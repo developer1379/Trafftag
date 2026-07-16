@@ -1,0 +1,165 @@
+<div class="auth-container">
+  <!-- Background Glows -->
+  <div class="bg-glow-purple" style="top: -10%; left: -10%;"></div>
+  <div class="bg-glow-teal" style="bottom: -10%; right: -10%;"></div>
+
+  <header class="auth-header">
+    <div class="logo" [routerLink]="['/']">
+      <span class="logo-icon"><i class="fa-solid fa-taxi"></i></span>
+      <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
+    </div>
+    <a [routerLink]="['/']" class="back-home-btn"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+  </header>
+
+  <main class="auth-card-wrapper">
+    <div class="glass-card auth-card">
+      <div class="form-header">
+        <h2>Create Account</h2>
+        <p class="form-description">Get started with a free account and protect your vehicle.</p>
+      </div>
+
+      <form (ngSubmit)="submitRegister()" #registerForm="ngForm" class="auth-form">
+        
+        <!-- Name Group -->
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label class="form-label">First Name <span class="required">*</span></label>
+            <div class="input-wrapper-inner">
+              <span class="input-icon-left"><i class="fa-solid fa-user"></i></span>
+              <input 
+                type="text" 
+                name="firstName" 
+                [ngModel]="firstName()" 
+                (ngModelChange)="firstName.set($event)"
+                class="form-input form-input-with-icon" 
+                placeholder="John" 
+                required
+              />
+            </div>
+          </div>
+          <div class="form-group flex-1">
+            <label class="form-label">Last Name <span class="required">*</span></label>
+            <div class="input-wrapper-inner">
+              <span class="input-icon-left"><i class="fa-solid fa-user"></i></span>
+              <input 
+                type="text" 
+                name="lastName" 
+                [ngModel]="lastName()" 
+                (ngModelChange)="lastName.set($event)"
+                class="form-input form-input-with-icon" 
+                placeholder="Doe" 
+                required
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Email Input -->
+        <div class="form-group">
+          <label class="form-label">Email Address <span class="required">*</span></label>
+          <div class="input-wrapper-inner">
+            <span class="input-icon-left"><i class="fa-solid fa-envelope"></i></span>
+            <input 
+              type="email" 
+              name="email" 
+              [ngModel]="email()" 
+              (ngModelChange)="email.set($event)"
+              class="form-input form-input-with-icon" 
+              placeholder="john.doe@example.com" 
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Phone Input -->
+        <div class="form-group">
+          <label class="form-label">Phone Number (Optional)</label>
+          <p class="input-tip">For receiving instant SMS notification alerts.</p>
+          <div class="input-wrapper-inner">
+            <span class="input-icon-left"><i class="fa-solid fa-phone"></i></span>
+            <input 
+              type="tel" 
+              name="phone" 
+              [ngModel]="phone()" 
+              (ngModelChange)="phone.set($event)"
+              class="form-input form-input-with-icon" 
+              placeholder="e.g. +1 (555) 019-2834"
+            />
+          </div>
+        </div>
+
+        <!-- Password Input -->
+        <div class="form-group">
+          <label class="form-label">Password <span class="required">*</span></label>
+          <div class="input-wrapper-inner">
+            <span class="input-icon-left"><i class="fa-solid fa-lock"></i></span>
+            <input 
+              [type]="showPassword() ? 'text' : 'password'" 
+              name="password" 
+              [ngModel]="password()" 
+              (ngModelChange)="password.set($event)"
+              class="form-input form-input-with-icon" 
+              placeholder="Min. 8 characters" 
+              required
+            />
+            <button 
+              type="button" 
+              class="btn-toggle-password" 
+              (click)="togglePasswordVisibility()"
+              aria-label="Toggle password visibility"
+            >
+              <i class="fa-solid" [class.fa-eye]="!showPassword()" [class.fa-eye-slash]="showPassword()"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Terms Agreement -->
+        <div class="form-checkbox-group">
+          <label class="checkbox-container">
+            <input 
+              type="checkbox" 
+              name="agreeTerms" 
+              [ngModel]="agreeTerms()" 
+              (ngModelChange)="agreeTerms.set($event)"
+              required
+            />
+            <span class="checkmark"></span>
+            <span class="checkbox-label">
+              I agree to the <a href="#" class="inline-link">Terms of Service</a> and <a href="#" class="inline-link">Privacy Policy</a>
+            </span>
+          </label>
+        </div>
+
+        <!-- Error Alert -->
+        @if (errorMessage()) {
+          <div class="error-alert">
+            <span><i class="fa-solid fa-triangle-exclamation"></i></span>
+            <p>{{ errorMessage() }}</p>
+          </div>
+        }
+
+        <!-- Submit Button -->
+        <button 
+          type="submit" 
+          class="btn btn-primary btn-submit" 
+          [disabled]="isSubmitting()"
+        >
+          @if (isSubmitting()) {
+            <span class="spinner"></span> Creating Account...
+          } @else {
+            Create Account & Get Started
+          }
+        </button>
+
+      </form>
+
+      <div class="auth-footer">
+        <p>Already have an account? <a [routerLink]="['/login']" class="auth-switch-link">Sign in here</a></p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="auth-footer-note">
+    <p>&copy; 2026 TRAFFTAG. Secure Access Console.</p>
+  </footer>
+</div>

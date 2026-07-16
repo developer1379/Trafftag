@@ -1,0 +1,210 @@
+<div class="home-container">
+  <!-- Background Glows -->
+  <div class="bg-glow-purple" style="top: -10%; left: -10%;"></div>
+  <div class="bg-glow-teal" style="top: 40%; right: -10%;"></div>
+
+  <!-- Header -->
+  <header class="navbar">
+    <div class="logo" [routerLink]="['/']">
+      <span class="logo-icon"><i class="fa-solid fa-taxi"></i></span>
+      <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
+    </div>
+    
+    <!-- Desktop Navigation Links -->
+    <nav class="nav-links">
+      <a [routerLink]="['/features']">Features</a>
+      <a [routerLink]="['/pricing']" class="active-link">Pricing</a>
+      <a [routerLink]="['/faq']">FAQ</a>
+      <a [routerLink]="['/scan']" class="nav-scan-btn"><i class="fa-solid fa-qrcode"></i> Test Scan</a>
+    </nav>
+    
+    <!-- Desktop Auth -->
+    <div class="nav-auth">
+      <a [routerLink]="['/login']" class="btn btn-secondary">Login</a>
+      <a [routerLink]="['/register']" class="btn btn-primary">Sign Up</a>
+    </div>
+
+    <!-- Hamburger Toggle (Mobile Only) -->
+    <button class="menu-toggle" (click)="toggleMenu()" aria-label="Toggle Navigation">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </header>
+
+  <!-- Mobile Drawer Backdrop Overlay -->
+  @if (isMenuOpen()) {
+    <div class="mobile-drawer-overlay" (click)="isMenuOpen.set(false)"></div>
+  }
+
+  <!-- Mobile Slide-Out Drawer -->
+  <div class="mobile-drawer" [class.open]="isMenuOpen()">
+    <div class="drawer-header">
+      <div class="logo" [routerLink]="['/']" (click)="isMenuOpen.set(false)">
+        <span class="logo-icon"><i class="fa-solid fa-taxi"></i></span>
+        <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
+      </div>
+      <button class="drawer-close" (click)="isMenuOpen.set(false)" aria-label="Close Menu">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <nav class="drawer-nav">
+      <a [routerLink]="['/features']" (click)="isMenuOpen.set(false)">
+        <i class="fa-solid fa-star drawer-nav-icon"></i> Features
+      </a>
+      <a [routerLink]="['/pricing']" class="active-link" (click)="isMenuOpen.set(false)">
+        <i class="fa-solid fa-tags drawer-nav-icon"></i> Pricing Plans
+      </a>
+      <a [routerLink]="['/faq']" (click)="isMenuOpen.set(false)">
+        <i class="fa-solid fa-circle-question drawer-nav-icon"></i> FAQs
+      </a>
+      <a [routerLink]="['/scan']" class="drawer-scan-link" (click)="isMenuOpen.set(false)">
+        <i class="fa-solid fa-qrcode drawer-nav-icon"></i> Test Scan Form
+      </a>
+    </nav>
+
+    <div class="drawer-footer">
+      <a [routerLink]="['/login']" class="btn btn-secondary w-full" (click)="isMenuOpen.set(false)">
+        <i class="fa-solid fa-right-to-bracket"></i> Login
+      </a>
+      <a [routerLink]="['/register']" class="btn btn-primary w-full" (click)="isMenuOpen.set(false)">
+        <i class="fa-solid fa-user-plus"></i> Sign Up
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="page-content">
+    <div class="page-hero">
+      <div class="badge"><i class="fa-solid fa-tags"></i> Transparent Pricing</div>
+      <h1>Simple Plans for <span class="text-gradient">Every Driver</span></h1>
+      <p class="hero-subtitle">
+        Whether you own one car or manage a shipping fleet, we have a plan suited to keep your communications private.
+      </p>
+    </div>
+
+    <!-- Pricing Grid -->
+    <section class="pricing-section">
+      <div class="pricing-grid">
+        @for (plan of pricingPlans(); track plan.name) {
+          <div class="pricing-card glass-card" [class.popular-card]="plan.popular">
+            @if (plan.popular) {
+              <span class="popular-badge">Most Popular</span>
+            }
+            <h3>{{ plan.name }}</h3>
+            <p class="plan-desc">{{ plan.desc }}</p>
+            <div class="price-container">
+              <span class="price-val">{{ plan.price }}</span>
+              <span class="price-period">/ {{ plan.period }}</span>
+            </div>
+            <ul class="plan-features">
+              @for (feat of plan.features; track feat) {
+                <li><i class="fa-solid fa-check text-primary"></i> {{ feat }}</li>
+              }
+            </ul>
+            <a [routerLink]="['/register']" class="btn plan-btn" [class.btn-indigo]="plan.popular" [class.btn-secondary]="!plan.popular">
+              {{ plan.action }}
+            </a>
+          </div>
+        }
+      </div>
+    </section>
+
+    <!-- Comparison Table Matrix -->
+    <section class="comparison-section">
+      <h2 class="comparison-title">Compare Plan Details</h2>
+      <div class="table-responsive">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th class="table-feature-header">Core Features</th>
+              <th>Free</th>
+              <th>Premium</th>
+              <th>Fleet</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Registered Vehicles Limit</td>
+              <td>1 Vehicle</td>
+              <td>Up to 3 Vehicles</td>
+              <td>Unlimited</td>
+            </tr>
+            <tr>
+              <td>Email Notifications</td>
+              <td><i class="fa-solid fa-circle-check text-primary"></i> Yes</td>
+              <td><i class="fa-solid fa-circle-check text-primary"></i> Yes</td>
+              <td><i class="fa-solid fa-circle-check text-primary"></i> Yes</td>
+            </tr>
+            <tr>
+              <td>SMS Notifications Delivery</td>
+              <td><i class="fa-solid fa-circle-xmark text-danger"></i> No</td>
+              <td><i class="fa-solid fa-circle-check text-primary"></i> Instant</td>
+              <td><i class="fa-solid fa-circle-check text-primary"></i> Instant</td>
+            </tr>
+            <tr>
+              <td>Custom Text Pre-sets</td>
+              <td><i class="fa-solid fa-circle-xmark text-danger"></i> No</td>
+              <td><i class="fa-solid fa-circle-check text-primary"></i> Yes</td>
+              <td><i class="fa-solid fa-circle-check text-primary"></i> Yes</td>
+            </tr>
+            <tr>
+              <td>Physical Waterproof QR Decals</td>
+              <td>Self-Print</td>
+              <td>Shipped Free</td>
+              <td>Shipped Bulk (Discounted)</td>
+            </tr>
+            <tr>
+              <td>Webhook & API Integration</td>
+              <td><i class="fa-solid fa-circle-xmark text-danger"></i> No</td>
+              <td><i class="fa-solid fa-circle-xmark text-danger"></i> No</td>
+              <td><i class="fa-solid fa-circle-check text-primary"></i> Yes</td>
+            </tr>
+            <tr>
+              <td>Dashboard Account Manager</td>
+              <td><i class="fa-solid fa-circle-xmark text-danger"></i> No</td>
+              <td><i class="fa-solid fa-circle-xmark text-danger"></i> No</td>
+              <td><i class="fa-solid fa-circle-check text-primary"></i> Dedicated 24/7</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <div class="logo">
+          <span class="logo-icon"><i class="fa-solid fa-taxi"></i></span>
+          <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
+        </div>
+        <p>Smart, secure, and anonymous communications protecting vehicle owners worldwide.</p>
+        <div class="footer-socials">
+          <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+          <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+      
+      <div class="footer-column">
+        <h4>Platform</h4>
+        <a [routerLink]="['/login']">Sign In</a>
+        <a [routerLink]="['/register']">Get Started</a>
+        <a [routerLink]="['/portal']">Owner Dashboard</a>
+        <a [routerLink]="['/admin']">Admin Panel</a>
+      </div>
+
+      <div class="footer-column">
+        <h4>Trust & Legal</h4>
+        <a href="#">Privacy Shield</a>
+        <a href="#">Terms of Engagement</a>
+        <a href="#">Cookie Policy</a>
+        <a href="#">Support Center</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 TRAFFTAG Inc. All rights reserved.</p>
+    </div>
+  </footer>
+</div>

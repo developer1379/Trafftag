@@ -1,0 +1,420 @@
+<div class="admin-container">
+  <!-- Mobile Header Bar -->
+  <header class="mobile-header">
+    <button class="mobile-menu-toggle" (click)="toggleMobileSidebar()" aria-label="Toggle Navigation Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <div class="logo" [routerLink]="['/']">
+      <span class="logo-icon"><i class="fa-solid fa-taxi"></i></span>
+      <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
+    </div>
+    <div class="user-avatar-small">AD</div>
+  </header>
+
+  <!-- Mobile Sidebar Overlay Backdrop -->
+  @if (isMobileSidebarOpen()) {
+    <div class="mobile-sidebar-overlay" (click)="toggleMobileSidebar()"></div>
+  }
+
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.mobile-open]="isMobileSidebarOpen()">
+    <!-- Mobile Close Button -->
+    <button class="mobile-sidebar-close" (click)="toggleMobileSidebar()" aria-label="Close Navigation Menu">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <div class="sidebar-brand" [routerLink]="['/']">
+      <span class="logo-icon"><i class="fa-solid fa-taxi"></i></span>
+      <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
+    </div>
+    
+    <div class="admin-profile-summary">
+      <div class="admin-avatar">AD</div>
+      <div class="admin-info">
+        <h4>System Admin</h4>
+        <span class="admin-role-badge">Super Admin</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-item" [class.active]="activeTab() === 'dashboard'" (click)="selectTab('dashboard')">
+        <span><i class="fa-solid fa-chart-line nav-icon"></i> KPI Overview</span>
+      </button>
+      <button class="nav-item" [class.active]="activeTab() === 'users'" (click)="selectTab('users')">
+        <span><i class="fa-solid fa-users nav-icon"></i> Users Mgmt</span>
+      </button>
+      <button class="nav-item" [class.active]="activeTab() === 'tags'" (click)="selectTab('tags')">
+        <span><i class="fa-solid fa-qrcode nav-icon"></i> QR Code Decals</span>
+      </button>
+      <button class="nav-item" [class.active]="activeTab() === 'enquiries'" (click)="selectTab('enquiries')">
+        <span><i class="fa-solid fa-envelope-open-text nav-icon"></i> Inquiries</span>
+      </button>
+      <button class="nav-item" [class.active]="activeTab() === 'gateways'" (click)="selectTab('gateways')">
+        <span><i class="fa-solid fa-server nav-icon"></i> System Gateways</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a [routerLink]="['/']" class="btn btn-secondary logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+    </div>
+  </aside>
+
+  <!-- Main Dashboard Content -->
+  <main class="main-content">
+    
+    <!-- Top Header -->
+    <header class="content-header">
+      <div class="header-welcome">
+        @if (activeTab() === 'dashboard') {
+          <h1>Administrative Overview</h1>
+        } @else if (activeTab() === 'users') {
+          <h1>User Accounts Directory</h1>
+        } @else if (activeTab() === 'tags') {
+          <h1>QR Code Tag Inventory</h1>
+        } @else if (activeTab() === 'enquiries') {
+          <h1>Inbound Help Inquiries</h1>
+        } @else if (activeTab() === 'gateways') {
+          <h1>Gateway Services Health</h1>
+        }
+        <p>Manage users, tags, verify services, and track general platform activity logs.</p>
+      </div>
+    </header>
+
+    <!-- Tab 1: Dashboard Overview -->
+    @if (activeTab() === 'dashboard') {
+      <div class="tab-panel">
+        
+        <!-- Metrics Grid (KPI Cards) -->
+        <div class="metrics-grid">
+          <div class="metric-card glass-card">
+            <span class="metric-icon"><i class="fa-solid fa-users text-primary"></i></span>
+            <div class="metric-info">
+              <span class="metric-label">Total Users</span>
+              <span class="metric-value">{{ totalUsersCount() }}</span>
+              <span class="metric-subtext text-success">Active: {{ activeUsersCount() }}</span>
+            </div>
+          </div>
+          <div class="metric-card glass-card">
+            <span class="metric-icon"><i class="fa-solid fa-car text-indigo"></i></span>
+            <div class="metric-info">
+              <span class="metric-label">Registered Cars</span>
+              <span class="metric-value">{{ totalVehiclesCount() }}</span>
+            </div>
+          </div>
+          <div class="metric-card glass-card">
+            <span class="metric-icon"><i class="fa-solid fa-qrcode text-warning"></i></span>
+            <div class="metric-info">
+              <span class="metric-label">QR Decals Printed</span>
+              <span class="metric-value">{{ totalTagsCount() }}</span>
+            </div>
+          </div>
+          <div class="metric-card glass-card">
+            <span class="metric-icon"><i class="fa-solid fa-wallet text-success"></i></span>
+            <div class="metric-info">
+              <span class="metric-label">Revenue</span>
+              <span class="metric-value">${{ membershipRevenue() }}</span>
+              <span class="metric-subtext">Orders Today: {{ ordersTodayCount() }}</span>
+            </div>
+          </div>
+          <div class="metric-card glass-card">
+            <span class="metric-icon"><i class="fa-solid fa-circle-question text-danger"></i></span>
+            <div class="metric-info">
+              <span class="metric-label">Support Tickets</span>
+              <span class="metric-value">{{ ticketsTodayCount() }}</span>
+              <span class="metric-subtext text-danger">Pending Review</span>
+            </div>
+          </div>
+          <div class="metric-card glass-card">
+            <span class="metric-icon"><i class="fa-solid fa-bell text-indigo"></i></span>
+            <div class="metric-info">
+              <span class="metric-label">SMS Scans Today</span>
+              <span class="metric-value">{{ notificationsTodayCount() }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Latest Activities & Performance split -->
+        <div class="dashboard-split">
+          <div class="dashboard-card glass-card flex-2">
+            <h3>Recent System Activities</h3>
+            <div class="log-items-list">
+              <div class="log-item">
+                <span class="log-time">10:45:12</span>
+                <span class="log-desc">User <strong>sarah.j@example.com</strong> linked tag <strong>TT-718-204</strong> to <strong>Honda Civic</strong>.</span>
+              </div>
+              <div class="log-item">
+                <span class="log-time">10:42:01</span>
+                <span class="log-desc">Support ticket #TKT-8902 status updated to <span class="badge badge-progress">In Progress</span>.</span>
+              </div>
+              <div class="log-item">
+                <span class="log-time">09:15:33</span>
+                <span class="log-desc">Twilio SMS gateway sent notification alert to user <strong>+1 (555) 304-2911</strong>.</span>
+              </div>
+              <div class="log-item animate-pulse">
+                <span class="log-time">08:00:00</span>
+                <span class="log-desc text-success"><i class="fa-solid fa-circle-check"></i> System backup completed successfully on AWS S3 bucket.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-card glass-card flex-1">
+            <h3>Quick Actions</h3>
+            <div class="quick-admin-actions">
+              <button class="btn btn-primary w-full" (click)="showGenerateModal.set(true)">
+                <i class="fa-solid fa-qrcode"></i> Generate Bulk QR Serials
+              </button>
+              <button class="btn btn-secondary w-full" (click)="selectTab('enquiries')">
+                <i class="fa-solid fa-envelope"></i> Review Support Tickets
+              </button>
+              <button class="btn btn-secondary w-full" (click)="selectTab('gateways')">
+                <i class="fa-solid fa-signal"></i> Gateway Live Checks
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Tab 2: Users Management -->
+    @if (activeTab() === 'users') {
+      <div class="tab-panel">
+        
+        <!-- Toolbar with Search, Role, Plan, Status (FR-USER-MGMT-001) -->
+        <div class="filter-toolbar glass-card">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" placeholder="Search name, email, or phone..." [ngModel]="userSearchQuery()" (ngModelChange)="userSearchQuery.set($event)">
+          </div>
+
+          <div class="filter-controls">
+            <!-- Filter Role -->
+            <select [ngModel]="userRoleFilter()" (ngModelChange)="userRoleFilter.set($event)">
+              <option value="all">Role: All</option>
+              <option value="Customer">Customer</option>
+              <option value="Fleet Manager">Fleet Manager</option>
+              <option value="Support Agent">Support Agent</option>
+            </select>
+
+            <!-- Filter Plan -->
+            <select [ngModel]="userPlanFilter()" (ngModelChange)="userPlanFilter.set($event)">
+              <option value="all">Plan: All</option>
+              <option value="Free">Free</option>
+              <option value="Premium">Premium</option>
+              <option value="Fleet">Fleet</option>
+            </select>
+
+            <!-- Filter Status -->
+            <select [ngModel]="userStatusFilter()" (ngModelChange)="userStatusFilter.set($event)">
+              <option value="all">Status: All</option>
+              <option value="active">Active</option>
+              <option value="suspended">Suspended</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-container glass-card">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>User Profile</th>
+                <th>Contact Details</th>
+                <th>Role Designation</th>
+                <th>Active Plan</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (user of filteredUsers(); track user.id) {
+                <tr>
+                  <td>
+                    <div class="user-row-meta">
+                      <span class="user-avatar-text">{{ user.name.substring(0, 2).toUpperCase() }}</span>
+                      <div>
+                        <div class="u-name">{{ user.name }}</div>
+                        <div class="u-joined">Joined: {{ user.joinedDate }}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="u-email">{{ user.email }}</div>
+                    <div class="u-phone">{{ user.phone || 'N/A' }}</div>
+                  </td>
+                  <td><span class="role-pill {{ user.role.toLowerCase().replace(' ', '-') }}">{{ user.role }}</span></td>
+                  <td><span class="plan-pill">{{ user.plan }}</span></td>
+                  <td>
+                    <span class="status-indicator" [class.active]="user.status === 'Active'">{{ user.status }}</span>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm" [class.btn-danger-outline]="user.status === 'Active'" [class.btn-success]="user.status === 'Suspended'" (click)="toggleUserStatus(user.id)">
+                      {{ user.status === 'Active' ? 'Suspend' : 'Activate' }}
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+    <!-- Tab 3: QR Tags Inventory -->
+    @if (activeTab() === 'tags') {
+      <div class="tab-panel">
+        
+        <div class="panel-header">
+          <p>Generate, edit, track and update active sticker assignments.</p>
+          <button class="btn btn-primary" (click)="showGenerateModal.set(true)"><i class="fa-solid fa-plus"></i> Generate Bulk Serials</button>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="filter-toolbar glass-card">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" placeholder="Search serial, owner email or plate..." [ngModel]="tagSearchQuery()" (ngModelChange)="tagSearchQuery.set($event)">
+          </div>
+
+          <div class="filter-controls">
+            <select [ngModel]="tagStatusFilter()" (ngModelChange)="tagStatusFilter.set($event)">
+              <option value="all">Status: All</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+              <option value="lost/stolen">Lost/Stolen</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-container glass-card">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Sticker Serial</th>
+                <th>Owner Account</th>
+                <th>Assigned Plate</th>
+                <th>Scan Logs</th>
+                <th>Status State</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (tag of filteredTags(); track tag.serial) {
+                <tr>
+                  <td><strong>{{ tag.serial }}</strong></td>
+                  <td>{{ tag.ownerEmail }}</td>
+                  <td><span class="veh-plate">{{ tag.plate }}</span></td>
+                  <td>{{ tag.scansCount }} Scans</td>
+                  <td>
+                    <span class="status-indicator" [class.active]="tag.status === 'Active'" [class.paused]="tag.status === 'Inactive'" [class.danger]="tag.status === 'Lost/Stolen'">
+                      {{ tag.status }}
+                    </span>
+                  </td>
+                  <td>
+                    <select class="action-select" [value]="tag.status" (change)="updateTagStatus(tag.serial, $any($event.target).value)">
+                      <option value="Active">Active</option>
+                      <option value="Inactive">Inactive</option>
+                      <option value="Lost/Stolen">Lost/Stolen</option>
+                    </select>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+    <!-- Tab 4: Inquiries Resolution -->
+    @if (activeTab() === 'enquiries') {
+      <div class="tab-panel">
+        <p>Review customer contact forms and help tickets (FR-SUPPORT-001).</p>
+        
+        <div class="enquiries-list">
+          @for (enq of enquiries(); track enq.id) {
+            <div class="enquiry-card glass-card">
+              <div class="enquiry-header">
+                <div>
+                  <span class="badge-count">{{ enq.id }}</span>
+                  <h3>{{ enq.subject }}</h3>
+                </div>
+                <span class="status-indicator" [class.active]="enq.status === 'Resolved'">{{ enq.status }}</span>
+              </div>
+              <div class="enquiry-meta">
+                <span>By: <strong>{{ enq.name }}</strong> ({{ enq.email }})</span>
+                <span>Phone: <strong>{{ enq.phone }}</strong></span>
+                <span>Date: <strong>{{ enq.date }}</strong></span>
+              </div>
+              <p class="enquiry-message">"{{ enq.message }}"</p>
+              @if (enq.status === 'Pending') {
+                <div class="enquiry-actions">
+                  <button class="btn btn-success btn-sm" (click)="resolveEnquiry(enq.id)">
+                    <i class="fa-solid fa-circle-check"></i> Mark Resolved
+                  </button>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Tab 5: Gateways Services Health -->
+    @if (activeTab() === 'gateways') {
+      <div class="tab-panel">
+        <p>Continuous diagnostic check of external systems, databases and transactional SMS/Email relays.</p>
+
+        <div class="gateways-grid">
+          @for (gw of gateways(); track gw.name) {
+            <div class="gateway-card glass-card">
+              <div class="gw-top">
+                <h3>{{ gw.name }}</h3>
+                <span class="status-dot online"></span>
+              </div>
+              <div class="gw-details">
+                <div class="gw-detail-item">
+                  <span class="lbl">API Status</span>
+                  <span class="val text-success">Healthy ({{ gw.status }})</span>
+                </div>
+                <div class="gw-detail-item">
+                  <span class="lbl">Response Latency</span>
+                  <span class="val">{{ gw.latency }}</span>
+                </div>
+                <div class="gw-detail-item">
+                  <span class="lbl">Resource Load</span>
+                  <span class="val">{{ gw.load }} ({{ gw.cpu }})</span>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </main>
+
+  <!-- Generate Bulk Tags Modal -->
+  @if (showGenerateModal()) {
+    <div class="modal-overlay">
+      <div class="modal-content glass-card">
+        <div class="modal-header">
+          <h2>Generate Bulk QR Codes</h2>
+          <button class="modal-close" (click)="showGenerateModal.set(false)"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+          <form (submit)="$event.preventDefault(); generateTagsBulk()">
+            <div class="form-group">
+              <label for="prefix">Tag Code Prefix</label>
+              <input id="prefix" type="text" [(ngModel)]="prefix" name="prefix" placeholder="e.g. TT">
+            </div>
+            <div class="form-group">
+              <label for="quantity">Quantity to Generate *</label>
+              <input id="quantity" type="number" [(ngModel)]="bulkQuantity" name="quantity" min="1" max="100" required>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="showGenerateModal.set(false)">Cancel</button>
+              <button type="submit" class="btn btn-primary">Generate Serials</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  }
+</div>

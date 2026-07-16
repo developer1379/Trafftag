@@ -1,0 +1,727 @@
+<div class="portal-container">
+  <!-- Mobile Header Bar -->
+  <header class="mobile-header">
+    <button class="mobile-menu-toggle" (click)="toggleMobileSidebar()" aria-label="Toggle Navigation Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <div class="logo" [routerLink]="['/']">
+      <span class="logo-icon"><i class="fa-solid fa-taxi"></i></span>
+      <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
+    </div>
+    <div class="user-avatar-small">SJ</div>
+  </header>
+
+  <!-- Mobile Sidebar Overlay Backdrop -->
+  @if (isMobileSidebarOpen()) {
+    <div class="mobile-sidebar-overlay" (click)="toggleMobileSidebar()"></div>
+  }
+
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.mobile-open]="isMobileSidebarOpen()">
+    <!-- Mobile Close Button -->
+    <button class="mobile-sidebar-close" (click)="toggleMobileSidebar()" aria-label="Close Navigation Menu">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <div class="sidebar-brand" [routerLink]="['/']">
+      <span class="logo-icon"><i class="fa-solid fa-taxi"></i></span>
+      <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
+    </div>
+    
+    <div class="user-profile-summary">
+      <div class="user-avatar">SJ</div>
+      <div class="user-info">
+        <h4>{{ userName() }}</h4>
+        <span class="user-plan-badge">{{ membershipType() }}</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-item" [class.active]="activeTab() === 'dashboard'" (click)="selectTab('dashboard')">
+        <span><i class="fa-solid fa-chart-pie nav-icon"></i> Overview</span>
+      </button>
+      <button class="nav-item" [class.active]="activeTab() === 'vehicles'" (click)="selectTab('vehicles')">
+        <span><i class="fa-solid fa-car nav-icon"></i> My Vehicles</span>
+      </button>
+      <button class="nav-item" [class.active]="activeTab() === 'tags'" (click)="selectTab('tags')">
+        <span><i class="fa-solid fa-qrcode nav-icon"></i> Active QR Tags</span>
+      </button>
+      <button class="nav-item" [class.active]="activeTab() === 'notifications'" (click)="selectTab('notifications')">
+        <span><i class="fa-solid fa-bell nav-icon"></i> Alerts</span>
+        @if (unreadCount() > 0) {
+          <span class="badge-count">{{ unreadCount() }}</span>
+        }
+      </button>
+      <button class="nav-item" [class.active]="activeTab() === 'support'" (click)="selectTab('support')">
+        <span><i class="fa-solid fa-circle-question nav-icon"></i> Support Center</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a [routerLink]="['/']" class="btn btn-secondary logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+    </div>
+  </aside>
+
+  <!-- Main Dashboard Content -->
+  <main class="main-content">
+    
+    <!-- Top Header -->
+    <header class="content-header">
+      <div class="header-welcome">
+        @if (activeTab() === 'dashboard') {
+          <h1>Dashboard Overview</h1>
+        } @else if (activeTab() === 'vehicles') {
+          <h1>My Registered Vehicles</h1>
+        } @else if (activeTab() === 'tags') {
+          <h1>My Active QR Tags</h1>
+        } @else if (activeTab() === 'notifications') {
+          <h1>Notification Alerts Center</h1>
+        } @else if (activeTab() === 'support') {
+          <h1>Customer Support Tickets</h1>
+        }
+        <p>Manage your account, check alerts, and monitor your vehicles.</p>
+      </div>
+      <div class="header-actions">
+        @if (membershipType() === 'Free Plan') {
+          <button class="btn btn-primary upgrade-cta" (click)="openUpgrade()"><i class="fa-solid fa-star"></i> Upgrade to Premium</button>
+        } @else {
+          <span class="premium-active-badge"><i class="fa-solid fa-star"></i> Premium Active</span>
+        }
+      </div>
+    </header>
+
+    <!-- Tab 1: Overview -->
+    @if (activeTab() === 'dashboard') {
+      <div class="tab-panel">
+        
+        <!-- Metrics Grid (SRS Specified Widgets) -->
+        <div class="metrics-grid">
+          <!-- Profile Widget -->
+          <div class="metric-card glass-card">
+            <span class="metric-icon"><i class="fa-solid fa-user text-primary"></i></span>
+            <div class="metric-info">
+              <span class="metric-label">Profile Summary</span>
+              <span class="metric-value-title">{{ userName() }}</span>
+              <span class="metric-subtext">Active Since: {{ activeSince() }}</span>
+              <span class="metric-subtext">Last Login: {{ lastLogin() }}</span>
+            </div>
+          </div>
+          
+          <!-- Vehicle Widget -->
+          <div class="metric-card glass-card">
+            <span class="metric-icon"><i class="fa-solid fa-car text-indigo"></i></span>
+            <div class="metric-info">
+              <span class="metric-label">Vehicle Summary</span>
+              <span class="metric-value">{{ vehicles().length }} <span class="metric-value-unit">Cars</span></span>
+              <span class="metric-subtext text-success">Active Tags: {{ activeTagsCount() }}</span>
+              <span class="metric-subtext text-danger">Inactive: {{ inactiveTagsCount() }}</span>
+            </div>
+          </div>
+
+          <!-- Membership Widget -->
+          <div class="metric-card glass-card">
+            <span class="metric-icon"><i class="fa-solid fa-gem text-warning"></i></span>
+            <div class="metric-info">
+              <span class="metric-label">Membership Details</span>
+              <span class="metric-value-title">{{ membershipType() }}</span>
+              <span class="metric-subtext">Renewal: {{ renewalDate() }}</span>
+              <span class="metric-subtext text-indigo">Remaining: {{ remainingDays() }} Days</span>
+            </div>
+          </div>
+
+          <!-- Notifications Widget -->
+          <div class="metric-card glass-card">
+            <span class="metric-icon"><i class="fa-solid fa-bell text-danger"></i></span>
+            <div class="metric-info">
+              <span class="metric-label">Notification Counts</span>
+              <span class="metric-value">{{ notifications().length }} <span class="metric-value-unit">Total</span></span>
+              <span class="metric-subtext text-danger">Unread Alerts: {{ unreadCount() }}</span>
+              <span class="metric-subtext">This Month: {{ notifications().length }}</span>
+            </div>
+          </div>
+
+          <!-- Referral Widget -->
+          <div class="metric-card glass-card">
+            <span class="metric-icon"><i class="fa-solid fa-gift text-success"></i></span>
+            <div class="metric-info">
+              <span class="metric-label">Referrals & Rewards</span>
+              <span class="metric-value">${{ rewardsBalance().toFixed(2) }}</span>
+              <span class="metric-subtext">Total Referrals: {{ totalReferrals() }}</span>
+              <span class="metric-subtext text-muted">Pending Rewards: ${{ pendingRewards().toFixed(2) }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions Panel -->
+        <section class="quick-actions-section glass-card">
+          <h3>Quick Control Actions</h3>
+          <div class="quick-actions-grid">
+            <button class="btn btn-secondary action-icon-btn" (click)="openAddVehicle()">
+              <i class="fa-solid fa-plus text-primary"></i> Register New Vehicle
+            </button>
+            <button class="btn btn-secondary action-icon-btn" (click)="openLinkTag()">
+              <i class="fa-solid fa-qrcode text-indigo"></i> Activate Sticker Tag
+            </button>
+            <button class="btn btn-secondary action-icon-btn" (click)="openUpgrade()">
+              <i class="fa-solid fa-credit-card text-warning"></i> Upgrade Membership
+            </button>
+            <button class="btn btn-secondary action-icon-btn" (click)="selectTab('notifications')">
+              <i class="fa-solid fa-bell text-danger"></i> View Notification Center
+            </button>
+            <button class="btn btn-secondary action-icon-btn" (click)="selectTab('support')">
+              <i class="fa-solid fa-circle-question text-success"></i> Get Technical Support
+            </button>
+          </div>
+        </section>
+
+        <!-- Dashboard Bottom Row -->
+        <div class="dashboard-split">
+          <!-- Recent Notifications -->
+          <div class="dashboard-card glass-card flex-2">
+            <div class="card-header">
+              <h3>Recent Vehicle Alerts</h3>
+              <button class="text-btn" (click)="selectTab('notifications')">View All Center</button>
+            </div>
+            <div class="alerts-list">
+              @if (notifications().length === 0) {
+                <p class="empty-message">No alerts received yet. Safe driving!</p>
+              } @else {
+                @for (notif of notifications().slice(0, 3); track notif.id) {
+                  <div class="alert-item" [class.unread]="!notif.read">
+                    <div class="alert-meta">
+                      <span class="alert-category">
+                        <i [class]="notif.icon" class="alert-cat-icon"></i>
+                        {{ notif.category }}
+                      </span>
+                      <span class="alert-time">{{ notif.timestamp }}</span>
+                    </div>
+                    <p class="alert-msg">"{{ notif.message }}"</p>
+                    <div class="alert-actions">
+                      @if (notif.senderPhone) {
+                        <span class="alert-contact"><i class="fa-solid fa-phone"></i> {{ notif.senderPhone }}</span>
+                      }
+                      <span class="status-pill" [class.resolved]="notif.status === 'Resolved'">{{ notif.status }}</span>
+                      <button class="action-btn" (click)="toggleResolve(notif.id)">
+                        {{ notif.status === 'Resolved' ? 'Reopen Alert' : 'Mark Resolved' }}
+                      </button>
+                    </div>
+                  </div>
+                }
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Tab 2: My Vehicles -->
+    @if (activeTab() === 'vehicles') {
+      <div class="tab-panel">
+        <div class="panel-header">
+          <p>Register all your household or company cars to link them with protective QR labels.</p>
+          <button class="btn btn-primary" (click)="openAddVehicle()"><i class="fa-solid fa-plus"></i> Register Vehicle</button>
+        </div>
+
+        <div class="vehicles-grid">
+          @if (vehicles().length === 0) {
+            <div class="empty-card glass-card">
+              <i class="fa-solid fa-car empty-icon"></i>
+              <h3>No Vehicles Registered</h3>
+              <p>Add your first vehicle to secure your dashboard links.</p>
+              <button class="btn btn-primary" (click)="openAddVehicle()">Register Vehicle Now</button>
+            </div>
+          } @else {
+            @for (veh of vehicles(); track veh.id) {
+              <div class="vehicle-card glass-card">
+                <!-- Card Header -->
+                <div class="veh-card-header">
+                  <div class="veh-title-block">
+                    <span class="car-brand-icon"><i class="fa-solid fa-car-side text-primary"></i></span>
+                    <div>
+                      <h3>{{ veh.make }} {{ veh.model }}</h3>
+                      <span class="veh-subtitle">{{ veh.color }} &bull; {{ veh.year }}</span>
+                    </div>
+                  </div>
+                  <div class="status-badge-container">
+                    @if (veh.tagId === 'Not Assigned') {
+                      <span class="status-pill-badge tag-missing"><i class="fa-solid fa-triangle-exclamation"></i> Unassigned</span>
+                    } @else if (veh.active) {
+                      <span class="status-pill-badge tag-active"><i class="fa-solid fa-circle-check"></i> Active Decal</span>
+                    } @else {
+                      <span class="status-pill-badge tag-paused"><i class="fa-solid fa-circle-pause"></i> Tag Paused</span>
+                    }
+                  </div>
+                </div>
+
+                <!-- Stylized License Plate -->
+                <div class="veh-license-plate-wrapper">
+                  <div class="veh-license-plate">
+                    <div class="plate-state">{{ veh.stateProvince | uppercase }}</div>
+                    <div class="plate-number">{{ veh.plate }}</div>
+                    <div class="plate-hologram"></div>
+                  </div>
+                </div>
+
+                <!-- Card Body (Grid Details) -->
+                <div class="veh-card-body">
+                  <div class="veh-info-section">
+                    <h4><i class="fa-solid fa-circle-info text-primary"></i> Specifications & Details</h4>
+                    <div class="veh-info-grid">
+                      <div class="info-item">
+                        <span class="label">VIN:</span>
+                        <span class="value vin-text">{{ veh.vin || 'N/A' }}</span>
+                      </div>
+                      <div class="info-item">
+                        <span class="label">Driver Name:</span>
+                        <span class="value">{{ veh.driverName || 'Primary Owner' }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="veh-info-section">
+                    <h4><i class="fa-solid fa-chart-simple text-indigo"></i> QR Sticker Analytics</h4>
+                    <div class="veh-info-grid">
+                      <div class="info-item">
+                        <span class="label">Decal Serial:</span>
+                        <span class="value font-mono">{{ veh.tagId }}</span>
+                      </div>
+                      <div class="info-item">
+                        <span class="label">Total Alerts:</span>
+                        <span class="value">{{ veh.totalScans }} scans <span class="last-alert-time">(Last: {{ veh.lastScan }})</span></span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="veh-info-section">
+                    <h4><i class="fa-solid fa-sliders text-warning"></i> Alert Dispatch Preferences</h4>
+                    <div class="preferences-pills">
+                      <span class="pref-badge" [class.enabled]="veh.prefSMS">
+                        <i class="fa-solid" [class.fa-comment-sms]="veh.prefSMS" [class.fa-circle-xmark]="!veh.prefSMS"></i> SMS Alerts
+                      </span>
+                      <span class="pref-badge" [class.enabled]="veh.prefEmail">
+                        <i class="fa-solid" [class.fa-envelope]="veh.prefEmail" [class.fa-circle-xmark]="!veh.prefEmail"></i> Email Alerts
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Card Footer Controls -->
+                <div class="veh-card-footer">
+                  <div class="toggle-control-group">
+                    <span class="toggle-desc-label">Protect State</span>
+                    <label class="switch">
+                      <input type="checkbox" [checked]="veh.active" (change)="toggleVehicleActive(veh.id)">
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                  
+                  <div class="footer-actions-group">
+                    @if (veh.tagId !== 'Not Assigned') {
+                      <a [routerLink]="['/scan', veh.tagId]" target="_blank" class="footer-btn btn-action-scan" title="Test QR Scan Page">
+                        <i class="fa-solid fa-qrcode"></i> Test
+                      </a>
+                    }
+                    <button class="footer-btn btn-action-pdf" title="Print Sticker PDF Decal">
+                      <i class="fa-solid fa-file-pdf"></i> Decal
+                    </button>
+                    <button class="footer-btn btn-action-delete" (click)="deleteVehicle(veh.id)" title="Remove Vehicle from Registry">
+                      <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            }
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Tab 3: Active QR Tags -->
+    @if (activeTab() === 'tags') {
+      <div class="tab-panel">
+        <div class="panel-header">
+          <p>Manage physical waterproof QR code decals attached to your vehicles.</p>
+          <button class="btn btn-primary" (click)="openLinkTag()"><i class="fa-solid fa-link"></i> Link/Activate Sticker</button>
+        </div>
+
+        <div class="tags-grid-layout">
+          @for (veh of vehicles(); track veh.id) {
+            <div class="decal-card glass-card">
+              <!-- Physical Decal Preview Column -->
+              <div class="decal-preview-wrapper">
+                <div class="decal-sticker-mock">
+                  <div class="sticker-header">TRAFFTAG &bull; PROTECT</div>
+                  <div class="sticker-qr-container">
+                    <div class="qr-target-corner top-left"></div>
+                    <div class="qr-target-corner top-right"></div>
+                    <div class="qr-target-corner bottom-left"></div>
+                    <div class="qr-target-corner bottom-right"></div>
+                    <i class="fa-solid fa-qrcode decal-qr-icon"></i>
+                  </div>
+                  <div class="sticker-serial-footer">{{ veh.tagId }}</div>
+                </div>
+              </div>
+
+              <!-- Metadata & Actions Column -->
+              <div class="decal-details-wrapper">
+                <div class="decal-header-row">
+                  <span class="decal-badge-id">Serial: <strong>{{ veh.tagId }}</strong></span>
+                  <span class="status-pill-badge" [class.tag-active]="veh.active && veh.tagId !== 'Not Assigned'" [class.tag-paused]="!veh.active && veh.tagId !== 'Not Assigned'" [class.tag-missing]="veh.tagId === 'Not Assigned'">
+                    <i class="fa-solid" [class.fa-circle-check]="veh.active && veh.tagId !== 'Not Assigned'" [class.fa-circle-pause]="!veh.active && veh.tagId !== 'Not Assigned'" [class.fa-triangle-exclamation]="veh.tagId === 'Not Assigned'"></i>
+                    {{ veh.tagId !== 'Not Assigned' ? (veh.active ? 'Active Decal' : 'Paused') : 'Unassigned Tag' }}
+                  </span>
+                </div>
+
+                <div class="decal-meta-grid">
+                  <div class="decal-meta-item">
+                    <span class="lbl"><i class="fa-solid fa-car text-primary"></i> Linked Vehicle:</span>
+                    <span class="val">{{ veh.make }} {{ veh.model }} ({{ veh.plate }})</span>
+                  </div>
+                  <div class="decal-meta-item">
+                    <span class="lbl"><i class="fa-solid fa-shield-halved text-indigo"></i> Protection Plan:</span>
+                    <span class="val">{{ membershipType() }}</span>
+                  </div>
+                  <div class="decal-meta-item">
+                    <span class="lbl"><i class="fa-solid fa-barcode text-muted"></i> Hardware Type:</span>
+                    <span class="val">Premium Matte Vinyl Decal</span>
+                  </div>
+                  <div class="decal-meta-item">
+                    <span class="lbl"><i class="fa-solid fa-chart-line text-success"></i> Scan Interactions:</span>
+                    <span class="val">{{ veh.totalScans }} total alerts logged</span>
+                  </div>
+                </div>
+
+                <div class="decal-actions-footer">
+                  @if (veh.tagId !== 'Not Assigned') {
+                    <a [routerLink]="['/scan', veh.tagId]" target="_blank" class="btn btn-primary btn-sm">
+                      <i class="fa-solid fa-up-right-from-square"></i> Test Scan Portal
+                    </a>
+                  }
+                  <button class="btn btn-secondary btn-sm" (click)="openLinkTag()"><i class="fa-solid fa-arrows-rotate"></i> Reassign Sticker</button>
+                  <button class="btn btn-secondary btn-sm" title="Print decal template"><i class="fa-solid fa-print"></i> Print Decal</button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Tab 4: Notifications (Alerts Center) -->
+    @if (activeTab() === 'notifications') {
+      <div class="tab-panel">
+        
+        <!-- Search & Filter Area (SRS Requirement FR-NOTIFY-010 & FR-NOTIFY-011) -->
+        <div class="filter-toolbar glass-card">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" placeholder="Search alerts message or category..." [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event)">
+          </div>
+          
+          <div class="filter-controls">
+            <!-- Filter by Vehicle -->
+            <select [ngModel]="filterVehicle()" (ngModelChange)="filterVehicle.set($event)">
+              <option value="all">Filter by Vehicle: All</option>
+              @for (veh of vehicles(); track veh.id) {
+                <option [value]="veh.id">{{ veh.make }} {{ veh.model }} ({{ veh.plate }})</option>
+              }
+            </select>
+
+            <!-- Filter by Category -->
+            <select [ngModel]="filterCategory()" (ngModelChange)="filterCategory.set($event)">
+              <option value="all">Filter by Issue: All</option>
+              <option value="Headlights Left On">Headlights Left On</option>
+              <option value="Parking Obstruction">Parking Obstruction</option>
+              <option value="Window Rolled Down">Window Rolled Down</option>
+              <option value="Flat Tire">Flat Tire</option>
+              <option value="Emergency / Towing">Emergency / Towing</option>
+            </select>
+
+            <!-- Filter by Status -->
+            <select [ngModel]="filterStatus()" (ngModelChange)="filterStatus.set($event)">
+              <option value="all">Status: All</option>
+              <option value="unread">Status: Unread</option>
+              <option value="read">Status: Read</option>
+              <option value="resolved">Status: Resolved</option>
+              <option value="unresolved">Status: Unresolved</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="alerts-list">
+          @if (filteredNotifications().length === 0) {
+            <p class="empty-message">No matching notifications found.</p>
+          } @else {
+            @for (notif of filteredNotifications(); track notif.id) {
+              <div class="alert-item" [class.unread]="!notif.read">
+                <div class="alert-meta">
+                  <span class="alert-category">
+                    <i [class]="notif.icon" class="alert-cat-icon"></i>
+                    {{ notif.category }}
+                  </span>
+                  <span class="alert-time">{{ notif.timestamp }}</span>
+                </div>
+                <p class="alert-msg">"{{ notif.message }}"</p>
+                <div class="alert-actions">
+                  @if (notif.senderPhone) {
+                    <span class="alert-contact"><i class="fa-solid fa-phone"></i> {{ notif.senderPhone }}</span>
+                  }
+                  <span class="status-pill" [class.resolved]="notif.status === 'Resolved'">{{ notif.status }}</span>
+                  
+                  <div class="alert-btn-group">
+                    @if (!notif.read) {
+                      <button class="action-btn-secondary" (click)="markAsRead(notif.id)">Mark Read</button>
+                    }
+                    <button class="action-btn" (click)="toggleResolve(notif.id)">
+                      {{ notif.status === 'Resolved' ? 'Reopen Alert' : 'Mark Resolved' }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            }
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Tab 5: Customer Support Tickets -->
+    @if (activeTab() === 'support') {
+      <div class="tab-panel">
+        <div class="panel-header">
+          <p>Need help? Submit a support ticket and track staff resolution statuses (FR-SUPPORT-001).</p>
+          <button class="btn btn-primary" (click)="openSubmitTicket()"><i class="fa-solid fa-plus"></i> Submit Support Ticket</button>
+        </div>
+
+        <div class="tickets-container">
+          @if (supportTickets().length === 0) {
+            <p class="empty-message">No support tickets submitted yet.</p>
+          } @else {
+            @for (ticket of supportTickets(); track ticket.id) {
+              <div class="ticket-card glass-card">
+                <div class="ticket-header">
+                  <div class="ticket-title-col">
+                    <span class="ticket-id">#{{ ticket.id }}</span>
+                    <h3>{{ ticket.subject }}</h3>
+                  </div>
+                  <span class="ticket-status-pill" [class.t-open]="ticket.status === 'Open'" [class.t-progress]="ticket.status === 'In Progress'" [class.t-resolved]="ticket.status === 'Resolved'">
+                    {{ ticket.status }}
+                  </span>
+                </div>
+                <div class="ticket-meta-info">
+                  <span>Category: <strong>{{ ticket.category }}</strong></span>
+                  <span>Submitted: <strong>{{ ticket.date }}</strong></span>
+                  <span>Priority: <strong [class.p-high]="ticket.priority === 'High'">{{ ticket.priority }}</strong></span>
+                </div>
+
+                @if (ticket.status === 'Resolved') {
+                  <div class="ticket-rating-section">
+                    @if (ticket.rated) {
+                      <div class="rated-stars">
+                        <span>Your Rating: </span>
+                        @for (star of [1,2,3,4,5]; track star) {
+                          <i class="fa-star" [class.fa-solid]="star <= (ticket.rating || 0)" [class.fa-regular]="star > (ticket.rating || 0)" style="color: var(--warning);"></i>
+                        }
+                      </div>
+                    } @else {
+                      <div class="rating-prompt">
+                        <span>Please rate your experience:</span>
+                        <div class="stars-picker">
+                          @for (star of [1,2,3,4,5]; track star) {
+                            <button (click)="rateTicket(ticket.id, star)"><i class="fa-regular fa-star"></i></button>
+                          }
+                        </div>
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+            }
+          }
+        </div>
+      </div>
+    }
+  </main>
+
+  <!-- Add Vehicle Modal -->
+  @if (showAddVehicleModal()) {
+    <div class="modal-overlay">
+      <div class="modal-content glass-card">
+        <div class="modal-header">
+          <h2>Register New Vehicle</h2>
+          <button class="modal-close" (click)="closeAddVehicle()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+          <form (submit)="$event.preventDefault(); addVehicle()">
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="veh-make">Make / Manufacturer *</label>
+                <input id="veh-make" type="text" placeholder="e.g. Tesla" [(ngModel)]="newMake" name="make" required>
+              </div>
+              <div class="form-group">
+                <label for="veh-model">Model *</label>
+                <input id="veh-model" type="text" placeholder="e.g. Model Y" [(ngModel)]="newModel" name="model" required>
+              </div>
+            </div>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="veh-year">Model Year</label>
+                <input id="veh-year" type="number" placeholder="2025" [(ngModel)]="newYear" name="year">
+              </div>
+              <div class="form-group">
+                <label for="veh-color">Exterior Color</label>
+                <input id="veh-color" type="text" placeholder="e.g. Matte Gray" [(ngModel)]="newColor" name="color">
+              </div>
+            </div>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="veh-plate">License Plate Number *</label>
+                <input id="veh-plate" type="text" placeholder="e.g. XYZ-1234" [(ngModel)]="newPlate" name="plate" required>
+              </div>
+              <div class="form-group">
+                <label for="veh-state">State / Province *</label>
+                <input id="veh-state" type="text" placeholder="e.g. California" [(ngModel)]="newStateProvince" name="state" required>
+              </div>
+            </div>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="veh-driver">Driver Name</label>
+                <input id="veh-driver" type="text" placeholder="e.g. Sarah Jenkins" [(ngModel)]="newDriverName" name="driver">
+              </div>
+              <div class="form-group">
+                <label for="veh-tag">Sticker Serial Number (Optional)</label>
+                <input id="veh-tag" type="text" placeholder="e.g. TT-482-901" [(ngModel)]="newTagId" name="tagId">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="veh-vin">VIN (Vehicle Identification Number)</label>
+              <input id="veh-vin" type="text" placeholder="17-character VIN" [(ngModel)]="newVin" name="vin">
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="closeAddVehicle()">Cancel</button>
+              <button type="submit" class="btn btn-primary">Add Vehicle</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Link Tag Modal -->
+  @if (showLinkTagModal()) {
+    <div class="modal-overlay">
+      <div class="modal-content glass-card">
+        <div class="modal-header">
+          <h2>Activate Sticker QR Code</h2>
+          <button class="modal-close" (click)="closeLinkTag()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+          <form (submit)="$event.preventDefault(); linkTag()">
+            <div class="form-group">
+              <label for="serial-code">Sticker Serial / QR Code ID *</label>
+              <input id="serial-code" type="text" placeholder="e.g. TT-718-204" [(ngModel)]="linkSerial" name="serial" required>
+            </div>
+            <div class="form-group">
+              <label for="vehicle-select">Select Vehicle *</label>
+              <select id="vehicle-select" [(ngModel)]="linkVehicleId" name="vehicle" required>
+                <option value="">-- Choose registered vehicle --</option>
+                @for (v of vehicles(); track v.id) {
+                  <option [value]="v.id">{{ v.make }} {{ v.model }} ({{ v.plate }})</option>
+                }
+              </select>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="closeLinkTag()">Cancel</button>
+              <button type="submit" class="btn btn-primary">Link QR Decal</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Upgrade Modal -->
+  @if (showUpgradeModal()) {
+    <div class="modal-overlay">
+      <div class="modal-content glass-card modal-large">
+        <div class="modal-header">
+          <h2>Upgrade Subscription Plan</h2>
+          <button class="modal-close" (click)="closeUpgrade()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+          <div class="upgrade-grid">
+            <div class="upgrade-tier">
+              <h3>Premium Tier</h3>
+              <p class="price">$4.99 <span>/ month</span></p>
+              <ul class="features">
+                <li><i class="fa-solid fa-check"></i> Up to 3 Vehicles</li>
+                <li><i class="fa-solid fa-check"></i> Instant SMS Alerts</li>
+                <li><i class="fa-solid fa-check"></i> Premium Matte Decals</li>
+              </ul>
+              <button class="btn btn-primary w-full" (click)="upgradePlan('Premium Plan')">Choose Premium</button>
+            </div>
+            <div class="upgrade-tier">
+              <h3>Fleet Tier</h3>
+              <p class="price">$19.99 <span>/ month</span></p>
+              <ul class="features">
+                <li><i class="fa-solid fa-check"></i> Unlimited Vehicles</li>
+                <li><i class="fa-solid fa-check"></i> Team Webhooks API</li>
+                <li><i class="fa-solid fa-check"></i> Dedicated Manager</li>
+              </ul>
+              <button class="btn btn-secondary w-full" (click)="upgradePlan('Fleet Plan')">Contact Fleet Sales</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Submit Support Ticket Modal -->
+  @if (showSubmitTicketModal()) {
+    <div class="modal-overlay">
+      <div class="modal-content glass-card">
+        <div class="modal-header">
+          <h2>Submit Support Ticket</h2>
+          <button class="modal-close" (click)="closeSubmitTicket()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+          <form (submit)="$event.preventDefault(); submitTicket()">
+            <div class="form-group">
+              <label for="t-subj">Ticket Subject / Title *</label>
+              <input id="t-subj" type="text" placeholder="e.g. Delayed sticker delivery" [(ngModel)]="newTicketSubject" name="subject" required>
+            </div>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="t-cat">Category *</label>
+                <select id="t-cat" [(ngModel)]="newTicketCategory" name="category">
+                  <option value="Hardware Decals">Hardware Decals</option>
+                  <option value="Billing & Referral">Billing & Referral</option>
+                  <option value="General Support">General Support</option>
+                  <option value="Bug Report">Bug Report</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="t-prio">Priority *</label>
+                <select id="t-prio" [(ngModel)]="newTicketPriority" name="priority">
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="High">High</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="t-msg">Description / Message *</label>
+              <textarea id="t-msg" rows="4" placeholder="Detail your issue here..." [(ngModel)]="newTicketMessage" name="message" required></textarea>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="closeSubmitTicket()">Cancel</button>
+              <button type="submit" class="btn btn-primary">Submit Ticket</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  }
+</div>

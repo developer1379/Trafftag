@@ -1,0 +1,243 @@
+<div class="home-container">
+  <!-- Background Glows -->
+  <div class="bg-glow-purple" style="top: -10%; left: -10%;"></div>
+  <div class="bg-glow-teal" style="top: 40%; right: -10%;"></div>
+  <div class="bg-glow-purple" style="bottom: 10%; left: 20%;"></div>
+
+  <!-- Header -->
+  <header class="navbar">
+    <div class="logo" [routerLink]="['/']">
+      <span class="logo-icon"><i class="fa-solid fa-taxi"></i></span>
+      <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
+    </div>
+    
+    <!-- Desktop Navigation Links -->
+    <nav class="nav-links">
+      <a [routerLink]="['/features']">Features</a>
+      <a [routerLink]="['/pricing']">Pricing</a>
+      <a [routerLink]="['/faq']">FAQ</a>
+      <a [routerLink]="['/scan']" class="nav-scan-btn"><i class="fa-solid fa-qrcode"></i> Test Scan</a>
+    </nav>
+    
+    <!-- Desktop Auth -->
+    <div class="nav-auth">
+      <a [routerLink]="['/login']" class="btn btn-secondary">Login</a>
+      <a [routerLink]="['/register']" class="btn btn-primary">Sign Up</a>
+    </div>
+
+    <!-- Hamburger Toggle (Mobile Only) -->
+    <button class="menu-toggle" (click)="toggleMenu()" aria-label="Toggle Navigation">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </header>
+
+  <!-- Mobile Drawer Backdrop Overlay -->
+  @if (isMenuOpen()) {
+    <div class="mobile-drawer-overlay" (click)="isMenuOpen.set(false)"></div>
+  }
+
+  <!-- Mobile Slide-Out Drawer -->
+  <div class="mobile-drawer" [class.open]="isMenuOpen()">
+    <div class="drawer-header">
+      <div class="logo">
+        <span class="logo-icon"><i class="fa-solid fa-taxi"></i></span>
+        <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
+      </div>
+      <button class="drawer-close" (click)="isMenuOpen.set(false)" aria-label="Close Menu">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <nav class="drawer-nav">
+      <a [routerLink]="['/features']" (click)="isMenuOpen.set(false)">
+        <i class="fa-solid fa-star drawer-nav-icon"></i> Features
+      </a>
+      <a [routerLink]="['/pricing']" (click)="isMenuOpen.set(false)">
+        <i class="fa-solid fa-tags drawer-nav-icon"></i> Pricing Plans
+      </a>
+      <a [routerLink]="['/faq']" (click)="isMenuOpen.set(false)">
+        <i class="fa-solid fa-circle-question drawer-nav-icon"></i> FAQs
+      </a>
+      <a [routerLink]="['/scan']" class="drawer-scan-link" (click)="isMenuOpen.set(false)">
+        <i class="fa-solid fa-qrcode drawer-nav-icon"></i> Test Scan Form
+      </a>
+    </nav>
+
+    <div class="drawer-footer">
+      <a [routerLink]="['/login']" class="btn btn-secondary w-full" (click)="isMenuOpen.set(false)">
+        <i class="fa-solid fa-right-to-bracket"></i> Login
+      </a>
+      <a [routerLink]="['/register']" class="btn btn-primary w-full" (click)="isMenuOpen.set(false)">
+        <i class="fa-solid fa-user-plus"></i> Sign Up
+      </a>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="badge"><i class="fa-solid fa-rocket"></i> Smart Vehicle Notification Platform</div>
+      <h1>Anonymous Vehicle Communication via <span class="text-gradient">QR Codes</span></h1>
+      <p class="hero-subtitle">
+        Protect your privacy, stay reachable on the road. Enable finders to notify you about parking issues, open windows, or emergencies instantly without sharing your personal details.
+      </p>
+      <div class="hero-actions">
+        <a [routerLink]="['/register']" class="btn btn-indigo btn-lg">Get Your Free QR Tag</a>
+        <a [routerLink]="['/scan/DEMO123']" class="btn btn-secondary btn-lg">See Live Scan Demo</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-number">10k+</span>
+          <span class="stat-label">Active Users</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">99.9%</span>
+          <span class="stat-label">Uptime Delivery</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">100%</span>
+          <span class="stat-label">Privacy Shield</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="canvas-container">
+        <canvas #rendererCanvas class="hero-3d-canvas"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="features-section">
+    <div class="section-header">
+      <h2>Why Choose <span class="text-gradient">TRAFFTAG</span>?</h2>
+      <p>A secure middleman service keeping your phone number off windshields.</p>
+    </div>
+    <div class="features-grid">
+      @for (feature of features(); track feature.title) {
+        <div class="feature-card glass-card">
+          <div class="feature-icon"><i [class]="feature.icon"></i></div>
+          <h3>{{ feature.title }}</h3>
+          <p>{{ feature.desc }}</p>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="how-it-works">
+    <div class="section-header">
+      <h2>Simple 3-Step Process</h2>
+      <p>Get up and running in less than 5 minutes.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h3>Activate Tag</h3>
+        <p>Register your account and link your unique QR tag serial number to your vehicle.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h3>Affix to Windshield</h3>
+        <p>Place your durable TRAFFTAG sticker inside your car window where it is easily visible.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h3>Stay Connected</h3>
+        <p>If someone notices an issue, they scan the tag to message you. You get a secure alert.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing" class="pricing-section">
+    <div class="section-header">
+      <h2>Flexible Subscription Plans</h2>
+      <p>Select the plan that fits your personal or fleet notification needs.</p>
+    </div>
+    <div class="pricing-grid">
+      @for (plan of pricingPlans(); track plan.name) {
+        <div class="pricing-card glass-card" [class.popular-card]="plan.popular">
+          @if (plan.popular) {
+            <span class="popular-badge">Most Popular</span>
+          }
+          <h3>{{ plan.name }}</h3>
+          <div class="price-container">
+            <span class="price-val">{{ plan.price }}</span>
+            <span class="price-period">/ {{ plan.period }}</span>
+          </div>
+          <ul class="plan-features">
+            @for (feat of plan.features; track feat) {
+              <li><i class="fa-solid fa-check text-primary"></i> {{ feat }}</li>
+            }
+          </ul>
+          <a [routerLink]="['/register']" class="btn plan-btn" [class.btn-indigo]="plan.popular" [class.btn-secondary]="!plan.popular">
+            {{ plan.action }}
+          </a>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="faq-section">
+    <div class="section-header">
+      <h2>Frequently Asked Questions</h2>
+      <p>Have questions? We have answers.</p>
+    </div>
+    <div class="faq-accordion">
+      @for (faq of faqs(); track faq.question; let idx = $index) {
+        <div class="faq-item glass-card" [class.open]="faq.open" (click)="toggleFaq(idx)">
+          <div class="faq-question">
+            <h3>{{ faq.question }}</h3>
+            <span class="faq-toggle-icon">
+              <i class="fa-solid" [class.fa-minus]="faq.open" [class.fa-plus]="!faq.open"></i>
+            </span>
+          </div>
+          @if (faq.open) {
+            <div class="faq-answer">
+              <p>{{ faq.answer }}</p>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <div class="logo">
+          <span class="logo-icon"><i class="fa-solid fa-taxi"></i></span>
+          <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
+        </div>
+        <p>Smart, secure, and anonymous communications protecting vehicle owners worldwide.</p>
+        <div class="footer-socials">
+          <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+          <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+      
+      <div class="footer-column">
+        <h4>Platform</h4>
+        <a [routerLink]="['/login']">Sign In</a>
+        <a [routerLink]="['/register']">Get Started</a>
+        <a [routerLink]="['/portal']">Owner Dashboard</a>
+        <a [routerLink]="['/admin']">Admin Panel</a>
+      </div>
+
+      <div class="footer-column">
+        <h4>Trust & Legal</h4>
+        <a href="#">Privacy Shield</a>
+        <a href="#">Terms of Engagement</a>
+        <a href="#">Cookie Policy</a>
+        <a href="#">Support Center</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 TRAFFTAG Inc. All rights reserved.</p>
+    </div>
+  </footer>
+</div>
