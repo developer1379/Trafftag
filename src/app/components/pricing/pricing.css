@@ -1,24 +1,50 @@
 .home-container {
   position: relative;
   width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 24px;
   overflow-x: hidden;
 }
 
-/* Navbar */
+/* Navbar stretching full-width with centered container */
 .navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24px 0;
-  border-bottom: 1px solid var(--border-card);
   position: sticky;
   top: 0;
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-card);
   z-index: 100;
+  width: 100%;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 24px;
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+@media (min-width: 1200px) {
+  .navbar-container {
+    padding: 24px 48px;
+  }
+}
+
+/* Centering rules for all page sections */
+.pricing-section, .comparison-section {
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+@media (min-width: 1200px) {
+  .pricing-section, .comparison-section {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
 }
 
 .logo {
@@ -59,14 +85,14 @@
 
 .nav-scan-btn {
   color: var(--primary) !important;
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  border: 1px solid rgba(223, 178, 63, 0.3);
   padding: 6px 12px;
   border-radius: 20px;
-  background: rgba(16, 185, 129, 0.05);
+  background: rgba(223, 178, 63, 0.05);
 }
 
 .nav-scan-btn:hover {
-  background: rgba(16, 185, 129, 0.1) !important;
+  background: rgba(223, 178, 63, 0.1) !important;
   border-color: var(--primary);
 }
 
@@ -99,7 +125,7 @@
   font-weight: 700;
   padding: 6px 16px;
   border-radius: 30px;
-  border: 1px solid rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(223, 178, 63, 0.2);
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -290,6 +316,7 @@
   margin-top: 80px;
   padding: 64px 0 32px 0;
   border-top: 1px solid var(--border-card);
+  width: 100%;
 }
 
 .footer-content {
@@ -297,6 +324,16 @@
   grid-template-columns: 1.5fr 1fr 1fr;
   gap: 48px;
   margin-bottom: 48px;
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 24px;
+}
+
+@media (min-width: 1200px) {
+  .footer-content {
+    padding: 0 48px;
+  }
 }
 
 .footer-brand {
@@ -369,6 +406,18 @@
   padding-top: 32px;
   color: var(--text-muted);
   font-size: 0.85rem;
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+@media (min-width: 1200px) {
+  .footer-bottom {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
 }
 
 /* Responsive Media Queries */

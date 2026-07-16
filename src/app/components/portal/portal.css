@@ -71,7 +71,7 @@
   font-size: 0.75rem;
   font-weight: 700;
   color: var(--primary);
-  background: rgba(16, 185, 129, 0.1);
+  background: rgba(223, 178, 63, 0.1);
   padding: 2px 8px;
   border-radius: 4px;
   align-self: flex-start;
@@ -338,7 +338,7 @@
 }
 
 .status-pill.resolved {
-  background: rgba(16, 185, 129, 0.1);
+  background: rgba(223, 178, 63, 0.1);
   color: var(--primary);
 }
 
@@ -482,7 +482,7 @@
 }
 
 .status-pill-badge.tag-active {
-  background: rgba(16, 185, 129, 0.1);
+  background: rgba(223, 178, 63, 0.1);
   color: var(--primary);
 }
 
@@ -628,7 +628,7 @@
 .pref-badge.enabled {
   background: var(--primary-glow);
   color: var(--primary);
-  border: 1px solid rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(223, 178, 63, 0.15);
 }
 
 /* Card Footer */
@@ -866,7 +866,7 @@
 }
 
 .status-badge.resolved-badge {
-  background: rgba(16, 185, 129, 0.1);
+  background: rgba(223, 178, 63, 0.1);
   color: var(--primary);
 }
 
@@ -1403,7 +1403,7 @@
 }
 
 .ticket-status-pill.t-open {
-  background: rgba(16, 185, 129, 0.1);
+  background: rgba(223, 178, 63, 0.1);
   color: var(--primary);
 }
 

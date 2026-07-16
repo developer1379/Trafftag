@@ -1,33 +1,35 @@
 <div class="home-container">
   <!-- Background Glows -->
-  <div class="bg-glow-purple" style="top: -10%; left: -10%;"></div>
-  <div class="bg-glow-teal" style="top: 40%; right: -10%;"></div>
+  <div class="bg-glow-gold" style="top: -10%; left: -10%;"></div>
+  <div class="bg-glow-gold" style="top: 40%; right: -10%;"></div>
 
   <!-- Header -->
   <header class="navbar">
-    <div class="logo" [routerLink]="['/']">
-      <span class="logo-icon"><i class="fa-solid fa-taxi"></i></span>
-      <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
-    </div>
-    
-    <!-- Desktop Navigation Links -->
-    <nav class="nav-links">
-      <a [routerLink]="['/features']">Features</a>
-      <a [routerLink]="['/pricing']" class="active-link">Pricing</a>
-      <a [routerLink]="['/faq']">FAQ</a>
-      <a [routerLink]="['/scan']" class="nav-scan-btn"><i class="fa-solid fa-qrcode"></i> Test Scan</a>
-    </nav>
-    
-    <!-- Desktop Auth -->
-    <div class="nav-auth">
-      <a [routerLink]="['/login']" class="btn btn-secondary">Login</a>
-      <a [routerLink]="['/register']" class="btn btn-primary">Sign Up</a>
-    </div>
+    <div class="navbar-container">
+      <div class="logo" [routerLink]="['/']">
+        <span class="logo-icon"><i class="fa-solid fa-taxi"></i></span>
+        <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
+      </div>
+      
+      <!-- Desktop Navigation Links -->
+      <nav class="nav-links">
+        <a [routerLink]="['/features']">Features</a>
+        <a [routerLink]="['/pricing']" class="active-link">Pricing</a>
+        <a [routerLink]="['/faq']">FAQ</a>
+        <a [routerLink]="['/scan']" class="nav-scan-btn"><i class="fa-solid fa-qrcode"></i> Test Scan</a>
+      </nav>
+      
+      <!-- Desktop Auth -->
+      <div class="nav-auth">
+        <a [routerLink]="['/login']" class="btn btn-secondary" data-ripple-dark="true">Login</a>
+        <a [routerLink]="['/register']" class="btn btn-primary" data-ripple-light="true">Sign Up</a>
+      </div>
 
-    <!-- Hamburger Toggle (Mobile Only) -->
-    <button class="menu-toggle" (click)="toggleMenu()" aria-label="Toggle Navigation">
-      <i class="fa-solid fa-bars"></i>
-    </button>
+      <!-- Hamburger Toggle (Mobile Only) -->
+      <button class="menu-toggle" (click)="toggleMenu()" aria-label="Toggle Navigation">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
   </header>
 
   <!-- Mobile Drawer Backdrop Overlay -->
@@ -101,7 +103,7 @@
                 <li><i class="fa-solid fa-check text-primary"></i> {{ feat }}</li>
               }
             </ul>
-            <a [routerLink]="['/register']" class="btn plan-btn" [class.btn-indigo]="plan.popular" [class.btn-secondary]="!plan.popular">
+            <a [routerLink]="['/register']" class="btn plan-btn" [class.btn-indigo]="plan.popular" [class.btn-secondary]="!plan.popular" [attr.data-ripple-light]="plan.popular ? 'true' : null" [attr.data-ripple-dark]="!plan.popular ? 'true' : null">
               {{ plan.action }}
             </a>
           </div>

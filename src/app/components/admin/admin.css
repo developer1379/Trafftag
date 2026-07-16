@@ -319,7 +319,7 @@
 }
 
 .status-badge-admin.active {
-  background: rgba(16, 185, 129, 0.1);
+  background: rgba(223, 178, 63, 0.1);
   color: var(--primary);
 }
 
@@ -790,7 +790,7 @@
 }
 
 .role-pill.customer {
-  background: rgba(16, 185, 129, 0.1);
+  background: rgba(223, 178, 63, 0.1);
   color: var(--primary);
 }
 

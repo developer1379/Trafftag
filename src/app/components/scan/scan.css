@@ -7,6 +7,12 @@
   position: relative;
 }
 
+@media (min-width: 1200px) {
+  .scan-container {
+    padding: 0 48px;
+  }
+}
+
 /* Header */
 .scan-header {
   display: flex;
@@ -71,9 +77,9 @@
 }
 
 .shield-badge {
-  background: rgba(16, 185, 129, 0.1);
+  background: rgba(223, 178, 63, 0.1);
   color: var(--primary);
-  border: 1px solid rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(223, 178, 63, 0.2);
   padding: 6px 14px;
   border-radius: 30px;
   font-size: 0.75rem;
@@ -125,8 +131,8 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  background: rgba(16, 185, 129, 0.08);
-  border: 1px solid rgba(16, 185, 129, 0.2);
+  background: rgba(223, 178, 63, 0.08);
+  border: 1px solid rgba(223, 178, 63, 0.2);
   padding: 14px 18px;
   border-radius: 10px;
 }
@@ -156,7 +162,7 @@
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--primary);
-  background: rgba(16, 185, 129, 0.12);
+  background: rgba(223, 178, 63, 0.12);
   padding: 2px 8px;
   border-radius: 4px;
 }
@@ -335,7 +341,7 @@
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  background: rgba(16, 185, 129, 0.1);
+  background: rgba(223, 178, 63, 0.1);
   color: var(--primary);
   font-size: 2.2rem;
   display: flex;

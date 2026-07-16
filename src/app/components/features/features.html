@@ -1,33 +1,35 @@
 <div class="home-container">
   <!-- Background Glows -->
-  <div class="bg-glow-purple" style="top: -10%; left: -10%;"></div>
-  <div class="bg-glow-teal" style="top: 40%; right: -10%;"></div>
+  <div class="bg-glow-gold" style="top: -10%; left: -10%;"></div>
+  <div class="bg-glow-gold" style="top: 40%; right: -10%;"></div>
 
   <!-- Header -->
   <header class="navbar">
-    <div class="logo" [routerLink]="['/']">
-      <span class="logo-icon"><i class="fa-solid fa-taxi"></i></span>
-      <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
-    </div>
-    
-    <!-- Desktop Navigation Links -->
-    <nav class="nav-links">
-      <a [routerLink]="['/features']" class="active-link">Features</a>
-      <a [routerLink]="['/pricing']">Pricing</a>
-      <a [routerLink]="['/faq']">FAQ</a>
-      <a [routerLink]="['/scan']" class="nav-scan-btn"><i class="fa-solid fa-qrcode"></i> Test Scan</a>
-    </nav>
-    
-    <!-- Desktop Auth -->
-    <div class="nav-auth">
-      <a [routerLink]="['/login']" class="btn btn-secondary">Login</a>
-      <a [routerLink]="['/register']" class="btn btn-primary">Sign Up</a>
-    </div>
+    <div class="navbar-container">
+      <div class="logo" [routerLink]="['/']">
+        <span class="logo-icon"><i class="fa-solid fa-taxi"></i></span>
+        <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
+      </div>
+      
+      <!-- Desktop Navigation Links -->
+      <nav class="nav-links">
+        <a [routerLink]="['/features']" class="active-link">Features</a>
+        <a [routerLink]="['/pricing']">Pricing</a>
+        <a [routerLink]="['/faq']">FAQ</a>
+        <a [routerLink]="['/scan']" class="nav-scan-btn"><i class="fa-solid fa-qrcode"></i> Test Scan</a>
+      </nav>
+      
+      <!-- Desktop Auth -->
+      <div class="nav-auth">
+        <a [routerLink]="['/login']" class="btn btn-secondary" data-ripple-dark="true">Login</a>
+        <a [routerLink]="['/register']" class="btn btn-primary" data-ripple-light="true">Sign Up</a>
+      </div>
 
-    <!-- Hamburger Toggle (Mobile Only) -->
-    <button class="menu-toggle" (click)="toggleMenu()" aria-label="Toggle Navigation">
-      <i class="fa-solid fa-bars"></i>
-    </button>
+      <!-- Hamburger Toggle (Mobile Only) -->
+      <button class="menu-toggle" (click)="toggleMenu()" aria-label="Toggle Navigation">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
   </header>
 
   <!-- Mobile Drawer Backdrop Overlay -->
@@ -101,8 +103,8 @@
         <h2>Protect Your Vehicle and Privacy Today</h2>
         <p>Join thousands of drivers using TRAFFTAG for zero-risk, anonymous communication.</p>
         <div class="cta-actions">
-          <a [routerLink]="['/register']" class="btn btn-primary btn-lg">Create Free Account</a>
-          <a [routerLink]="['/pricing']" class="btn btn-secondary btn-lg">View Subscription Plans</a>
+          <a [routerLink]="['/register']" class="btn btn-primary btn-lg" data-ripple-light="true">Create Free Account</a>
+          <a [routerLink]="['/pricing']" class="btn btn-secondary btn-lg" data-ripple-dark="true">View Subscription Plans</a>
         </div>
       </div>
     </section>

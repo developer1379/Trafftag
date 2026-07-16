@@ -179,7 +179,7 @@ export class Home implements AfterViewInit, OnDestroy {
 
       // Glowing outer gradient border
       const borderGrad = ctx.createLinearGradient(0, 0, 1024, 1440);
-      borderGrad.addColorStop(0, '#10b981'); // Emerald
+      borderGrad.addColorStop(0, '#dfb23f'); // Gold
       borderGrad.addColorStop(0.5, '#6366f1'); // Indigo
       borderGrad.addColorStop(1, '#06b6d4'); // Cyan
       ctx.strokeStyle = borderGrad;
@@ -187,7 +187,7 @@ export class Home implements AfterViewInit, OnDestroy {
       ctx.stroke();
 
       // High-tech glowing grid background lines
-      ctx.strokeStyle = 'rgba(16, 185, 129, 0.15)';
+      ctx.strokeStyle = 'rgba(223, 178, 63, 0.15)';
       ctx.lineWidth = 2;
       for (let i = 80; i < 960; i += 60) {
         ctx.beginPath();
@@ -203,11 +203,11 @@ export class Home implements AfterViewInit, OnDestroy {
       }
 
       // Premium Header Banner
-      ctx.fillStyle = 'rgba(16, 185, 129, 0.12)';
+      ctx.fillStyle = 'rgba(223, 178, 63, 0.12)';
       ctx.beginPath();
       ctx.roundRect(80, 80, 864, 160, 30);
       ctx.fill();
-      ctx.strokeStyle = 'rgba(16, 185, 129, 0.4)';
+      ctx.strokeStyle = 'rgba(223, 178, 63, 0.4)';
       ctx.lineWidth = 4;
       ctx.stroke();
 

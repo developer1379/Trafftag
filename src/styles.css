@@ -1,6 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700;900&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css');
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 
 :root {
   --font-primary: 'Plus Jakarta Sans', sans-serif;
@@ -19,9 +23,9 @@
   --text-secondary: #475569;
   --text-muted: #64748b;
 
-  --primary: #10b981; /* Emerald/Teal */
-  --primary-hover: #059669;
-  --primary-glow: rgba(16, 185, 129, 0.08);
+  --primary: #dfb23f; /* Gold */
+  --primary-hover: #c99e2e;
+  --primary-glow: rgba(223, 178, 63, 0.08);
 
   --secondary: #4f46e5; /* Indigo */
   --secondary-hover: #4338ca;
@@ -39,7 +43,7 @@
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.02);
   --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
   --shadow-lg: 0 12px 24px -4px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.03);
-  --shadow-primary: 0 0 20px 0 rgba(16, 185, 129, 0.15);
+  --shadow-primary: 0 0 20px 0 rgba(223, 178, 63, 0.15);
   --shadow-secondary: 0 0 20px 0 rgba(99, 102, 241, 0.15);
 }
 
@@ -116,12 +120,12 @@ button:hover::after, .btn:hover::after {
 .btn-primary {
   background: linear-gradient(135deg, var(--primary), var(--primary-hover));
   color: #ffffff;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+  box-shadow: 0 4px 12px rgba(223, 178, 63, 0.15);
 }
 
 .btn-primary:hover {
   transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 10px 22px rgba(16, 185, 129, 0.35);
+  box-shadow: 0 10px 22px rgba(223, 178, 63, 0.35);
 }
 
 .btn-secondary {
@@ -202,12 +206,12 @@ button:active, .btn:active {
   z-index: 0;
 }
 
-.bg-glow-teal {
+.bg-glow-gold {
   position: absolute;
   width: 500px;
   height: 500px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0) 70%);
+  background: radial-gradient(circle, rgba(223, 178, 63, 0.08) 0%, rgba(223, 178, 63, 0) 70%);
   filter: blur(50px);
   pointer-events: none;
   z-index: 0;
