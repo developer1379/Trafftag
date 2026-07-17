@@ -52,6 +52,9 @@
       <button class="nav-item" [class.active]="activeTab() === 'gateways'" (click)="selectTab('gateways')">
         <span><i class="fa-solid fa-server nav-icon"></i> System Gateways</span>
       </button>
+      <button class="nav-item" [class.active]="activeTab() === 'profile'" (click)="selectTab('profile')">
+        <span><i class="fa-solid fa-user-gear nav-icon"></i> My Profile</span>
+      </button>
     </nav>
 
     <div class="sidebar-footer">
@@ -75,6 +78,8 @@
           <h1>Inbound Help Inquiries</h1>
         } @else if (activeTab() === 'gateways') {
           <h1>Gateway Services Health</h1>
+        } @else if (activeTab() === 'profile') {
+          <h1>My Profile Settings</h1>
         }
         <p>Manage users, tags, verify services, and track general platform activity logs.</p>
       </div>
@@ -385,6 +390,88 @@
               </div>
             </div>
           }
+        </div>
+      </div>
+    }
+
+    <!-- Tab 6: My Profile -->
+    @if (activeTab() === 'profile') {
+      <div class="tab-panel animate-fade-in-up">
+        <div class="profile-layout-grid">
+          
+          <!-- User Details Card -->
+          <div class="profile-card glass-card">
+            <div class="profile-card-header">
+              <i class="fa-solid fa-user-shield profile-main-icon"></i>
+              <div>
+                <h3>Administrator Profile</h3>
+                <p>Track administrator access levels and metadata.</p>
+              </div>
+            </div>
+            
+            <div class="profile-details-list">
+              <div class="profile-detail-row">
+                <span class="detail-label">Full Name</span>
+                <span class="detail-value">System Admin</span>
+              </div>
+              <div class="profile-detail-row">
+                <span class="detail-label">Email Address</span>
+                <span class="detail-value">admin@trafftag.com</span>
+              </div>
+              <div class="profile-detail-row">
+                <span class="detail-label">Mobile Number</span>
+                <span class="detail-value">+1 (555) 901-3820</span>
+              </div>
+              <div class="profile-detail-row">
+                <span class="detail-label">Account Role</span>
+                <span class="detail-value"><span class="badge-role">Super Admin</span></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Security Settings Card -->
+          <div class="profile-card glass-card">
+            <div class="profile-card-header">
+              <i class="fa-solid fa-key profile-main-icon text-warning"></i>
+              <div>
+                <h3>Session Credentials</h3>
+                <p>Request session validations or resend security tokens.</p>
+              </div>
+            </div>
+
+            <div class="profile-security-actions">
+              <div class="security-action-box">
+                <div class="action-info">
+                  <h4>Request Resend OTP</h4>
+                  <p>Send a new OTP validation code to verify your administrative access console authorization.</p>
+                </div>
+                
+                <div class="action-trigger-area">
+                  <button 
+                    type="button" 
+                    class="btn btn-indigo resend-otp-btn" 
+                    (click)="resendOtp()"
+                    [disabled]="otpResendLoading()"
+                  >
+                    @if (otpResendLoading()) {
+                      <span class="spinner"></span> Resending OTP...
+                    } @else {
+                      <i class="fa-solid fa-paper-plane"></i> Resend Verification OTP
+                    }
+                  </button>
+                </div>
+              </div>
+
+              <!-- Success resend alert -->
+              @if (otpResendSuccess()) {
+                <div class="success-alert animate-fade-in">
+                  <span><i class="fa-solid fa-circle-check"></i></span>
+                  <p>A new validation OTP has been successfully resent to admin@trafftag.com</p>
+                </div>
+              }
+            </div>
+          </div>
+
         </div>
       </div>
     }

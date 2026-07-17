@@ -7,31 +7,32 @@
 
 
 :root {
-  --font-primary: 'Plus Jakarta Sans', sans-serif;
-  --font-secondary: 'Outfit', sans-serif;
+  --font-primary: 'Roboto', sans-serif;
+  --font-secondary: 'Roboto', sans-serif;
   --font-roboto: 'Roboto', sans-serif;
 
-  /* Colors - Light Mode First */
-  --bg-primary: #f8fafc;
-  --bg-secondary: #ffffff;
-  --bg-card: rgba(15, 23, 42, 0.02);
-  --bg-card-hover: rgba(15, 23, 42, 0.05);
-  --border-card: rgba(15, 23, 42, 0.07);
-  --border-card-hover: rgba(15, 23, 42, 0.14);
+  /* Colors - Premium High-Tech Light Mode */
+  --bg-primary: #f8fafc; /* Clean background */
+  --bg-secondary: #ffffff; /* White card background */
+  --bg-card: rgba(15, 23, 42, 0.01);
+  --bg-card-hover: rgba(15, 23, 42, 0.03);
+  --border-card: rgba(15, 23, 42, 0.06);
+  --border-card-hover: rgba(15, 23, 42, 0.12);
 
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #64748b;
+  --text-primary: #0f172a; /* Slate 900 */
+  --text-secondary: #475569; /* Slate 600 */
+  --text-muted: #64748b; /* Slate 500 */
 
-  --primary: #dfb23f; /* Gold */
-  --primary-hover: #c99e2e;
-  --primary-glow: rgba(223, 178, 63, 0.08);
+  --primary: #dfb23f; /* Premium Gold */
+  --primary-hover: #c99e2e; /* Amber Gold */
+  --primary-glow: rgba(223, 178, 63, 0.06);
 
-  --secondary: #4f46e5; /* Indigo */
+  --secondary: #4f46e5; /* Royal Indigo */
   --secondary-hover: #4338ca;
-  --secondary-glow: rgba(79, 70, 229, 0.08);
+  --secondary-glow: rgba(79, 70, 229, 0.06);
 
-  --accent: #d97706; /* Amber */
+  --accent: #06b6d4; /* Neon Cyan */
+  --accent-glow: rgba(6, 182, 212, 0.06);
 
   --success: #10b981;
   --danger: #ef4444;
@@ -43,8 +44,8 @@
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.02);
   --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
   --shadow-lg: 0 12px 24px -4px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.03);
-  --shadow-primary: 0 0 20px 0 rgba(223, 178, 63, 0.15);
-  --shadow-secondary: 0 0 20px 0 rgba(99, 102, 241, 0.15);
+  --shadow-primary: 0 0 20px 0 rgba(223, 178, 63, 0.1);
+  --shadow-secondary: 0 0 20px 0 rgba(99, 102, 241, 0.1);
 }
 
 /* Reset and Global Styles */
@@ -67,7 +68,7 @@ html, body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-secondary);
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 /* Interactive elements */
@@ -197,22 +198,365 @@ button:active, .btn:active {
 /* Background Gradients */
 .bg-glow-purple {
   position: absolute;
-  width: 500px;
-  height: 500px;
+  width: 600px;
+  height: 600px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(99, 102, 241, 0.09) 0%, rgba(99, 102, 241, 0) 70%);
-  filter: blur(50px);
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.05) 0%, rgba(99, 102, 241, 0) 70%);
+  filter: blur(60px);
   pointer-events: none;
   z-index: 0;
 }
 
 .bg-glow-gold {
   position: absolute;
-  width: 500px;
-  height: 500px;
+  width: 600px;
+  height: 600px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(223, 178, 63, 0.08) 0%, rgba(223, 178, 63, 0) 70%);
-  filter: blur(50px);
+  background: radial-gradient(circle, rgba(223, 178, 63, 0.04) 0%, rgba(223, 178, 63, 0) 70%);
+  filter: blur(60px);
   pointer-events: none;
   z-index: 0;
 }
+
+/* ==========================================
+   GLOBAL PREMIUM LIGHT THEME & ANIMATION OVERRIDES
+   ========================================== */
+
+/* Navbar glass styling */
+.navbar {
+  background: rgba(255, 255, 255, 0.8) !important;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+}
+
+/* Drawer styles */
+.mobile-drawer {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-left: 1px solid rgba(15, 23, 42, 0.08) !important;
+}
+
+.drawer-header {
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+}
+
+.drawer-close {
+  color: var(--text-secondary) !important;
+}
+
+.drawer-close:hover {
+  background-color: rgba(15, 23, 42, 0.05) !important;
+  color: var(--text-primary) !important;
+}
+
+.drawer-nav a:hover {
+  background-color: rgba(79, 70, 229, 0.05) !important;
+  color: var(--secondary) !important;
+}
+
+.drawer-footer {
+  border-top: 1px solid rgba(15, 23, 42, 0.08) !important;
+}
+
+.mobile-drawer-overlay {
+  background-color: rgba(15, 23, 42, 0.2) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+/* Glass Card Overrides for All Pages */
+.glass-card, .feature-card, .pricing-card, .faq-item, .step-card, .auth-card, .dashboard-card, .scan-card {
+  background: rgba(255, 255, 255, 0.75) !important;
+  border: 1px solid rgba(15, 23, 42, 0.06) !important;
+  color: var(--text-primary) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.04) !important;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Hover glow lift effects */
+.glass-card:hover, .feature-card:hover, .pricing-card:hover, .step-card:hover, .auth-card:hover, .dashboard-card:hover, .scan-card:hover {
+  transform: translateY(-8px) scale(1.01) !important;
+  border-color: rgba(99, 102, 241, 0.2) !important;
+  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08), 
+              0 0 30px 0 rgba(99, 102, 241, 0.03) !important;
+}
+
+/* Form input styling overrides for all pages */
+.form-input, .form-select, .form-textarea, select, input, textarea {
+  background: rgba(255, 255, 255, 0.8) !important;
+  border: 1px solid rgba(15, 23, 42, 0.12) !important;
+  color: var(--text-primary) !important;
+  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.02) !important;
+  border-radius: 10px !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.form-input:hover, .form-select:hover, select:hover, input:hover, textarea:hover {
+  border-color: rgba(15, 23, 42, 0.22) !important;
+  background: #ffffff !important;
+}
+
+.form-input:focus, .form-select:focus, select:focus, input:focus, textarea:focus {
+  outline: none !important;
+  background: #ffffff !important;
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 4px rgba(223, 178, 63, 0.1), inset 0 1px 2px rgba(15, 23, 42, 0.02) !important;
+}
+
+/* Accordion details */
+.faq-answer {
+  border-top: 1px solid rgba(15, 23, 42, 0.08) !important;
+}
+
+/* CTA sections background */
+.cta-banner, .cta-banner-section {
+  background: radial-gradient(circle at top right, rgba(223, 178, 63, 0.03), rgba(99, 102, 241, 0.03)) !important;
+  border: 1px solid rgba(15, 23, 42, 0.06) !important;
+}
+
+/* Micro-animations keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulseBorder {
+  0%, 100% {
+    border-color: rgba(15, 23, 42, 0.06);
+  }
+  50% {
+    border-color: rgba(99, 102, 241, 0.15);
+  }
+}
+
+/* Animation utilities */
+.animate-fade-in-up {
+  animation: fadeInUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-float {
+  animation: float 4s infinite ease-in-out;
+}
+
+/* Page content animation reveal delay helpers */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+
+/* ==========================================
+   HIGH-END SaaS UI OVERRIDES & DECORATIONS
+   ========================================== */
+
+/* Premium Badge Overrides */
+.badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 6px 14px !important;
+  border-radius: 30px !important;
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  background: rgba(79, 70, 229, 0.05) !important;
+  color: var(--secondary) !important;
+  border: 1px solid rgba(79, 70, 229, 0.15) !important;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.02) !important;
+}
+
+.section-header .badge, .page-hero .badge {
+  align-self: center !important;
+}
+
+.hero-content .badge {
+  align-self: flex-start !important;
+}
+
+@media (max-width: 968px) {
+  .hero-content .badge {
+    align-self: center !important;
+  }
+}
+
+.badge i {
+  font-size: 0.85rem !important;
+}
+
+/* Premium Section Headers */
+.section-header h2 {
+  font-size: 2.6rem !important;
+  font-weight: 800 !important;
+  color: var(--text-primary) !important;
+  line-height: 1.25 !important;
+  margin-top: 14px !important;
+}
+
+.section-header p {
+  font-size: 1.05rem !important;
+  color: var(--text-secondary) !important;
+  max-width: 600px !important;
+  margin: 10px auto 0 auto !important;
+}
+
+/* Premium Feature Card Overrides */
+.feature-card {
+  padding: 36px 28px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 20px !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+/* Gradient accent bar on top of feature-cards */
+.feature-card::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 4px !important;
+  background: linear-gradient(90deg, var(--primary), var(--secondary)) !important;
+  opacity: 0 !important;
+  transition: opacity 0.3s ease !important;
+}
+
+.feature-card:hover::before {
+  opacity: 1 !important;
+}
+
+.feature-icon {
+  font-size: 1.8rem !important;
+  width: 56px !important;
+  height: 56px !important;
+  border-radius: 14px !important;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.06), rgba(6, 182, 212, 0.06)) !important;
+  color: var(--secondary) !important;
+  border: 1px solid rgba(79, 70, 229, 0.12) !important;
+  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.02) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.feature-card:hover .feature-icon {
+  background: linear-gradient(135deg, var(--secondary), var(--accent)) !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+  transform: scale(1.1) rotate(4deg) !important;
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.15) !important;
+}
+
+.feature-card h3 {
+  font-size: 1.3rem !important;
+  font-weight: 700 !important;
+  color: var(--text-primary) !important;
+}
+
+.feature-card p {
+  font-size: 0.95rem !important;
+  line-height: 1.6 !important;
+  color: var(--text-secondary) !important;
+}
+
+/* Premium Step Card & Connector Overrides */
+.step-card {
+  padding: 40px 30px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 20px !important;
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.step-num {
+  width: 56px !important;
+  height: 56px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: var(--primary) !important;
+  border: 2px solid var(--primary) !important;
+  font-size: 1.4rem !important;
+  font-weight: 800 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 4px 10px rgba(223, 178, 63, 0.1) !important;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  z-index: 2 !important;
+}
+
+.step-card:hover .step-num {
+  background: var(--primary) !important;
+  color: #ffffff !important;
+  transform: scale(1.15) !important;
+  box-shadow: 0 8px 20px rgba(223, 178, 63, 0.25) !important;
+}
+
+.step-card h3 {
+  font-size: 1.3rem !important;
+  font-weight: 700 !important;
+  margin-top: 8px !important;
+}
+
+.step-card p {
+  font-size: 0.95rem !important;
+  color: var(--text-secondary) !important;
+  line-height: 1.6 !important;
+}
+
+/* Horizontal Connector Line for steps (Desktop) */
+@media (min-width: 968px) {
+  .steps-grid {
+    position: relative !important;
+  }
+  
+  .steps-grid::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 68px !important; /* aligned with step-num center */
+    left: 15% !important;
+    right: 15% !important;
+    height: 2px !important;
+    background-image: linear-gradient(to right, rgba(15, 23, 42, 0.05) 33%, var(--primary) 33%, var(--primary) 66%, rgba(15, 23, 42, 0.05) 66%) !important;
+    background-size: 12px 100% !important;
+    z-index: 0 !important;
+    opacity: 0.6 !important;
+  }
+}
+
+

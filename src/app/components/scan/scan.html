@@ -32,7 +32,7 @@
         </div>
       } @else {
         <!-- Form State -->
-        <div class="form-header">
+        <div class="form-header animate-fade-in-up delay-100">
           <div class="shield-badge"><i class="fa-solid fa-shield-halved"></i> SECURE PRIVACY SHIELD</div>
           <h2>Report Vehicle Issue</h2>
           <p class="form-description">
@@ -43,7 +43,7 @@
         <form (ngSubmit)="submitNotification()" #notifyForm="ngForm" class="scan-form">
           
           <!-- Tag Identifier Entry -->
-          <div class="form-group">
+          <div class="form-group animate-fade-in-up delay-150">
             <label class="form-label">Vehicle QR Tag ID</label>
             @if (tagId()) {
               <div class="tag-display">
@@ -65,11 +65,11 @@
           </div>
 
           <!-- Alert Categories (Grid of Cards) -->
-          <div class="form-group">
+          <div class="form-group animate-fade-in-up delay-100">
             <label class="form-label">What is the issue? <span class="required">*</span></label>
             <div class="category-grid">
-              @for (cat of categories; track cat.value) {
-                <label class="category-option" [class.selected]="selectedCategory() === cat.value">
+              @for (cat of categories; track cat.value; let idx = $index) {
+                <label class="category-option animate-fade-in-up" [class.selected]="selectedCategory() === cat.value" [class]="'delay-' + ((idx + 1) * 50)">
                   <input 
                     type="radio" 
                     name="category" 
@@ -89,7 +89,7 @@
           </div>
 
           <!-- Custom Message -->
-          <div class="form-group">
+          <div class="form-group animate-fade-in-up delay-200">
             <label class="form-label">Additional details (Optional)</label>
             <textarea 
               name="customMessage" 
@@ -102,7 +102,7 @@
           </div>
 
           <!-- Contact Number (Optional) -->
-          <div class="form-group">
+          <div class="form-group animate-fade-in-up delay-250">
             <label class="form-label">Your Phone Number (Optional)</label>
             <p class="input-tip">Provide this only if you want the owner to reach back to you directly.</p>
             <input 
@@ -116,7 +116,7 @@
           </div>
 
           <!-- CAPTCHA Verification -->
-          <div class="form-group captcha-group">
+          <div class="form-group captcha-group animate-fade-in-up delay-300">
             <label class="form-label">Human Verification <span class="required">*</span></label>
             <div class="captcha-box">
               <span class="captcha-math">{{ num1() }} + {{ num2() }} =</span>
@@ -134,7 +134,7 @@
 
           <!-- Error Alert -->
           @if (errorMessage()) {
-            <div class="error-alert">
+            <div class="error-alert animate-fade-in">
               <span class="error-icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
               <p>{{ errorMessage() }}</p>
             </div>
@@ -143,7 +143,7 @@
           <!-- Submit Button -->
           <button 
             type="submit" 
-            class="btn btn-indigo btn-submit" 
+            class="btn btn-indigo btn-submit animate-fade-in-up delay-350" 
             [disabled]="isSubmitting() || (!tagId() && !manualTagInput())"
           >
             @if (isSubmitting()) {

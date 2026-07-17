@@ -927,3 +927,142 @@
 .action-select:focus {
   border-color: var(--primary);
 }
+
+/* ==========================================
+   PROFILE LAYOUT & SECURITY ACTIONS STYLING
+   ========================================== */
+.profile-layout-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+  gap: 24px !important;
+  margin-top: 8px !important;
+}
+
+.profile-card {
+  padding: 32px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 24px !important;
+}
+
+.profile-card-header {
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px !important;
+  border-bottom: 1px solid var(--border-card) !important;
+  padding-bottom: 20px !important;
+}
+
+.profile-main-icon {
+  font-size: 2.6rem !important;
+  color: var(--secondary) !important;
+}
+
+.profile-card-header h3 {
+  font-size: 1.35rem !important;
+  font-weight: 700 !important;
+  color: var(--text-primary) !important;
+  margin: 0 !important;
+}
+
+.profile-card-header p {
+  font-size: 0.85rem !important;
+  color: var(--text-secondary) !important;
+  margin: 4px 0 0 0 !important;
+}
+
+.profile-details-list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 16px !important;
+}
+
+.profile-detail-row {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 12px 0 !important;
+  border-bottom: 1px dashed rgba(15, 23, 42, 0.05) !important;
+}
+
+.profile-detail-row:last-child {
+  border-bottom: none !important;
+}
+
+.detail-label {
+  font-size: 0.9rem !important;
+  color: var(--text-secondary) !important;
+  font-weight: 500 !important;
+}
+
+.detail-value {
+  font-size: 0.95rem !important;
+  color: var(--text-primary) !important;
+  font-weight: 600 !important;
+}
+
+.badge-role {
+  background: rgba(79, 70, 229, 0.06) !important;
+  color: var(--secondary) !important;
+  border: 1px solid rgba(79, 70, 229, 0.15) !important;
+  padding: 3px 8px !important;
+  border-radius: 4px !important;
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+}
+
+.profile-security-actions {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 20px !important;
+}
+
+.security-action-box {
+  background: rgba(15, 23, 42, 0.01) !important;
+  border: 1px solid rgba(15, 23, 42, 0.05) !important;
+  border-radius: 12px !important;
+  padding: 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 16px !important;
+}
+
+.security-action-box h4 {
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  color: var(--text-primary) !important;
+  margin: 0 !important;
+}
+
+.security-action-box p {
+  font-size: 0.85rem !important;
+  color: var(--text-secondary) !important;
+  line-height: 1.5 !important;
+  margin: 4px 0 0 0 !important;
+}
+
+.resend-otp-btn {
+  width: 100% !important;
+  padding: 12px !important;
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+}
+
+.success-alert {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  background: rgba(16, 185, 129, 0.05) !important;
+  border: 1px solid rgba(16, 185, 129, 0.18) !important;
+  padding: 12px 16px !important;
+  border-radius: 10px !important;
+  color: #065f46 !important;
+  font-weight: 500 !important;
+  font-size: 0.88rem !important;
+}
+

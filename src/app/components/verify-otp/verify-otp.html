@@ -14,16 +14,14 @@
   <main class="auth-card-wrapper">
     <div class="glass-card auth-card animate-fade-in-up">
       <div class="form-header animate-fade-in-up delay-100">
-        <h2>Welcome Back</h2>
-        <p class="form-description">Enter your credentials to manage your vehicles and QR tags.</p>
+        <h2>Verify Account</h2>
+        <p class="form-description">We have sent a verification code to your email. Please enter it below to verify your account.</p>
       </div>
 
-
-
-      <form (ngSubmit)="submitLogin()" #loginForm="ngForm" class="auth-form">
+      <form (ngSubmit)="submitVerifyOtp()" #verifyForm="ngForm" class="auth-form">
         
-        <!-- Email Input -->
-        <div class="form-group animate-fade-in-up delay-200">
+        <!-- Email Field -->
+        <div class="form-group animate-fade-in-up delay-150">
           <label class="form-label">Email Address</label>
           <div class="input-wrapper-inner">
             <span class="input-icon-left"><i class="fa-solid fa-envelope"></i></span>
@@ -33,39 +31,36 @@
               [ngModel]="email()" 
               (ngModelChange)="email.set($event)"
               class="form-input form-input-with-icon" 
-              placeholder="e.g. owner@example.com" 
+              placeholder="e.g. john@example.com" 
               required
             />
           </div>
         </div>
 
-        <!-- Password Input -->
-        <div class="form-group animate-fade-in-up delay-250">
-          <div class="label-wrapper">
-            <label class="form-label">Password</label>
-            <a href="#" class="forgot-link">Forgot?</a>
-          </div>
+        <!-- OTP Code Field -->
+        <div class="form-group animate-fade-in-up delay-200">
+          <label class="form-label">OTP Verification Code</label>
           <div class="input-wrapper-inner">
-            <span class="input-icon-left"><i class="fa-solid fa-lock"></i></span>
+            <span class="input-icon-left"><i class="fa-solid fa-key"></i></span>
             <input 
-              [type]="showPassword() ? 'text' : 'password'" 
-              name="password" 
-              [ngModel]="password()" 
-              (ngModelChange)="password.set($event)"
-              class="form-input form-input-with-icon" 
-              placeholder="••••••••" 
+              type="text" 
+              name="otp" 
+              [ngModel]="otp()" 
+              (ngModelChange)="otp.set($event)"
+              class="form-input form-input-with-icon otp-input" 
+              placeholder="Enter your OTP code" 
               required
             />
-            <button 
-              type="button" 
-              class="btn-toggle-password" 
-              (click)="togglePasswordVisibility()"
-              aria-label="Toggle password visibility"
-            >
-              <i class="fa-solid" [class.fa-eye]="!showPassword()" [class.fa-eye-slash]="showPassword()"></i>
-            </button>
           </div>
         </div>
+
+        <!-- Success Alert -->
+        @if (successMessage()) {
+          <div class="success-alert animate-fade-in">
+            <span><i class="fa-solid fa-circle-check"></i></span>
+            <p>{{ successMessage() }}</p>
+          </div>
+        }
 
         <!-- Error Alert -->
         @if (errorMessage()) {
@@ -78,20 +73,20 @@
         <!-- Submit Button -->
         <button 
           type="submit" 
-          class="btn btn-primary btn-submit animate-fade-in-up delay-300" 
+          class="btn btn-primary btn-submit animate-fade-in-up delay-250" 
           [disabled]="isSubmitting()"
         >
           @if (isSubmitting()) {
-            <span class="spinner"></span> Signing In...
+            <span class="spinner"></span> Verifying Code...
           } @else {
-            Sign In
+            Verify & Proceed
           }
         </button>
 
       </form>
 
-      <div class="auth-footer animate-fade-in-up delay-350">
-        <p>Don't have an account? <a [routerLink]="['/register']" class="auth-switch-link">Create one free</a></p>
+      <div class="auth-footer animate-fade-in-up delay-300">
+        <p>Didn't receive code? <a [routerLink]="['/login']" class="auth-switch-link">Login again</a> to request new code</p>
       </div>
     </div>
   </main>

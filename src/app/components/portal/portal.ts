@@ -44,8 +44,12 @@ export class Portal implements OnInit {
   private router = inject(Router);
 
   // Navigation
-  activeTab = signal<'dashboard' | 'vehicles' | 'tags' | 'notifications' | 'support'>('dashboard');
+  activeTab = signal<'dashboard' | 'vehicles' | 'tags' | 'notifications' | 'support' | 'profile'>('dashboard');
   isMobileSidebarOpen = signal(false);
+
+  // Resend OTP variables
+  otpResendLoading = signal(false);
+  otpResendSuccess = signal(false);
 
   toggleMobileSidebar() {
     this.isMobileSidebarOpen.update(v => !v);
@@ -214,18 +218,36 @@ export class Portal implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const sub = params.get('subpage');
-      if (sub && ['dashboard', 'vehicles', 'tags', 'notifications', 'support'].includes(sub)) {
+      if (sub && ['dashboard', 'vehicles', 'tags', 'notifications', 'support', 'profile'].includes(sub)) {
         this.activeTab.set(sub as any);
       } else {
         this.router.navigate(['/portal', 'dashboard'], { replaceUrl: true });
       }
     });
+
+    // Set name dynamically from active token
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      this.userName.set('ARVIND VERMA');
+      this.userEmail.set('arvindverma630635@gmail.com');
+      this.membershipType.set('Premium Plan');
+    }
   }
 
-  selectTab(tab: 'dashboard' | 'vehicles' | 'tags' | 'notifications' | 'support') {
+  selectTab(tab: 'dashboard' | 'vehicles' | 'tags' | 'notifications' | 'support' | 'profile') {
     this.activeTab.set(tab);
     this.isMobileSidebarOpen.set(false);
     this.router.navigate(['/portal', tab]);
+  }
+
+  resendOtp() {
+    this.otpResendLoading.set(true);
+    this.otpResendSuccess.set(false);
+    setTimeout(() => {
+      this.otpResendLoading.set(false);
+      this.otpResendSuccess.set(true);
+      setTimeout(() => this.otpResendSuccess.set(false), 5000);
+    }, 1200);
   }
 
   addVehicle() {

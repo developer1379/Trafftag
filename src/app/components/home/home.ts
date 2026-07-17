@@ -35,24 +35,31 @@ export class Home implements AfterViewInit, OnDestroy {
   private resizeListener = () => this.onWindowResize();
   private mouseMoveListener = (e: MouseEvent) => this.onMouseMove(e);
 
+  activityLog = signal([
+    { vehicle: 'Tesla Model Y (Gray)', alert: 'Passenger-side window left wide open', time: '2 mins ago', location: 'Sector 5 Parking', status: 'Resolved', icon: 'fa-solid fa-window-maximize', color: 'text-success' },
+    { vehicle: 'BMW 3 Series (White)', alert: 'Headlights left turned on (draining battery)', time: '8 mins ago', location: 'Airport Terminal B', status: 'Resolved', icon: 'fa-solid fa-lightbulb', color: 'text-success' },
+    { vehicle: 'Toyota RAV4 (Black)', alert: 'Blocking parking garage ramp exit', time: '22 mins ago', location: 'City Center Mall', status: 'Resolved', icon: 'fa-solid fa-triangle-exclamation', color: 'text-success' },
+    { vehicle: 'Porsche 911 (Red)', alert: 'Car alarm triggering repeatedly', time: '1 hour ago', location: 'Broadway Boulevard', status: 'Pending', icon: 'fa-solid fa-bell', color: 'text-warning' }
+  ]);
+
   features = signal([
     {
-      icon: 'fa-solid fa-shield-halved',
+      icon: 'fa-solid fa-shield-halved text-primary',
       title: '100% Privacy Preserved',
       desc: 'Finders can notify you about your vehicle without ever knowing your phone number, email, or name.'
     },
     {
-      icon: 'fa-solid fa-bolt',
+      icon: 'fa-solid fa-bolt text-indigo-400',
       title: 'Instant Alerts',
       desc: 'Receive alerts via Email and SMS the exact moment someone scans your vehicle\'s QR code.'
     },
     {
-      icon: 'fa-solid fa-car-side',
+      icon: 'fa-solid fa-car-side text-cyan-400',
       title: 'Fleet & Vehicle Management',
       desc: 'Manage your entire personal or commercial fleet from a single consolidated customer dashboard.'
     },
     {
-      icon: 'fa-solid fa-chart-line',
+      icon: 'fa-solid fa-chart-line text-emerald-400',
       title: 'Analytics & History',
       desc: 'Track notification logs, timestamps, and scan statistics to monitor your fleet\'s status.'
     }

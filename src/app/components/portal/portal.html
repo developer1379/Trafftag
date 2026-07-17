@@ -55,6 +55,9 @@
       <button class="nav-item" [class.active]="activeTab() === 'support'" (click)="selectTab('support')">
         <span><i class="fa-solid fa-circle-question nav-icon"></i> Support Center</span>
       </button>
+      <button class="nav-item" [class.active]="activeTab() === 'profile'" (click)="selectTab('profile')">
+        <span><i class="fa-solid fa-user-gear nav-icon"></i> My Profile</span>
+      </button>
     </nav>
 
     <div class="sidebar-footer">
@@ -78,6 +81,8 @@
           <h1>Notification Alerts Center</h1>
         } @else if (activeTab() === 'support') {
           <h1>Customer Support Tickets</h1>
+        } @else if (activeTab() === 'profile') {
+          <h1>My Profile Settings</h1>
         }
         <p>Manage your account, check alerts, and monitor your vehicles.</p>
       </div>
@@ -537,6 +542,92 @@
               </div>
             }
           }
+        </div>
+      </div>
+    }
+
+    <!-- Tab 6: My Profile -->
+    @if (activeTab() === 'profile') {
+      <div class="tab-panel animate-fade-in-up">
+        <div class="profile-layout-grid">
+          
+          <!-- User Details Card -->
+          <div class="profile-card glass-card">
+            <div class="profile-card-header">
+              <i class="fa-solid fa-user-circle profile-main-icon"></i>
+              <div>
+                <h3>Personal Information</h3>
+                <p>Manage your account settings and credentials.</p>
+              </div>
+            </div>
+            
+            <div class="profile-details-list">
+              <div class="profile-detail-row">
+                <span class="detail-label">Full Name</span>
+                <span class="detail-value">{{ userName() }}</span>
+              </div>
+              <div class="profile-detail-row">
+                <span class="detail-label">Email Address</span>
+                <span class="detail-value">{{ userEmail() }}</span>
+              </div>
+              <div class="profile-detail-row">
+                <span class="detail-label">Mobile Number</span>
+                <span class="detail-value">+1 (555) 019-2834</span>
+              </div>
+              <div class="profile-detail-row">
+                <span class="detail-label">Account Role</span>
+                <span class="detail-value"><span class="badge-role">Customer</span></span>
+              </div>
+              <div class="profile-detail-row">
+                <span class="detail-label">Membership Plan</span>
+                <span class="detail-value"><span class="badge-plan-premium">{{ membershipType() }}</span></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Security Settings Card -->
+          <div class="profile-card glass-card">
+            <div class="profile-card-header">
+              <i class="fa-solid fa-shield-halved profile-main-icon text-warning"></i>
+              <div>
+                <h3>Security Credentials</h3>
+                <p>Verify your device or update security tokens.</p>
+              </div>
+            </div>
+
+            <div class="profile-security-actions">
+              <div class="security-action-box">
+                <div class="action-info">
+                  <h4>Verify Device / Resend OTP</h4>
+                  <p>Send a new OTP verification code to your registered email address to verify your session details.</p>
+                </div>
+                
+                <div class="action-trigger-area">
+                  <button 
+                    type="button" 
+                    class="btn btn-indigo resend-otp-btn" 
+                    (click)="resendOtp()"
+                    [disabled]="otpResendLoading()"
+                  >
+                    @if (otpResendLoading()) {
+                      <span class="spinner"></span> Resending OTP...
+                    } @else {
+                      <i class="fa-solid fa-paper-plane"></i> Resend Verification OTP
+                    }
+                  </button>
+                </div>
+              </div>
+
+              <!-- Success resend alert -->
+              @if (otpResendSuccess()) {
+                <div class="success-alert animate-fade-in">
+                  <span><i class="fa-solid fa-circle-check"></i></span>
+                  <p>A new OTP code has been successfully sent to {{ userEmail() }}</p>
+                </div>
+              }
+            </div>
+          </div>
+
         </div>
       </div>
     }

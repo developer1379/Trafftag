@@ -31,8 +31,12 @@ export class Admin implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
-  activeTab = signal<'dashboard' | 'users' | 'tags' | 'enquiries' | 'gateways'>('dashboard');
+  activeTab = signal<'dashboard' | 'users' | 'tags' | 'enquiries' | 'gateways' | 'profile'>('dashboard');
   isMobileSidebarOpen = signal(false);
+
+  // Resend OTP variables
+  otpResendLoading = signal(false);
+  otpResendSuccess = signal(false);
 
   // System Stats
   totalUsersCount = signal(1240);
@@ -133,7 +137,7 @@ export class Admin implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const sub = params.get('subpage');
-      if (sub && ['dashboard', 'users', 'tags', 'enquiries', 'gateways'].includes(sub)) {
+      if (sub && ['dashboard', 'users', 'tags', 'enquiries', 'gateways', 'profile'].includes(sub)) {
         this.activeTab.set(sub as any);
       } else {
         this.router.navigate(['/admin', 'dashboard'], { replaceUrl: true });
@@ -141,10 +145,20 @@ export class Admin implements OnInit {
     });
   }
 
-  selectTab(tab: 'dashboard' | 'users' | 'tags' | 'enquiries' | 'gateways') {
+  selectTab(tab: 'dashboard' | 'users' | 'tags' | 'enquiries' | 'gateways' | 'profile') {
     this.activeTab.set(tab);
     this.isMobileSidebarOpen.set(false);
     this.router.navigate(['/admin', tab]);
+  }
+
+  resendOtp() {
+    this.otpResendLoading.set(true);
+    this.otpResendSuccess.set(false);
+    setTimeout(() => {
+      this.otpResendLoading.set(false);
+      this.otpResendSuccess.set(true);
+      setTimeout(() => this.otpResendSuccess.set(false), 5000);
+    }, 1200);
   }
 
   toggleMobileSidebar() {

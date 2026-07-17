@@ -77,18 +77,18 @@
   <!-- Main Content -->
   <main class="page-content">
     <div class="page-hero">
-      <div class="badge"><i class="fa-solid fa-tags"></i> Transparent Pricing</div>
-      <h1>Simple Plans for <span class="text-gradient">Every Driver</span></h1>
-      <p class="hero-subtitle">
+      <div class="badge animate-fade-in-up delay-100"><i class="fa-solid fa-tags"></i> Transparent Pricing</div>
+      <h1 class="animate-fade-in-up delay-200">Simple Plans for <span class="text-gradient">Every Driver</span></h1>
+      <p class="hero-subtitle animate-fade-in-up delay-300">
         Whether you own one car or manage a shipping fleet, we have a plan suited to keep your communications private.
       </p>
     </div>
 
     <!-- Pricing Grid -->
-    <section class="pricing-section">
+    <section class="pricing-section animate-fade-in-up delay-100">
       <div class="pricing-grid">
-        @for (plan of pricingPlans(); track plan.name) {
-          <div class="pricing-card glass-card" [class.popular-card]="plan.popular">
+        @for (plan of pricingPlans(); track plan.name; let idx = $index) {
+          <div class="pricing-card glass-card animate-fade-in-up" [class.popular-card]="plan.popular" [class]="'delay-' + ((idx + 1) * 100)">
             @if (plan.popular) {
               <span class="popular-badge">Most Popular</span>
             }
@@ -112,7 +112,7 @@
     </section>
 
     <!-- Comparison Table Matrix -->
-    <section class="comparison-section">
+    <section class="comparison-section animate-fade-in-up delay-100">
       <h2 class="comparison-title">Compare Plan Details</h2>
       <div class="table-responsive">
         <table class="comparison-table">

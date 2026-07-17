@@ -338,3 +338,98 @@
   color: var(--text-muted);
   font-size: 0.85rem;
 }
+
+/* ==========================================
+   LOGIN FORM LIGHT-MODE & ANIMATION OVERRIDES
+   ========================================== */
+
+/* Demo button styling */
+.btn-demo-fill {
+  background: #ffffff !important;
+  border: 1px solid rgba(79, 70, 229, 0.12) !important;
+  color: var(--secondary) !important;
+  border-radius: 30px !important;
+  box-shadow: 0 2px 6px rgba(79, 70, 229, 0.02) !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  cursor: pointer !important;
+}
+
+.btn-demo-fill:hover {
+  border-color: var(--secondary) !important;
+  background: rgba(79, 70, 229, 0.04) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 16px rgba(79, 70, 229, 0.1) !important;
+}
+
+/* Icons and input wrappers */
+.input-wrapper-inner {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.input-icon-left {
+  position: absolute !important;
+  left: 14px !important;
+  color: var(--text-muted) !important;
+  font-size: 1rem !important;
+  pointer-events: none !important;
+  z-index: 10 !important;
+}
+
+.form-input-with-icon {
+  padding-left: 42px !important;
+}
+
+.btn-toggle-password {
+  position: absolute !important;
+  right: 14px !important;
+  background: none !important;
+  border: none !important;
+  color: var(--text-muted) !important;
+  cursor: pointer !important;
+  font-size: 1rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 10 !important;
+  transition: color 0.2s ease !important;
+}
+
+.btn-toggle-password:hover {
+  color: var(--text-primary) !important;
+}
+
+/* Light Mode error alert contrast fix */
+.error-alert {
+  background: rgba(239, 68, 68, 0.05) !important;
+  border: 1px solid rgba(239, 68, 68, 0.18) !important;
+  color: #b91c1c !important; /* Rich contrast red */
+  font-weight: 500 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 12px 16px !important;
+  border-radius: 10px !important;
+}
+
+.error-alert i {
+  color: #ef4444 !important;
+}
+
+/* Submit button */
+.btn-submit {
+  background: linear-gradient(135deg, var(--primary), var(--primary-hover)) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: 12px !important;
+  padding: 14px !important;
+  box-shadow: 0 4px 15px rgba(223, 178, 63, 0.2) !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.btn-submit:hover:not(:disabled) {
+  transform: translateY(-4px) scale(1.01) !important;
+  box-shadow: 0 12px 25px rgba(223, 178, 63, 0.35) !important;
+}
+

@@ -403,14 +403,146 @@
 /* Responsive */
 @media (max-width: 600px) {
   .scan-card {
-    padding: 24px 16px;
+    padding: 24px 16px !important;
   }
   
   .category-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
 
   .success-actions {
-    flex-direction: column;
+    flex-direction: column !important;
   }
 }
+
+/* ==========================================
+   FORM PREMIUM LIGHT-MODE & ANIMATION OVERRIDES
+   ========================================== */
+
+/* Shield badge */
+.shield-badge {
+  background: rgba(223, 178, 63, 0.08) !important;
+  color: var(--primary) !important;
+  border: 1px solid rgba(223, 178, 63, 0.2) !important;
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em !important;
+  padding: 6px 14px !important;
+  border-radius: 30px !important;
+  text-transform: uppercase !important;
+}
+
+/* Tag Display (Verified Mode) */
+.tag-display {
+  background: rgba(16, 185, 129, 0.04) !important;
+  border: 1px solid rgba(16, 185, 129, 0.15) !important;
+  padding: 16px 20px !important;
+  border-radius: 12px !important;
+}
+
+.tag-status-indicator {
+  color: var(--success) !important;
+}
+
+.tag-lock {
+  color: var(--success) !important;
+  background: rgba(16, 185, 129, 0.08) !important;
+  border: 1px solid rgba(16, 185, 129, 0.15) !important;
+}
+
+/* Category Grid Option Cards */
+.category-option {
+  background: #ffffff !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  border-radius: 12px !important;
+  padding: 16px 20px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.01) !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  position: relative !important;
+}
+
+.category-option:hover {
+  background: #ffffff !important;
+  border-color: var(--secondary) !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 10px 20px -10px rgba(79, 70, 229, 0.12) !important;
+}
+
+.category-option.selected {
+  background: rgba(79, 70, 229, 0.02) !important;
+  border-color: var(--secondary) !important;
+  border-width: 2px !important;
+  box-shadow: 0 10px 20px -10px rgba(79, 70, 229, 0.15), 0 0 0 3px rgba(79, 70, 229, 0.08) !important;
+  transform: translateY(-3px) !important;
+}
+
+.category-icon-wrapper {
+  color: var(--text-muted) !important;
+  font-size: 1.35rem !important;
+  transition: transform 0.3s ease !important;
+}
+
+.category-option.selected .category-icon-wrapper {
+  color: var(--secondary) !important;
+  transform: scale(1.1) !important;
+}
+
+.selection-check {
+  color: var(--secondary) !important;
+}
+
+/* Captcha math box */
+.captcha-math {
+  background: rgba(15, 23, 42, 0.02) !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  padding: 10px 18px !important;
+  border-radius: 10px !important;
+  font-size: 1.15rem !important;
+  color: var(--text-primary) !important;
+}
+
+/* Highly readable error alert in Light Mode */
+.error-alert {
+  background: rgba(239, 68, 68, 0.05) !important;
+  border: 1px solid rgba(239, 68, 68, 0.18) !important;
+  color: #b91c1c !important; /* Rich contrast red */
+  font-weight: 500 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 14px 18px !important;
+  border-radius: 10px !important;
+}
+
+.error-icon {
+  color: #ef4444 !important;
+  font-size: 1.1rem !important;
+}
+
+/* Premium submit button */
+.btn-submit {
+  background: linear-gradient(135deg, var(--secondary), var(--secondary-hover)) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: 12px !important;
+  padding: 16px !important;
+  box-shadow: 0 4px 15px rgba(79, 70, 229, 0.2) !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.btn-submit:hover:not(:disabled) {
+  transform: translateY(-4px) scale(1.01) !important;
+  box-shadow: 0 12px 25px rgba(79, 70, 229, 0.35) !important;
+}
+
+/* Success icon */
+.success-icon {
+  background: rgba(16, 185, 129, 0.08) !important;
+  color: var(--success) !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.1) !important;
+}
+

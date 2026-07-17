@@ -8,6 +8,7 @@ import { Scan } from './components/scan/scan';
 import { Features } from './components/features/features';
 import { Pricing } from './components/pricing/pricing';
 import { Faq } from './components/faq/faq';
+import { VerifyOtp } from './components/verify-otp/verify-otp';
 
 export const routes: Routes = [
   { path: '', component: Home, title: 'TRAFFTAG | Protect Your Vehicle Anonymously with QR Decals' },
@@ -16,6 +17,7 @@ export const routes: Routes = [
   { path: 'faq', component: Faq, title: 'Frequently Asked Questions | TRAFFTAG Help Center' },
   { path: 'login', component: Login, title: 'Sign In | TRAFFTAG Customer Portal' },
   { path: 'register', component: Register, title: 'Create Account | TRAFFTAG Safety Registry' },
+  { path: 'verify-otp', component: VerifyOtp, title: 'Verify OTP Code | TRAFFTAG Security' },
   { path: 'portal', redirectTo: 'portal/dashboard', pathMatch: 'full' },
   { path: 'portal/:subpage', component: Portal, title: 'Customer Dashboard | TRAFFTAG Portal' },
   { path: 'admin', redirectTo: 'admin/dashboard', pathMatch: 'full' },

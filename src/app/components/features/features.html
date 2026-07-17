@@ -77,18 +77,18 @@
   <!-- Main Content -->
   <main class="page-content">
     <div class="page-hero">
-      <div class="badge"><i class="fa-solid fa-shield"></i> Privacy Shield Core Features</div>
-      <h1>State-of-the-Art <span class="text-gradient">Security Features</span></h1>
-      <p class="hero-subtitle">
+      <div class="badge animate-fade-in-up delay-100"><i class="fa-solid fa-shield"></i> Privacy Shield Core Features</div>
+      <h1 class="animate-fade-in-up delay-200">State-of-the-Art <span class="text-gradient">Security Features</span></h1>
+      <p class="hero-subtitle animate-fade-in-up delay-300">
         Explore how TRAFFTAG bridges the gap between vehicle owner reachability and strict personal data privacy.
       </p>
     </div>
 
     <!-- Features Grid -->
-    <section class="features-section">
+    <section class="features-section animate-fade-in-up delay-100">
       <div class="features-grid">
-        @for (feature of featuresList(); track feature.title) {
-          <div class="feature-card glass-card">
+        @for (feature of featuresList(); track feature.title; let idx = $index) {
+          <div class="feature-card glass-card animate-fade-in-up" [class]="'delay-' + ((idx + 1) * 100)">
             <div class="feature-icon"><i [class]="feature.icon"></i></div>
             <h3>{{ feature.title }}</h3>
             <p>{{ feature.desc }}</p>
@@ -98,7 +98,7 @@
     </section>
 
     <!-- Call to Action Banner -->
-    <section class="cta-banner-section">
+    <section class="cta-banner-section animate-fade-in-up delay-100">
       <div class="cta-banner glass-card">
         <h2>Protect Your Vehicle and Privacy Today</h2>
         <p>Join thousands of drivers using TRAFFTAG for zero-risk, anonymous communication.</p>

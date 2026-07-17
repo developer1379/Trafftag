@@ -77,15 +77,15 @@
   <!-- Main Content -->
   <main class="page-content">
     <div class="page-hero">
-      <div class="badge"><i class="fa-solid fa-circle-question"></i> Help Desk</div>
-      <h1>Frequently Asked <span class="text-gradient">Questions</span></h1>
-      <p class="hero-subtitle">
+      <div class="badge animate-fade-in-up delay-100"><i class="fa-solid fa-circle-question"></i> Help Desk</div>
+      <h1 class="animate-fade-in-up delay-200">Frequently Asked <span class="text-gradient">Questions</span></h1>
+      <p class="hero-subtitle animate-fade-in-up delay-300">
         Find quick answers to common questions about setting up accounts, printing tags, and security features.
       </p>
     </div>
 
     <!-- Category Filters -->
-    <div class="faq-categories">
+    <div class="faq-categories animate-fade-in-up delay-100">
       <button class="category-btn" [class.active]="activeCategory() === 'all'" (click)="activeCategory.set('all')">
         All Questions
       </button>
@@ -101,10 +101,10 @@
     </div>
 
     <!-- FAQ Accordion -->
-    <section class="faq-section">
+    <section class="faq-section animate-fade-in-up delay-100">
       <div class="faq-accordion">
-        @for (faq of filteredFaqs(); track faq.question) {
-          <div class="faq-item glass-card" [class.open]="faq.open" (click)="toggleFaq(faq)">
+        @for (faq of filteredFaqs(); track faq.question; let idx = $index) {
+          <div class="faq-item glass-card animate-fade-in-up" [class.open]="faq.open" [class]="'delay-' + ((idx + 1) * 50)" (click)="toggleFaq(faq)">
             <div class="faq-question">
               <h3>{{ faq.question }}</h3>
               <span class="faq-toggle-icon">
@@ -122,7 +122,7 @@
     </section>
 
     <!-- Support Center CTA -->
-    <section class="support-cta-section">
+    <section class="support-cta-section animate-fade-in-up delay-100">
       <div class="support-card glass-card">
         <div class="support-icon"><i class="fa-solid fa-envelope-open-text"></i></div>
         <h2>Still Have Questions?</h2>

@@ -1,11 +1,11 @@
 <div class="home-container">
   <!-- Background Glows -->
   <div class="bg-glow-gold" style="top: -10%; left: -10%;"></div>
-  <div class="bg-glow-gold" style="top: 40%; right: -10%;"></div>
+  <div class="bg-glow-purple" style="top: 30%; right: -10%;"></div>
   <div class="bg-glow-gold" style="bottom: 10%; left: 20%;"></div>
 
   <!-- Header -->
-  <header class="navbar">
+  <header class="navbar animate-fade-in">
     <div class="navbar-container">
       <div class="logo" [routerLink]="['/']">
         <span class="logo-icon"><i class="fa-solid fa-taxi"></i></span>
@@ -14,9 +14,9 @@
       
       <!-- Desktop Navigation Links -->
       <nav class="nav-links">
-        <a [routerLink]="['/features']">Features</a>
-        <a [routerLink]="['/pricing']">Pricing</a>
-        <a [routerLink]="['/faq']">FAQ</a>
+        <a [routerLink]="['/features']" class="nav-item">Features</a>
+        <a [routerLink]="['/pricing']" class="nav-item">Pricing</a>
+        <a [routerLink]="['/faq']" class="nav-item">FAQ</a>
         <a [routerLink]="['/scan']" class="nav-scan-btn"><i class="fa-solid fa-qrcode"></i> Test Scan</a>
       </nav>
       
@@ -78,16 +78,20 @@
   <!-- Hero Section -->
   <section class="hero">
     <div class="hero-content">
-      <div class="badge"><i class="fa-solid fa-rocket"></i> Smart Vehicle Notification Platform</div>
-      <h1>Anonymous Vehicle Communication via <span class="text-gradient">QR Codes</span></h1>
-      <p class="hero-subtitle">
+      <div class="badge animate-fade-in-up delay-100">
+        <i class="fa-solid fa-shield text-primary animate-pulse"></i> Next-Gen Security & Safety Platform
+      </div>
+      <h1 class="animate-fade-in-up delay-200">
+        Anonymous Vehicle Communication via <span class="text-gradient">QR Codes</span>
+      </h1>
+      <p class="hero-subtitle animate-fade-in-up delay-300">
         Protect your privacy, stay reachable on the road. Enable finders to notify you about parking issues, open windows, or emergencies instantly without sharing your personal details.
       </p>
-      <div class="hero-actions">
+      <div class="hero-actions animate-fade-in-up delay-400">
         <a [routerLink]="['/register']" class="btn btn-indigo btn-lg" data-ripple-light="true">Get Your Free QR Tag</a>
         <a [routerLink]="['/scan/DEMO123']" class="btn btn-secondary btn-lg" data-ripple-dark="true">See Live Scan Demo</a>
       </div>
-      <div class="hero-stats">
+      <div class="hero-stats animate-fade-in-up delay-500">
         <div class="stat-item">
           <span class="stat-number">10k+</span>
           <span class="stat-label">Active Users</span>
@@ -102,22 +106,23 @@
         </div>
       </div>
     </div>
-    <div class="hero-visual">
-      <div class="canvas-container">
+    <div class="hero-visual animate-fade-in delay-300">
+      <div class="canvas-container animate-float">
         <canvas #rendererCanvas class="hero-3d-canvas"></canvas>
       </div>
     </div>
   </section>
 
   <!-- Features Section -->
-  <section id="features" class="features-section">
+  <section id="features" class="features-section animate-fade-in-up delay-100">
     <div class="section-header">
+      <div class="badge"><i class="fa-solid fa-star"></i> Core Benefits</div>
       <h2>Why Choose <span class="text-gradient">TRAFFTAG</span>?</h2>
       <p>A secure middleman service keeping your phone number off windshields.</p>
     </div>
     <div class="features-grid">
-      @for (feature of features(); track feature.title) {
-        <div class="feature-card glass-card">
+      @for (feature of features(); track feature.title; let idx = $index) {
+        <div class="feature-card glass-card animate-fade-in-up" [class]="'delay-' + ((idx + 1) * 100)">
           <div class="feature-icon"><i [class]="feature.icon"></i></div>
           <h3>{{ feature.title }}</h3>
           <p>{{ feature.desc }}</p>
@@ -127,23 +132,24 @@
   </section>
 
   <!-- How It Works -->
-  <section class="how-it-works">
+  <section class="how-it-works animate-fade-in-up delay-100">
     <div class="section-header">
+      <div class="badge"><i class="fa-solid fa-circle-question"></i> Simple Setup</div>
       <h2>Simple 3-Step Process</h2>
       <p>Get up and running in less than 5 minutes.</p>
     </div>
     <div class="steps-grid">
-      <div class="step-card">
+      <div class="step-card glass-card animate-fade-in-up delay-100">
         <div class="step-num">1</div>
         <h3>Activate Tag</h3>
         <p>Register your account and link your unique QR tag serial number to your vehicle.</p>
       </div>
-      <div class="step-card">
+      <div class="step-card glass-card animate-fade-in-up delay-200">
         <div class="step-num">2</div>
         <h3>Affix to Windshield</h3>
         <p>Place your durable TRAFFTAG sticker inside your car window where it is easily visible.</p>
       </div>
-      <div class="step-card">
+      <div class="step-card glass-card animate-fade-in-up delay-300">
         <div class="step-num">3</div>
         <h3>Stay Connected</h3>
         <p>If someone notices an issue, they scan the tag to message you. You get a secure alert.</p>
@@ -151,15 +157,54 @@
     </div>
   </section>
 
-  <!-- Pricing Section -->
-  <section id="pricing" class="pricing-section">
+  <!-- Live Protection Feed Section -->
+  <section class="live-feed-section animate-fade-in-up delay-100">
     <div class="section-header">
+      <div class="badge"><i class="fa-solid fa-circle-dot text-danger animate-pulse"></i> Real-time Activity Feed</div>
+      <h2>Live System <span class="text-gradient">Alert Logs</span></h2>
+      <p>See how vehicle owners are being protected in real-time across the platform.</p>
+    </div>
+    <div class="live-feed-container glass-card">
+      <div class="live-feed-header">
+        <div class="feed-title"><i class="fa-solid fa-network-wired text-indigo-400"></i> Active Protection Stream</div>
+        <div class="status-indicator"><span class="pulse-dot"></span> System Online</div>
+      </div>
+      <div class="feed-grid">
+        @for (log of activityLog(); track log.vehicle; let idx = $index) {
+          <div class="feed-card animate-fade-in-up" [class]="'delay-' + ((idx + 1) * 100)">
+            <div class="feed-icon-container" [class]="log.color">
+              <i [class]="log.icon"></i>
+            </div>
+            <div class="feed-details">
+              <div class="feed-meta">
+                <span class="vehicle-name">{{ log.vehicle }}</span>
+                <span class="alert-time">{{ log.time }}</span>
+              </div>
+              <p class="alert-desc">{{ log.alert }}</p>
+              <div class="feed-footer">
+                <span class="alert-loc"><i class="fa-solid fa-location-dot"></i> {{ log.location }}</span>
+                <span class="status-badge" [class.resolved]="log.status === 'Resolved'">
+                  <i class="fa-solid" [class.fa-check-double]="log.status === 'Resolved'" [class.fa-spinner]="log.status !== 'Resolved'"></i>
+                  {{ log.status }}
+                </span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing" class="pricing-section animate-fade-in-up delay-100">
+    <div class="section-header">
+      <div class="badge"><i class="fa-solid fa-tags"></i> Affordable Rates</div>
       <h2>Flexible Subscription Plans</h2>
       <p>Select the plan that fits your personal or fleet notification needs.</p>
     </div>
     <div class="pricing-grid">
-      @for (plan of pricingPlans(); track plan.name) {
-        <div class="pricing-card glass-card" [class.popular-card]="plan.popular">
+      @for (plan of pricingPlans(); track plan.name; let idx = $index) {
+        <div class="pricing-card glass-card animate-fade-in-up" [class.popular-card]="plan.popular" [class]="'delay-' + ((idx + 1) * 100)">
           @if (plan.popular) {
             <span class="popular-badge">Most Popular</span>
           }
@@ -182,14 +227,15 @@
   </section>
 
   <!-- FAQ Section -->
-  <section id="faq" class="faq-section">
+  <section id="faq" class="faq-section animate-fade-in-up delay-100">
     <div class="section-header">
+      <div class="badge"><i class="fa-solid fa-circle-question"></i> Help Center</div>
       <h2>Frequently Asked Questions</h2>
       <p>Have questions? We have answers.</p>
     </div>
     <div class="faq-accordion">
       @for (faq of faqs(); track faq.question; let idx = $index) {
-        <div class="faq-item glass-card" [class.open]="faq.open" (click)="toggleFaq(idx)">
+        <div class="faq-item glass-card animate-fade-in-up" [class.open]="faq.open" [class]="'delay-' + ((idx + 1) * 50)" (click)="toggleFaq(idx)">
           <div class="faq-question">
             <h3>{{ faq.question }}</h3>
             <span class="faq-toggle-icon">
