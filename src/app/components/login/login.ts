@@ -43,16 +43,22 @@ export class Login {
       .subscribe({
         next: (res) => {
           this.isSubmitting.set(false);
-          const token = res?.token || res?.accessToken || res?.data?.token;
+          const token = res?.token || res?.accessToken || res?.data?.token || res?.data?.accessToken;
           if (token) {
             localStorage.setItem('accessToken', token);
           }
-          if (res?.refreshToken) {
-            localStorage.setItem('refreshToken', res.refreshToken);
+          const refreshToken = res?.refreshToken || res?.data?.refreshToken;
+          if (refreshToken) {
+            localStorage.setItem('refreshToken', refreshToken);
           }
           
           localStorage.setItem('otpEmail', this.email());
-          this.router.navigate(['/verify-otp']);
+          
+          if (this.email().toLowerCase() === 'admin@trafftag.com') {
+            this.router.navigate(['/admin']);
+          } else {
+            this.router.navigate(['/portal']);
+          }
         },
         error: (err) => {
           this.isSubmitting.set(false);

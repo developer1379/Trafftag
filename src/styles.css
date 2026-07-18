@@ -357,11 +357,14 @@ button:active, .btn:active {
 
 /* Animation utilities */
 .animate-fade-in-up {
-  animation: fadeInUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: none !important;
+  opacity: 1 !important;
 }
 
 .animate-float {

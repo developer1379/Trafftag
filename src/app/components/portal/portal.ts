@@ -2,6 +2,8 @@ import { Component, OnInit, signal, inject, computed } from '@angular/core';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { UpperCasePipe } from '@angular/common';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { API_BASE_URL } from '../../config/api.config';
 
 interface Vehicle {
   id: string;
@@ -42,6 +44,7 @@ interface QRNotification {
 export class Portal implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private http = inject(HttpClient);
 
   // Navigation
   activeTab = signal<'dashboard' | 'vehicles' | 'tags' | 'notifications' | 'support' | 'profile'>('dashboard');
@@ -56,8 +59,19 @@ export class Portal implements OnInit {
   }
 
   // User & Membership Details
-  userName = signal('Sarah Jenkins');
-  userEmail = signal('sarah.j@example.com');
+  firstName = signal('');
+  lastName = signal('');
+  userName = computed(() => `${this.firstName()} ${this.lastName()}`.trim() || 'ARVIND VERMA');
+  userInitials = computed(() => {
+    const first = this.firstName() ? this.firstName().charAt(0).toUpperCase() : '';
+    const last = this.lastName() ? this.lastName().charAt(0).toUpperCase() : '';
+    return (first + last) || 'AV';
+  });
+  userEmail = signal('arvindverma630635@gmail.com');
+  phoneNumber = signal('');
+  countryCode = signal('');
+  profileImage = signal('');
+  userRole = signal('Customer');
   membershipType = signal('Free Plan');
   activeSince = signal('Jan 15, 2026');
   lastLogin = signal('Jul 16, 2026 19:30');
@@ -75,82 +89,14 @@ export class Portal implements OnInit {
     return this.membershipType() === 'Free Plan' ? 0 : 30;
   });
 
-  // Vehicles List
-  vehicles = signal<Vehicle[]>([
-    {
-      id: 'v1',
-      make: 'Tesla',
-      model: 'Model Y',
-      year: 2023,
-      plate: 'EVE-9032',
-      color: 'Solid Black',
-      stateProvince: 'California',
-      vin: '5YJYG1EE8PF192032',
-      driverName: 'Sarah Jenkins',
-      totalScans: 14,
-      lastScan: '2 hours ago',
-      prefSMS: true,
-      prefEmail: true,
-      tagId: 'TT-482-901',
-      active: true
-    },
-    {
-      id: 'v2',
-      make: 'Honda',
-      model: 'Civic',
-      year: 2020,
-      plate: 'HRT-4109',
-      color: 'Lunar Silver',
-      stateProvince: 'New York',
-      vin: '1HGCP2F81LA092811',
-      driverName: 'John Jenkins',
-      totalScans: 3,
-      lastScan: '3 days ago',
-      prefSMS: true,
-      prefEmail: false,
-      tagId: 'TT-718-204',
-      active: true
-    }
-  ]);
+  vehicles = signal<Vehicle[]>([]);
 
   // Tag counters
   activeTagsCount = computed(() => this.vehicles().filter(v => v.tagId && v.tagId !== 'Not Assigned' && v.active).length);
   inactiveTagsCount = computed(() => this.vehicles().filter(v => !v.tagId || v.tagId === 'Not Assigned' || !v.active).length);
 
   // Notifications List
-  notifications = signal<QRNotification[]>([
-    {
-      id: 'n1',
-      vehicleId: 'v1',
-      timestamp: '2026-07-16 14:32',
-      category: 'Headlights Left On',
-      icon: 'fa-solid fa-lightbulb',
-      message: 'Hey, your front left fog lights and low beams are still on.',
-      senderPhone: '+1 (555) 304-2911',
-      read: false,
-      status: 'Unresolved'
-    },
-    {
-      id: 'n2',
-      vehicleId: 'v2',
-      timestamp: '2026-07-14 09:15',
-      category: 'Parking Obstruction',
-      icon: 'fa-solid fa-square-parking',
-      message: 'Blocked my driveway, but no worries, just let me know if you can move it in 10 mins.',
-      read: true,
-      status: 'Resolved'
-    },
-    {
-      id: 'n3',
-      vehicleId: 'v1',
-      timestamp: '2026-07-10 18:40',
-      category: 'Window Rolled Down',
-      icon: 'fa-solid fa-window-maximize',
-      message: 'Driver side window is completely open. Looks like it might rain later.',
-      read: true,
-      status: 'Resolved'
-    }
-  ]);
+  notifications = signal<QRNotification[]>([]);
 
   // Unread Alert Count
   unreadCount = computed(() => this.notifications().filter(n => !n.read).length);
@@ -215,6 +161,179 @@ export class Portal implements OnInit {
   linkSerial = signal('');
   linkVehicleId = signal('');
 
+  // Color Presets Database
+  colorPresets = [
+    { name: 'Pearl White', value: 'Pearl White', hex: '#ffffff' },
+    { name: 'Solid Black', value: 'Solid Black', hex: '#0f172a' },
+    { name: 'Steel Gray', value: 'Steel Gray', hex: '#64748b' },
+    { name: 'Deep Blue', value: 'Deep Blue', hex: '#1e3a8a' },
+    { name: 'Crimson Red', value: 'Crimson Red', hex: '#991b1b' },
+    { name: 'Forest Green', value: 'Forest Green', hex: '#064e3b' }
+  ];
+
+  isCustomColorSelected = computed(() => {
+    const val = this.newColor();
+    if (!val) return false;
+    return !this.colorPresets.some(c => c.value === val);
+  });
+
+  newColorHex = computed(() => {
+    const val = this.newColor();
+    if (val && val.startsWith('#')) return val;
+    const preset = this.colorPresets.find(c => c.value === val);
+    return preset ? preset.hex : '#3b82f6';
+  });
+
+  onCustomColorPickerChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input && input.value) {
+      this.newColor.set(input.value);
+    }
+  }
+
+  // Make/Model Database Dropdowns
+  makes = [
+    { id: '1', name: 'Toyota' },
+    { id: '2', name: 'Honda' },
+    { id: '3', name: 'Ford' },
+    { id: '4', name: 'Tesla' }
+  ];
+
+  modelsMap: { [key: string]: { id: string; name: string }[] } = {
+    '1': [
+      { id: '1', name: 'Fortuner' },
+      { id: '2', name: 'RAV4' },
+      { id: '4', name: 'Camry' }
+    ],
+    '2': [
+      { id: '5', name: 'Civic' },
+      { id: '6', name: 'Accord' },
+      { id: '7', name: 'CR-V' },
+      { id: '8', name: 'Pilot' }
+    ],
+    '3': [
+      { id: '9', name: 'Mustang' },
+      { id: '10', name: 'F-150' },
+      { id: '11', name: 'Explorer' },
+      { id: '12', name: 'Escape' }
+    ],
+    '4': [
+      { id: '13', name: 'Model 3' },
+      { id: '14', name: 'Model Y' },
+      { id: '15', name: 'Model S' },
+      { id: '16', name: 'Model X' }
+    ]
+  };
+
+  selectedMakeId = signal('');
+  selectedModelId = signal('');
+
+  onMakeChange(makeId: string) {
+    this.selectedMakeId.set(makeId);
+    this.selectedModelId.set('');
+    const makeObj = this.makes.find(m => m.id === makeId);
+    this.newMake.set(makeObj ? makeObj.name : '');
+    this.newModel.set('');
+  }
+
+  getModelsForSelectedMake() {
+    const makeId = this.selectedMakeId();
+    return makeId ? this.modelsMap[makeId] || [] : [];
+  }
+
+  getHeaders() {
+    const token = localStorage.getItem('accessToken');
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
+
+  loadVehicles() {
+    this.http.get<any>(`${API_BASE_URL}/api/v1/vehicles`, { headers: this.getHeaders() })
+      .subscribe({
+        next: (res) => {
+          if (res?.success && res?.data?.data) {
+            const list = res.data.data.map((item: any) => this.mapApiVehicle(item));
+            this.vehicles.set(list);
+          }
+        },
+        error: (err) => {
+          console.error('Error loading vehicles:', err);
+          if (err?.status === 401) {
+            this.logout();
+          }
+        }
+      });
+  }
+
+  mapApiVehicle(apiV: any): Vehicle {
+    return {
+      id: apiV.vehicleId.toString(),
+      make: apiV.make || 'Unknown',
+      model: apiV.model || 'Unknown',
+      year: apiV.year || 2025,
+      plate: apiV.licensePlate || 'Unknown',
+      color: apiV.color || 'Unknown',
+      stateProvince: apiV.stateProvince || 'California',
+      vin: apiV.vin || '',
+      driverName: apiV.driverName || this.userName(),
+      totalScans: apiV.totalScans || 0,
+      lastScan: apiV.lastScan || 'Never',
+      prefSMS: apiV.receiveSMS ?? true,
+      prefEmail: apiV.receiveEmail ?? true,
+      tagId: apiV.activeQrTag || 'Not Assigned',
+      active: apiV.status === 'Active'
+    };
+  }
+
+  loadNotifications() {
+    this.http.get<any>(`${API_BASE_URL}/api/v1/notifications`, { headers: this.getHeaders() })
+      .subscribe({
+        next: (res) => {
+          if (res?.success && res?.data?.data) {
+            const list = res.data.data.map((item: any) => this.mapApiNotification(item));
+            this.notifications.set(list);
+          } else if (res?.success && Array.isArray(res?.data)) {
+            const list = res.data.map((item: any) => this.mapApiNotification(item));
+            this.notifications.set(list);
+          }
+        },
+        error: (err) => {
+          console.error('Error loading notifications:', err);
+          if (err?.status === 401) {
+            this.logout();
+          }
+        }
+      });
+  }
+
+  getCategoryIcon(category: string): string {
+    switch (category) {
+      case 'Headlights Left On': return 'fa-solid fa-lightbulb';
+      case 'Parking Obstruction': return 'fa-solid fa-square-parking';
+      case 'Window Rolled Down': return 'fa-solid fa-window-maximize';
+      case 'Flat Tire': return 'fa-solid fa-car-burst';
+      case 'Emergency / Towing': return 'fa-solid fa-circle-exclamation';
+      default: return 'fa-solid fa-bell';
+    }
+  }
+
+  mapApiNotification(apiN: any): QRNotification {
+    return {
+      id: (apiN.notificationId || apiN.id || Math.random().toString()).toString(),
+      vehicleId: (apiN.vehicleId || '').toString(),
+      timestamp: apiN.createdAt ? new Date(apiN.createdAt).toLocaleString() : apiN.timestamp || 'Just now',
+      category: apiN.category || 'General Alert',
+      icon: this.getCategoryIcon(apiN.category),
+      message: apiN.message || '',
+      senderPhone: apiN.finderContact || apiN.senderPhone || '',
+      read: apiN.isRead ?? apiN.read ?? false,
+      status: apiN.status === 'Resolved' ? 'Resolved' : 'Unresolved'
+    };
+  }
+
+  getScanUrl(tagId: string): string {
+    return `${window.location.origin}/scan/${tagId}`;
+  }
+
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const sub = params.get('subpage');
@@ -225,12 +344,23 @@ export class Portal implements OnInit {
       }
     });
 
-    // Set name dynamically from active token
+    // Set user details dynamically from active token payload
     const token = localStorage.getItem('accessToken');
     if (token) {
-      this.userName.set('ARVIND VERMA');
-      this.userEmail.set('arvindverma630635@gmail.com');
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        this.firstName.set(payload.given_name || '');
+        this.lastName.set(payload.family_name || '');
+        this.userEmail.set(payload.email || 'arvindverma630635@gmail.com');
+      } catch (e) {
+        this.firstName.set('ARVIND');
+        this.lastName.set('VERMA');
+        this.userEmail.set('arvindverma630635@gmail.com');
+      }
       this.membershipType.set('Premium Plan');
+      this.loadVehicles();
+      this.loadProfile();
+      this.loadNotifications();
     }
   }
 
@@ -251,53 +381,105 @@ export class Portal implements OnInit {
   }
 
   addVehicle() {
-    if (!this.newMake() || !this.newModel() || !this.newPlate()) return;
+    if (!this.selectedMakeId() || !this.selectedModelId() || !this.newPlate()) return;
     
-    const newV: Vehicle = {
-      id: 'v_' + Math.random().toString(36).substr(2, 9),
-      make: this.newMake(),
-      model: this.newModel(),
+    const makeObj = this.makes.find(m => m.id === this.selectedMakeId());
+    const modelObj = this.getModelsForSelectedMake().find(m => m.id === this.selectedModelId());
+
+    const body = {
+      makeId: parseInt(this.selectedMakeId(), 10),
+      modelId: parseInt(this.selectedModelId(), 10),
       year: this.newYear(),
-      plate: this.newPlate().toUpperCase(),
-      color: this.newColor() || 'Unknown',
-      stateProvince: this.newStateProvince() || 'California',
       vin: this.newVin() || 'N/A',
-      driverName: this.newDriverName() || this.userName(),
-      totalScans: 0,
-      lastScan: 'Never',
-      prefSMS: true,
-      prefEmail: true,
-      tagId: this.newTagId() || 'Not Assigned',
-      active: true
+      licensePlate: this.newPlate().toUpperCase(),
+      color: this.newColor() || 'Unknown',
+      nickName: `${makeObj?.name || ''} ${modelObj?.name || ''}`.trim()
     };
 
-    this.vehicles.update(list => [...list, newV]);
-    this.closeAddVehicle();
+    this.http.post<any>(`${API_BASE_URL}/api/v1/vehicles`, body, { headers: this.getHeaders() })
+      .subscribe({
+        next: (res) => {
+          if (res?.success) {
+            this.loadVehicles();
+            this.closeAddVehicle();
+          } else {
+            alert(res?.message || 'Failed to register vehicle.');
+          }
+        },
+        error: (err) => {
+          alert(err?.error?.message || 'Error occurred while registering vehicle.');
+        }
+      });
   }
 
   deleteVehicle(id: string) {
-    this.vehicles.update(list => list.filter(v => v.id !== id));
+    if (confirm('Are you sure you want to delete this vehicle?')) {
+      this.http.delete<any>(`${API_BASE_URL}/api/v1/vehicles/${id}`, { headers: this.getHeaders() })
+        .subscribe({
+          next: () => {
+            this.loadVehicles();
+          },
+          error: (err) => {
+            alert(err?.error?.message || 'Error occurred while deleting vehicle.');
+          }
+        });
+    }
   }
 
   toggleVehicleActive(id: string) {
-    this.vehicles.update(list => 
-      list.map(v => v.id === id ? { ...v, active: !v.active } : v)
-    );
+    const v = this.vehicles().find(item => item.id === id);
+    if (!v) return;
+
+    // Toggle preferences for SMS/Email notifications
+    const body = {
+      receiveSMS: !v.prefSMS,
+      receiveEmail: !v.prefEmail,
+      receivePush: true,
+      silentHoursStart: null,
+      silentHoursEnd: null
+    };
+
+    this.http.put<any>(`${API_BASE_URL}/api/v1/vehicles/${id}/preferences`, body, { headers: this.getHeaders() })
+      .subscribe({
+        next: () => {
+          this.loadVehicles();
+        },
+        error: (err) => {
+          console.error('Error updating vehicle preferences:', err);
+        }
+      });
   }
 
   linkTag() {
     if (!this.linkSerial() || !this.linkVehicleId()) return;
 
-    this.vehicles.update(list => {
-      return list.map(v => {
-        if (v.id === this.linkVehicleId()) {
-          return { ...v, tagId: this.linkSerial() };
-        }
-        return v;
-      });
-    });
+    const serialStr = this.linkSerial().trim();
+    const match = serialStr.match(/\d+/);
+    const tagId = match ? parseInt(match[0], 10) : null;
 
-    this.closeLinkTag();
+    if (!tagId) {
+      alert('Invalid QR Sticker Serial format. Must contain a numeric ID.');
+      return;
+    }
+
+    const body = {
+      vehicleId: parseInt(this.linkVehicleId(), 10)
+    };
+
+    this.http.post<any>(`${API_BASE_URL}/api/v1/qrtags/${tagId}/assign`, body, { headers: this.getHeaders() })
+      .subscribe({
+        next: (res) => {
+          if (res?.success) {
+            this.loadVehicles();
+            this.closeLinkTag();
+          } else {
+            alert(res?.message || 'Failed to link QR decal.');
+          }
+        },
+        error: (err) => {
+          alert(err?.error?.message || 'Error occurred while linking QR decal.');
+        }
+      });
   }
 
   // Alerts logic
@@ -352,6 +534,8 @@ export class Portal implements OnInit {
   openAddVehicle() { this.showAddVehicleModal.set(true); }
   closeAddVehicle() {
     this.showAddVehicleModal.set(false);
+    this.selectedMakeId.set('');
+    this.selectedModelId.set('');
     this.newMake.set('');
     this.newModel.set('');
     this.newPlate.set('');
@@ -362,7 +546,12 @@ export class Portal implements OnInit {
     this.newDriverName.set('');
   }
 
-  openLinkTag() { this.showLinkTagModal.set(true); }
+  openLinkTag(vehicleId?: string) {
+    if (vehicleId) {
+      this.linkVehicleId.set(vehicleId);
+    }
+    this.showLinkTagModal.set(true);
+  }
   closeLinkTag() {
     this.showLinkTagModal.set(false);
     this.linkSerial.set('');
@@ -379,5 +568,123 @@ export class Portal implements OnInit {
     this.newTicketCategory.set('General Support');
     this.newTicketPriority.set('Medium');
     this.newTicketMessage.set('');
+  }
+
+  // Profile Edit & Password State
+  isEditingProfile = signal(false);
+  editFirstName = signal('');
+  editLastName = signal('');
+  editPhoneNumber = signal('');
+  editCountryCode = signal('');
+
+  currentPassword = signal('');
+  newPassword = signal('');
+  isUpdatingPassword = signal(false);
+  passwordUpdateMessage = signal('');
+  passwordUpdateError = signal('');
+
+  loadProfile() {
+    this.http.get<any>(`${API_BASE_URL}/api/v1/profile`, { headers: this.getHeaders() })
+      .subscribe({
+        next: (res) => {
+          if (res?.success && res?.data) {
+            const d = res.data;
+            this.firstName.set(d.firstName || '');
+            this.lastName.set(d.lastName || '');
+            this.userEmail.set(d.email || '');
+            this.phoneNumber.set(d.phoneNumber || '');
+            this.countryCode.set(d.countryCode || '');
+            this.profileImage.set(d.profileImage || '');
+            this.userRole.set(d.role || 'Customer');
+          }
+        },
+        error: (err) => {
+          console.error('Error loading profile:', err);
+          if (err?.status === 401) {
+            this.logout();
+          }
+        }
+      });
+  }
+
+  startEditingProfile() {
+    this.editFirstName.set(this.firstName());
+    this.editLastName.set(this.lastName());
+    this.editPhoneNumber.set(this.phoneNumber());
+    this.editCountryCode.set(this.countryCode());
+    this.isEditingProfile.set(true);
+  }
+
+  cancelEditingProfile() {
+    this.isEditingProfile.set(false);
+  }
+
+  saveProfile() {
+    const body = {
+      firstName: this.editFirstName(),
+      lastName: this.editLastName(),
+      phoneNumber: this.editPhoneNumber(),
+      countryCode: this.editCountryCode() || 'US',
+      profileImage: this.profileImage() || null
+    };
+
+    this.http.put<any>(`${API_BASE_URL}/api/v1/profile`, body, { headers: this.getHeaders() })
+      .subscribe({
+        next: (res) => {
+          if (res?.success) {
+            this.firstName.set(this.editFirstName());
+            this.lastName.set(this.editLastName());
+            this.phoneNumber.set(this.editPhoneNumber());
+            this.countryCode.set(this.editCountryCode());
+            this.isEditingProfile.set(false);
+          } else {
+            alert(res?.message || 'Failed to update profile.');
+          }
+        },
+        error: (err) => {
+          alert(err?.error?.message || 'Error occurred while updating profile.');
+        }
+      });
+  }
+
+  updatePassword() {
+    if (!this.currentPassword() || !this.newPassword()) {
+      this.passwordUpdateError.set('Please fill out all password fields.');
+      return;
+    }
+
+    this.isUpdatingPassword.set(true);
+    this.passwordUpdateMessage.set('');
+    this.passwordUpdateError.set('');
+
+    const body = {
+      currentPassword: this.currentPassword(),
+      newPassword: this.newPassword()
+    };
+
+    this.http.put<any>(`${API_BASE_URL}/api/v1/profile/password`, body, { headers: this.getHeaders() })
+      .subscribe({
+        next: (res) => {
+          this.isUpdatingPassword.set(false);
+          if (res?.success) {
+            this.passwordUpdateMessage.set('Password updated successfully!');
+            this.currentPassword.set('');
+            this.newPassword.set('');
+          } else {
+            this.passwordUpdateError.set(res?.message || 'Failed to update password.');
+          }
+        },
+        error: (err) => {
+          this.isUpdatingPassword.set(false);
+          this.passwordUpdateError.set(err?.error?.message || 'Failed to update password.');
+        }
+      });
+  }
+
+  logout() {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('otpEmail');
+    this.router.navigate(['/login']);
   }
 }

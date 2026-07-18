@@ -48,12 +48,13 @@ export class VerifyOtp implements OnInit {
       .subscribe({
         next: (res) => {
           this.isSubmitting.set(false);
-          const token = res?.token || res?.accessToken || res?.data?.token;
+          const token = res?.token || res?.accessToken || res?.data?.token || res?.data?.accessToken;
           if (token) {
             localStorage.setItem('accessToken', token);
           }
-          if (res?.refreshToken) {
-            localStorage.setItem('refreshToken', res.refreshToken);
+          const refreshToken = res?.refreshToken || res?.data?.refreshToken;
+          if (refreshToken) {
+            localStorage.setItem('refreshToken', refreshToken);
           }
 
           this.successMessage.set('OTP verification successful! Logging you in...');

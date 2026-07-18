@@ -8,7 +8,7 @@
       <span class="logo-icon"><i class="fa-solid fa-taxi"></i></span>
       <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
     </div>
-    <div class="user-avatar-small">SJ</div>
+    <div class="user-avatar-small">{{ userInitials() }}</div>
   </header>
 
   <!-- Mobile Sidebar Overlay Backdrop -->
@@ -29,7 +29,7 @@
     </div>
     
     <div class="user-profile-summary">
-      <div class="user-avatar">SJ</div>
+      <div class="user-avatar">{{ userInitials() }}</div>
       <div class="user-info">
         <h4>{{ userName() }}</h4>
         <span class="user-plan-badge">{{ membershipType() }}</span>
@@ -61,7 +61,7 @@
     </nav>
 
     <div class="sidebar-footer">
-      <a [routerLink]="['/']" class="btn btn-secondary logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+      <button class="btn btn-secondary logout-btn" (click)="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
     </div>
   </aside>
 
@@ -227,15 +227,19 @@
           <button class="btn btn-primary" (click)="openAddVehicle()"><i class="fa-solid fa-plus"></i> Register Vehicle</button>
         </div>
 
-        <div class="vehicles-grid">
-          @if (vehicles().length === 0) {
+        @if (vehicles().length === 0) {
+          <div class="empty-card-container">
             <div class="empty-card glass-card">
-              <i class="fa-solid fa-car empty-icon"></i>
+              <div class="empty-icon-wrapper">
+                <i class="fa-solid fa-car-rear empty-icon"></i>
+              </div>
               <h3>No Vehicles Registered</h3>
-              <p>Add your first vehicle to secure your dashboard links.</p>
-              <button class="btn btn-primary" (click)="openAddVehicle()">Register Vehicle Now</button>
+              <p>Register all your household or company cars to link them with protective QR labels and start receiving anonymous alerts.</p>
+              <button class="btn btn-primary" (click)="openAddVehicle()"><i class="fa-solid fa-plus"></i> Register Your First Vehicle</button>
             </div>
-          } @else {
+          </div>
+        } @else {
+          <div class="vehicles-grid">
             @for (veh of vehicles(); track veh.id) {
               <div class="vehicle-card glass-card">
                 <!-- Card Header -->
@@ -336,8 +340,8 @@
                 </div>
               </div>
             }
-          }
-        </div>
+          </div>
+        }
       </div>
     }
 
@@ -361,7 +365,11 @@
                     <div class="qr-target-corner top-right"></div>
                     <div class="qr-target-corner bottom-left"></div>
                     <div class="qr-target-corner bottom-right"></div>
-                    <i class="fa-solid fa-qrcode decal-qr-icon"></i>
+                    @if (veh.tagId !== 'Not Assigned') {
+                      <img [src]="'https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=' + getScanUrl(veh.tagId)" alt="QR Code" class="decal-qr-image" />
+                    } @else {
+                      <i class="fa-solid fa-qrcode decal-qr-icon"></i>
+                    }
                   </div>
                   <div class="sticker-serial-footer">{{ veh.tagId }}</div>
                 </div>
@@ -402,7 +410,7 @@
                       <i class="fa-solid fa-up-right-from-square"></i> Test Scan Portal
                     </a>
                   }
-                  <button class="btn btn-secondary btn-sm" (click)="openLinkTag()"><i class="fa-solid fa-arrows-rotate"></i> Reassign Sticker</button>
+                  <button class="btn btn-secondary btn-sm" (click)="openLinkTag(veh.id)"><i class="fa-solid fa-arrows-rotate"></i> Reassign Sticker</button>
                   <button class="btn btn-secondary btn-sm" title="Print decal template"><i class="fa-solid fa-print"></i> Print Decal</button>
                 </div>
               </div>
@@ -561,27 +569,63 @@
               </div>
             </div>
             
-            <div class="profile-details-list">
-              <div class="profile-detail-row">
-                <span class="detail-label">Full Name</span>
-                <span class="detail-value">{{ userName() }}</span>
-              </div>
-              <div class="profile-detail-row">
-                <span class="detail-label">Email Address</span>
-                <span class="detail-value">{{ userEmail() }}</span>
-              </div>
-              <div class="profile-detail-row">
-                <span class="detail-label">Mobile Number</span>
-                <span class="detail-value">+1 (555) 019-2834</span>
-              </div>
-              <div class="profile-detail-row">
-                <span class="detail-label">Account Role</span>
-                <span class="detail-value"><span class="badge-role">Customer</span></span>
-              </div>
-              <div class="profile-detail-row">
-                <span class="detail-label">Membership Plan</span>
-                <span class="detail-value"><span class="badge-plan-premium">{{ membershipType() }}</span></span>
-              </div>
+            <div class="profile-details-list" style="padding-top: 10px;">
+              @if (!isEditingProfile()) {
+                <div class="profile-detail-row">
+                  <span class="detail-label">First Name</span>
+                  <span class="detail-value">{{ firstName() }}</span>
+                </div>
+                <div class="profile-detail-row">
+                  <span class="detail-label">Last Name</span>
+                  <span class="detail-value">{{ lastName() }}</span>
+                </div>
+                <div class="profile-detail-row">
+                  <span class="detail-label">Email Address</span>
+                  <span class="detail-value">{{ userEmail() }}</span>
+                </div>
+                <div class="profile-detail-row">
+                  <span class="detail-label">Mobile Number</span>
+                  <span class="detail-value">{{ phoneNumber() || 'Not Provided' }}</span>
+                </div>
+                <div class="profile-detail-row">
+                  <span class="detail-label">Account Role</span>
+                  <span class="detail-value"><span class="badge-role">{{ userRole() }}</span></span>
+                </div>
+                <div class="profile-detail-row">
+                  <span class="detail-label">Membership Plan</span>
+                  <span class="detail-value"><span class="badge-plan-premium">{{ membershipType() }}</span></span>
+                </div>
+                <div style="margin-top: 15px; display: flex; justify-content: flex-end;">
+                  <button type="button" class="btn btn-primary btn-sm" (click)="startEditingProfile()"><i class="fa-solid fa-pen-to-square"></i> Edit Profile</button>
+                </div>
+              } @else {
+                <form (submit)="$event.preventDefault(); saveProfile()">
+                  <div class="form-grid-2" style="margin-bottom: 12px;">
+                    <div class="form-group">
+                      <label>First Name</label>
+                      <input type="text" [ngModel]="editFirstName()" (ngModelChange)="editFirstName.set($event)" name="firstName" required>
+                    </div>
+                    <div class="form-group">
+                      <label>Last Name</label>
+                      <input type="text" [ngModel]="editLastName()" (ngModelChange)="editLastName.set($event)" name="lastName" required>
+                    </div>
+                  </div>
+                  <div class="form-grid-2" style="margin-bottom: 12px;">
+                    <div class="form-group">
+                      <label>Mobile Number</label>
+                      <input type="text" [ngModel]="editPhoneNumber()" (ngModelChange)="editPhoneNumber.set($event)" name="phoneNumber" placeholder="e.g. +15550192834">
+                    </div>
+                    <div class="form-group">
+                      <label>Country Code</label>
+                      <input type="text" [ngModel]="editCountryCode()" (ngModelChange)="editCountryCode.set($event)" name="countryCode" placeholder="e.g. US">
+                    </div>
+                  </div>
+                  <div style="margin-top: 15px; display: flex; justify-content: flex-end; gap: 8px;">
+                    <button type="button" class="btn btn-secondary btn-sm" (click)="cancelEditingProfile()">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
+                  </div>
+                </form>
+              }
             </div>
           </div>
 
@@ -628,6 +672,51 @@
             </div>
           </div>
 
+          <!-- Password Card -->
+          <div class="profile-card glass-card">
+            <div class="profile-card-header">
+              <i class="fa-solid fa-key profile-main-icon text-indigo"></i>
+              <div>
+                <h3>Change Password</h3>
+                <p>Keep your account secure by updating your password.</p>
+              </div>
+            </div>
+            
+            <form (submit)="$event.preventDefault(); updatePassword()" class="profile-security-actions" style="display: flex; flex-direction: column; gap: 12px; padding-top: 10px;">
+              <div class="form-group">
+                <label>Current Password</label>
+                <input type="password" [ngModel]="currentPassword()" (ngModelChange)="currentPassword.set($event)" name="currentPassword" required>
+              </div>
+              <div class="form-group">
+                <label>New Password</label>
+                <input type="password" [ngModel]="newPassword()" (ngModelChange)="newPassword.set($event)" name="newPassword" required>
+              </div>
+              
+              <div style="display: flex; justify-content: flex-end; margin-top: 8px;">
+                <button type="submit" class="btn btn-indigo" [disabled]="isUpdatingPassword()">
+                  @if (isUpdatingPassword()) {
+                    <span class="spinner"></span> Updating...
+                  } @else {
+                    Change Password
+                  }
+                </button>
+              </div>
+              
+              @if (passwordUpdateMessage()) {
+                <div class="success-alert animate-fade-in" style="margin-top: 10px;">
+                  <span><i class="fa-solid fa-circle-check"></i></span>
+                  <p>{{ passwordUpdateMessage() }}</p>
+                </div>
+              }
+              @if (passwordUpdateError()) {
+                <div class="danger-alert animate-fade-in" style="margin-top: 10px; display: flex; align-items: center; gap: 8px; background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.15); padding: 10px 14px; border-radius: 8px;">
+                  <span style="color: var(--danger);"><i class="fa-solid fa-circle-exclamation"></i></span>
+                  <p style="color: var(--danger); font-size: 0.88rem; margin: 0;">{{ passwordUpdateError() }}</p>
+                </div>
+              }
+            </form>
+          </div>
+
         </div>
       </div>
     }
@@ -636,7 +725,7 @@
   <!-- Add Vehicle Modal -->
   @if (showAddVehicleModal()) {
     <div class="modal-overlay">
-      <div class="modal-content glass-card">
+      <div class="modal-content">
         <div class="modal-header">
           <h2>Register New Vehicle</h2>
           <button class="modal-close" (click)="closeAddVehicle()"><i class="fa-solid fa-xmark"></i></button>
@@ -646,11 +735,21 @@
             <div class="form-grid-2">
               <div class="form-group">
                 <label for="veh-make">Make / Manufacturer *</label>
-                <input id="veh-make" type="text" placeholder="e.g. Tesla" [(ngModel)]="newMake" name="make" required>
+                <select id="veh-make" [ngModel]="selectedMakeId()" (ngModelChange)="onMakeChange($event)" name="make" required>
+                  <option value="">-- Choose Make --</option>
+                  @for (m of makes; track m.id) {
+                    <option [value]="m.id">{{ m.name }}</option>
+                  }
+                </select>
               </div>
               <div class="form-group">
                 <label for="veh-model">Model *</label>
-                <input id="veh-model" type="text" placeholder="e.g. Model Y" [(ngModel)]="newModel" name="model" required>
+                <select id="veh-model" [ngModel]="selectedModelId()" (ngModelChange)="selectedModelId.set($event)" name="model" [disabled]="!selectedMakeId()" required>
+                  <option value="">-- Choose Model --</option>
+                  @for (mod of getModelsForSelectedMake(); track mod.id) {
+                    <option [value]="mod.id">{{ mod.name }}</option>
+                  }
+                </select>
               </div>
             </div>
             <div class="form-grid-2">
@@ -659,8 +758,37 @@
                 <input id="veh-year" type="number" placeholder="2025" [(ngModel)]="newYear" name="year">
               </div>
               <div class="form-group">
-                <label for="veh-color">Exterior Color</label>
-                <input id="veh-color" type="text" placeholder="e.g. Matte Gray" [(ngModel)]="newColor" name="color">
+                <label>Exterior Color</label>
+                <div class="color-picker-grid">
+                  <!-- Hidden Native Color Picker -->
+                  <input type="color" #colorPicker [value]="newColorHex()" (change)="onCustomColorPickerChange($event)" style="display: none;">
+                  
+                  @for (c of colorPresets; track c.value) {
+                    <button type="button" 
+                            class="color-swatch" 
+                            [style.background-color]="c.hex" 
+                            [class.active]="newColor() === c.value" 
+                            [title]="c.name"
+                            (click)="newColor.set(c.value)">
+                      @if (newColor() === c.value) {
+                        <i class="fa-solid fa-check" [style.color]="c.hex === '#ffffff' ? '#0f172a' : '#ffffff'"></i>
+                      }
+                    </button>
+                  }
+                  
+                  <!-- Color Swatch Button for Native Picker -->
+                  <button type="button" 
+                          class="color-swatch custom-picker-btn" 
+                          [class.active]="isCustomColorSelected()" 
+                          title="Custom Color Picker"
+                          (click)="colorPicker.click()">
+                    <i class="fa-solid fa-palette"></i>
+                  </button>
+                  
+                  <div class="custom-color-input-wrapper" [class.active]="isCustomColorSelected()">
+                    <input type="text" placeholder="Custom..." [ngModel]="newColor()" (ngModelChange)="newColor.set($event)" name="color" class="custom-color-text-input">
+                  </div>
+                </div>
               </div>
             </div>
             <div class="form-grid-2">
@@ -701,7 +829,7 @@
   <!-- Link Tag Modal -->
   @if (showLinkTagModal()) {
     <div class="modal-overlay">
-      <div class="modal-content glass-card">
+      <div class="modal-content">
         <div class="modal-header">
           <h2>Activate Sticker QR Code</h2>
           <button class="modal-close" (click)="closeLinkTag()"><i class="fa-solid fa-xmark"></i></button>
@@ -735,7 +863,7 @@
   <!-- Upgrade Modal -->
   @if (showUpgradeModal()) {
     <div class="modal-overlay">
-      <div class="modal-content glass-card modal-large">
+      <div class="modal-content modal-large">
         <div class="modal-header">
           <h2>Upgrade Subscription Plan</h2>
           <button class="modal-close" (click)="closeUpgrade()"><i class="fa-solid fa-xmark"></i></button>
@@ -771,7 +899,7 @@
   <!-- Submit Support Ticket Modal -->
   @if (showSubmitTicketModal()) {
     <div class="modal-overlay">
-      <div class="modal-content glass-card">
+      <div class="modal-content">
         <div class="modal-header">
           <h2>Submit Support Ticket</h2>
           <button class="modal-close" (click)="closeSubmitTicket()"><i class="fa-solid fa-xmark"></i></button>
