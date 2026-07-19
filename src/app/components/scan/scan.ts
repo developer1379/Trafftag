@@ -30,6 +30,13 @@ export class Scan implements OnInit {
   isSuccess = signal(false);
   errorMessage = signal('');
 
+  // Location signals (Compulsory)
+  latitude = signal('');
+  longitude = signal('');
+  isDetectingLocation = signal(false);
+  locationStatusMessage = signal('');
+  locationSuccess = signal(false);
+
   vehicleId = signal<number>(0);
 
   categories = [
@@ -51,6 +58,39 @@ export class Scan implements OnInit {
       }
     });
     this.generateCaptcha();
+    this.detectLocation();
+  }
+
+  detectLocation() {
+    if (!navigator.geolocation) {
+      this.locationStatusMessage.set('Geolocation is not supported by your browser.');
+      return;
+    }
+
+    this.isDetectingLocation.set(true);
+    this.locationStatusMessage.set('Acquiring precise GPS location...');
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude.toFixed(6);
+        const lng = position.coords.longitude.toFixed(6);
+        this.latitude.set(lat);
+        this.longitude.set(lng);
+        this.isDetectingLocation.set(false);
+        this.locationSuccess.set(true);
+        this.locationStatusMessage.set(`GPS Location Verified (${lat}, ${lng})`);
+      },
+      (error) => {
+        this.isDetectingLocation.set(false);
+        this.locationSuccess.set(false);
+        let msg = 'Could not fetch GPS automatically. Please enter location coordinates manually below.';
+        if (error.code === error.PERMISSION_DENIED) {
+          msg = 'Location permission denied by browser. Please enter location coordinates manually below.';
+        }
+        this.locationStatusMessage.set(msg);
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
   }
 
   lookupTagDetails(tagIdStr: string) {
@@ -92,6 +132,12 @@ export class Scan implements OnInit {
       return;
     }
 
+    // Compulsory Location Validation
+    if (!this.latitude() || !this.longitude()) {
+      this.errorMessage.set('Location is compulsory! Click "Detect Location" or enter Latitude and Longitude.');
+      return;
+    }
+
     // Validate CAPTCHA
     const expected = this.num1() + this.num2();
     if (parseInt(this.userCaptcha()) !== expected) {
@@ -107,15 +153,13 @@ export class Scan implements OnInit {
     const categoryObj = this.categories.find(c => c.value === this.selectedCategory());
     const categoryLabel = categoryObj ? categoryObj.label : this.selectedCategory();
 
-    const numericTagId = parseInt(activeTag.replace(/\D/g, ''), 10) || 0;
-    const finalVehicleId = this.vehicleId() || numericTagId;
-
     const payload = {
-      vehicleId: finalVehicleId,
-      qrTagId: numericTagId || activeTag,
+      serialno: activeTag,
       category: categoryLabel,
       message: this.customMessage() || `${categoryLabel} reported for tag ${activeTag}`,
-      finderContact: this.contactNumber() || ''
+      findercontact: this.contactNumber() || '',
+      lattitute: this.latitude(),
+      longitute: this.longitude()
     };
 
     // Dispatch HTTP POST request to /api/v1/notifications/send
@@ -137,6 +181,10 @@ export class Scan implements OnInit {
     this.selectedCategory.set('');
     this.customMessage.set('');
     this.contactNumber.set('');
+    this.latitude.set('');
+    this.longitude.set('');
+    this.locationSuccess.set(false);
+    this.locationStatusMessage.set('');
     this.generateCaptcha();
   }
 }
