@@ -1,0 +1,32 @@
+@if (show) {
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Activate Sticker QR Code</h2>
+        <button class="modal-close" (click)="close.emit()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <form (submit)="$event.preventDefault(); submit.emit()">
+          <div class="form-group">
+            <label for="serial-code">Sticker Serial / QR Code ID *</label>
+            <input id="serial-code" type="text" placeholder="e.g. TT-718-204" [ngModel]="linkSerial" (ngModelChange)="linkSerialChange.emit($event)" name="serial" required>
+          </div>
+          <div class="form-group">
+            <label for="vehicle-select">Select Vehicle *</label>
+            <select id="vehicle-select" [ngModel]="linkVehicleId" (ngModelChange)="linkVehicleIdChange.emit($event)" name="vehicle" required>
+              <option value="">-- Choose registered vehicle --</option>
+              @for (v of vehicles; track v.id) {
+                <option [value]="v.id">{{ v.make }} {{ v.model }} ({{ v.plate }})</option>
+              }
+            </select>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="close.emit()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Link & Activate Sticker</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+}

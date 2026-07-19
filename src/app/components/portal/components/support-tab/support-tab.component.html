@@ -1,0 +1,72 @@
+<div class="tab-panel animate-fade-in">
+  <div class="panel-header">
+    <div class="title-with-icon">
+      <div class="panel-header-icon bg-cyan">
+        <i class="fa-solid fa-headset"></i>
+      </div>
+      <div>
+        <h2>Support & Help Center</h2>
+        <p>Contact TRAFFTAG protection specialists for replacement decals, hardware issues, or account assistance.</p>
+      </div>
+    </div>
+    <button class="btn btn-primary" (click)="openSubmitTicket.emit()">
+      <i class="fa-solid fa-plus"></i> Open Support Ticket
+    </button>
+  </div>
+
+  <div class="support-grid-layout">
+    <!-- Help Articles Column -->
+    <div class="help-resources-column">
+      <div class="resource-card">
+        <div class="res-icon"><i class="fa-solid fa-shield-virus"></i></div>
+        <div class="res-body">
+          <h4>Decal Replacement Guarantee</h4>
+          <p>If your physical QR sticker is damaged, faded, or peeled off within 12 months, request a free replacement.</p>
+        </div>
+      </div>
+
+      <div class="resource-card">
+        <div class="res-icon"><i class="fa-solid fa-user-lock"></i></div>
+        <div class="res-body">
+          <h4>Privacy & Masking Guarantee</h4>
+          <p>Bystanders who scan your QR tag never see your personal phone number or email address.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Tickets Table -->
+    <div class="tickets-table-column">
+      <div class="tickets-table-card">
+        <div class="card-table-header">
+          <h3>Your Support Tickets</h3>
+        </div>
+        <table class="portal-table">
+          <thead>
+            <tr>
+              <th>Ticket ID</th>
+              <th>Subject</th>
+              <th>Category</th>
+              <th>Status</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (tkt of supportTickets; track tkt.id) {
+              <tr>
+                <td><span class="ticket-id">{{ tkt.id }}</span></td>
+                <td class="font-semibold">{{ tkt.subject }}</td>
+                <td><span class="cat-pill">{{ tkt.category }}</span></td>
+                <td>
+                  <span class="status-badge" [class.status-in-progress]="tkt.status === 'In Progress'" [class.status-resolved]="tkt.status === 'Resolved'" [class.status-open]="tkt.status === 'Open'">
+                    {{ tkt.status }}
+                  </span>
+                </td>
+                <td class="text-muted">{{ tkt.date }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

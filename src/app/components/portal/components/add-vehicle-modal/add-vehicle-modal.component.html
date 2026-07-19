@@ -1,0 +1,67 @@
+@if (show) {
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Register New Vehicle</h2>
+        <button class="modal-close" (click)="close.emit()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <form (submit)="$event.preventDefault(); submit.emit()">
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="veh-make">Make / Manufacturer *</label>
+              <select id="veh-make" [ngModel]="selectedMakeId" (ngModelChange)="onMakeChange($event)" name="make" required>
+                <option value="">-- Choose Make --</option>
+                @for (m of makes; track m.id) {
+                  <option [value]="m.id">{{ m.name }}</option>
+                }
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="veh-model">Model *</label>
+              <select id="veh-model" [ngModel]="selectedModelId" (ngModelChange)="selectedModelIdChange.emit($event)" name="model" [disabled]="!selectedMakeId" required>
+                <option value="">-- Choose Model --</option>
+                @for (mod of models; track mod.id) {
+                  <option [value]="mod.id">{{ mod.name }}</option>
+                }
+              </select>
+            </div>
+          </div>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="veh-year">Model Year</label>
+              <input id="veh-year" type="number" placeholder="2025" [ngModel]="newYear" (ngModelChange)="newYearChange.emit($event)" name="year">
+            </div>
+            <div class="form-group">
+              <label for="veh-color">Exterior Color</label>
+              <input id="veh-color" type="text" placeholder="e.g. Solid Black" [ngModel]="newColor" (ngModelChange)="newColorChange.emit($event)" name="color">
+            </div>
+          </div>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="veh-plate">License Plate Number *</label>
+              <input id="veh-plate" type="text" placeholder="e.g. XYZ-1234" [ngModel]="newPlate" (ngModelChange)="newPlateChange.emit($event)" name="plate" required>
+            </div>
+            <div class="form-group">
+              <label for="veh-state">State / Province *</label>
+              <input id="veh-state" type="text" placeholder="e.g. California" [ngModel]="newStateProvince" (ngModelChange)="newStateProvinceChange.emit($event)" name="state" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="veh-driver">Driver Name</label>
+            <input id="veh-driver" type="text" placeholder="e.g. Sarah Jenkins" [ngModel]="newDriverName" (ngModelChange)="newDriverNameChange.emit($event)" name="driver">
+          </div>
+          <div class="form-group">
+            <label for="veh-vin">VIN (Vehicle Identification Number)</label>
+            <input id="veh-vin" type="text" placeholder="17-character VIN" [ngModel]="newVin" (ngModelChange)="newVinChange.emit($event)" name="vin">
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="close.emit()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Add Vehicle</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+}

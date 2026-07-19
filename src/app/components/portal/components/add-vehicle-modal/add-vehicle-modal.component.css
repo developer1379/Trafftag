@@ -1,0 +1,79 @@
+/* Color Picker swatches styling */
+.color-picker-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.color-swatch {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid rgba(15, 23, 42, 0.1);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  padding: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.color-swatch:hover {
+  transform: scale(1.1);
+}
+
+.color-swatch.active {
+  transform: scale(1.15);
+  box-shadow: 0 0 0 3px var(--primary-glow);
+  border-color: var(--primary) !important;
+}
+
+.custom-picker-btn {
+  background: conic-gradient(red, orange, yellow, green, blue, indigo, violet, red) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.custom-picker-btn i {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  font-size: 0.95rem;
+}
+
+.custom-color-input-wrapper {
+  flex: 1;
+  min-width: 100px;
+}
+
+.custom-color-text-input {
+  width: 100% !important;
+  padding: 7px 11px !important;
+  font-size: 0.88rem !important;
+  border-radius: 8px !important;
+  background: rgba(15, 23, 42, 0.02) !important;
+  border: 1px solid rgba(15, 23, 42, 0.1) !important;
+}
+
+.custom-color-input-wrapper.active .custom-color-text-input {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px var(--primary-glow) !important;
+  background: #ffffff !important;
+}
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 480px) {
+  .form-grid-2 {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}

@@ -1,0 +1,198 @@
+/* Tags Layout */
+.tags-grid-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.decal-card {
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.09);
+  border-radius: 18px;
+  padding: 24px;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.decal-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #6366f1 0%, #3b82f6 100%);
+}
+
+.decal-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(99, 102, 241, 0.3);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+/* Sticker visual box */
+.decal-preview-wrapper {
+  flex-shrink: 0;
+}
+
+.decal-sticker-mock {
+  width: 148px;
+  height: 148px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  border: 3px solid #0f172a;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1);
+  position: relative;
+}
+
+.sticker-header {
+  font-size: 0.62rem;
+  font-weight: 900;
+  color: #0f172a;
+  letter-spacing: 1.5px;
+  font-family: var(--font-roboto);
+}
+
+.sticker-qr-container {
+  width: 86px;
+  height: 86px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 6px;
+  background: #ffffff;
+  padding: 4px;
+}
+
+.decal-qr-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.decal-qr-icon {
+  font-size: 3.4rem;
+  color: #0f172a;
+}
+
+/* Corner brackets for realistic camera target look */
+.qr-target-corner {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border: 2px solid #0f172a;
+}
+.qr-target-corner.top-left { top: 3px; left: 3px; border-right: none; border-bottom: none; }
+.qr-target-corner.top-right { top: 3px; right: 3px; border-left: none; border-bottom: none; }
+.qr-target-corner.bottom-left { bottom: 3px; left: 3px; border-right: none; border-top: none; }
+.qr-target-corner.bottom-right { bottom: 3px; right: 3px; border-left: none; border-top: none; }
+
+.sticker-serial-footer {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #0f172a;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 1px;
+}
+
+/* Details and specs layout */
+.decal-details-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.decal-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  padding-bottom: 10px;
+}
+
+.decal-badge-id {
+  font-size: 0.95rem;
+  color: #475569;
+  font-weight: 600;
+}
+
+.decal-badge-id strong {
+  color: #d97706;
+  font-family: monospace;
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin-left: 4px;
+}
+
+.decal-meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 24px;
+}
+
+.decal-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.decal-meta-item .lbl {
+  font-size: 0.75rem;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.decal-meta-item .val {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.decal-actions-footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+/* Responsive adjustment */
+@media (max-width: 680px) {
+  .decal-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .decal-header-row {
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+  
+  .decal-meta-grid {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+  
+  .decal-actions-footer {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}

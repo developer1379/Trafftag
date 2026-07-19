@@ -1,0 +1,75 @@
+<div class="tab-panel animate-fade-in">
+  <div class="panel-header">
+    <div class="title-with-icon">
+      <div class="panel-header-icon bg-blue">
+        <i class="fa-solid fa-user-gear"></i>
+      </div>
+      <div>
+        <h2>Account & Membership Settings</h2>
+        <p>Manage profile preferences, contact channels for notifications, and active protection plan tier.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="profile-layout-grid">
+    <!-- User Info Card -->
+    <div class="profile-card">
+      <div class="profile-card-header">
+        <div class="profile-main-icon"><i class="fa-solid fa-user"></i></div>
+        <div>
+          <h3>{{ userName }}</h3>
+          <p>{{ userEmail }}</p>
+        </div>
+      </div>
+
+      <div class="profile-details-list">
+        <div class="profile-detail-row">
+          <span class="detail-label"><i class="fa-solid fa-envelope"></i> Email Address</span>
+          <span class="detail-value">{{ userEmail }}</span>
+        </div>
+        <div class="profile-detail-row">
+          <span class="detail-label"><i class="fa-solid fa-phone"></i> Emergency Phone</span>
+          <span class="detail-value">{{ userPhone }}</span>
+        </div>
+        <div class="profile-detail-row">
+          <span class="detail-label"><i class="fa-solid fa-shield"></i> Protection Tier</span>
+          <span class="detail-value badge-plan-premium">{{ membershipType }}</span>
+        </div>
+        <div class="profile-detail-row">
+          <span class="detail-label"><i class="fa-solid fa-qrcode"></i> Active Decals</span>
+          <span class="detail-value">{{ activeTagsCount }} Stickers</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Membership Plan Card -->
+    <div class="profile-card">
+      <div class="profile-card-header">
+        <div class="profile-main-icon"><i class="fa-solid fa-crown"></i></div>
+        <div>
+          <h3>{{ membershipType }}</h3>
+          <p>Active Protection Membership Tier</p>
+        </div>
+      </div>
+
+      <div class="profile-details-list">
+        <div class="profile-detail-row">
+          <span class="detail-label"><i class="fa-solid fa-check text-emerald"></i> Vehicle Registry</span>
+          <span class="detail-value">Up to 2 vehicles on Free Plan</span>
+        </div>
+        <div class="profile-detail-row">
+          <span class="detail-label"><i class="fa-solid fa-check text-emerald"></i> Incident Reporting</span>
+          <span class="detail-value">Real-time Geolocation</span>
+        </div>
+        <div class="profile-detail-row">
+          <span class="detail-label"><i class="fa-solid fa-check text-emerald"></i> SMS Forwarding</span>
+          <span class="detail-value">Encrypted Bystander-to-Owner</span>
+        </div>
+      </div>
+
+      <button class="btn btn-primary w-full mt-4" (click)="openUpgrade.emit()">
+        <i class="fa-solid fa-rocket"></i> Upgrade Membership Tier
+      </button>
+    </div>
+  </div>
+</div>

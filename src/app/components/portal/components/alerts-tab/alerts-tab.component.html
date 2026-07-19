@@ -1,0 +1,109 @@
+<div class="tab-panel animate-fade-in">
+  <div class="panel-header">
+    <div class="title-with-icon">
+      <div class="panel-header-icon bg-amber">
+        <i class="fa-solid fa-bell"></i>
+      </div>
+      <div>
+        <h2>Notification & Scan History</h2>
+        <p>Real-time log of scans, parking alerts, and safety notifications sent by bystanders.</p>
+      </div>
+    </div>
+    <div class="panel-header-actions">
+      <button class="btn btn-secondary btn-sm" (click)="markAllAsRead.emit()">
+        <i class="fa-solid fa-check-double"></i> Mark All as Read
+      </button>
+    </div>
+  </div>
+
+  <!-- Search & Filter Controls -->
+  <div class="filters-toolbar-card">
+    <div class="search-input-wrapper">
+      <i class="fa-solid fa-magnifying-glass search-icon"></i>
+      <input 
+        type="text" 
+        placeholder="Search alerts by message content or category..." 
+        [ngModel]="searchQuery" 
+        (ngModelChange)="searchQueryChange.emit($event)" 
+        class="search-input"
+      />
+    </div>
+
+    <div class="filter-selects-group">
+      <select [ngModel]="filterVehicle" (ngModelChange)="filterVehicleChange.emit($event)" class="filter-select">
+        <option value="all">All Vehicles</option>
+        @for (v of vehicles; track v.id) {
+          <option [value]="v.id">{{ v.make }} {{ v.model }} ({{ v.plate }})</option>
+        }
+      </select>
+
+      <select [ngModel]="filterCategory" (ngModelChange)="filterCategoryChange.emit($event)" class="filter-select">
+        <option value="all">All Alert Types</option>
+        <option value="Parking Blocked">Parking Blocked</option>
+        <option value="Window Down">Window Down</option>
+        <option value="Lights On">Lights On</option>
+        <option value="Towing Risk">Towing Risk</option>
+        <option value="Emergency Incident">Emergency Incident</option>
+      </select>
+
+      <select [ngModel]="filterStatus" (ngModelChange)="filterStatusChange.emit($event)" class="filter-select">
+        <option value="all">All Statuses</option>
+        <option value="unread">Unread Only</option>
+        <option value="read">Read Only</option>
+        <option value="unresolved">Unresolved</option>
+        <option value="resolved">Resolved</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Notifications List -->
+  @if (filteredNotifications.length === 0) {
+    <div class="empty-state-card">
+      <div class="empty-icon"><i class="fa-solid fa-bell-slash"></i></div>
+      <h3>No Alerts Match Your Filter</h3>
+      <p>Try resetting search filters to view your entire scan history.</p>
+      <button class="btn btn-secondary mt-3" (click)="clearFilters.emit()">Reset Filters</button>
+    </div>
+  } @else {
+    <div class="alerts-feed-container">
+      @for (notif of filteredNotifications; track notif.id) {
+        <div class="alert-feed-item" [class.unread]="!notif.read" [class.resolved]="notif.status === 'Resolved'">
+          <div class="alert-type-icon" [class.icon-danger]="notif.category === 'Towing Risk' || notif.category === 'Emergency Incident'" [class.icon-warning]="notif.category === 'Parking Blocked'" [class.icon-info]="notif.category === 'Window Down' || notif.category === 'Lights On'">
+            <i class="fa-solid {{ notif.icon }}"></i>
+          </div>
+
+          <div class="alert-content-body">
+            <div class="alert-content-header">
+              <div class="alert-meta-top">
+                <span class="alert-category-badge">{{ notif.category }}</span>
+                <span class="alert-vehicle-tag"><i class="fa-solid fa-car"></i> {{ getVehicleName(notif.vehicleId) }}</span>
+              </div>
+              <span class="alert-time"><i class="fa-regular fa-clock"></i> {{ notif.timestamp }}</span>
+            </div>
+
+            <p class="alert-message-text">{{ notif.message }}</p>
+
+            @if (notif.senderPhone) {
+              <div class="alert-contact-footer">
+                <span class="contact-lbl"><i class="fa-solid fa-phone"></i> Bystander Contact:</span>
+                <a [href]="'tel:' + notif.senderPhone" class="contact-phone-link">{{ notif.senderPhone }}</a>
+              </div>
+            }
+          </div>
+
+          <div class="alert-item-actions">
+            @if (!notif.read) {
+              <button class="icon-action-btn" (click)="markAsRead.emit(notif.id)" title="Mark as Read">
+                <i class="fa-solid fa-eye"></i>
+              </button>
+            }
+            <button class="badge-action-btn" [class.is-resolved]="notif.status === 'Resolved'" (click)="toggleResolve.emit(notif.id)">
+              <i class="fa-solid" [class.fa-check]="notif.status !== 'Resolved'" [class.fa-rotate-left]="notif.status === 'Resolved'"></i>
+              {{ notif.status === 'Resolved' ? 'Resolved' : 'Mark Resolved' }}
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>
