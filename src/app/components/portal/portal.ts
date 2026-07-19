@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, inject, computed } from '@angular/core';
+import { Component, OnInit, signal, inject, computed, ViewEncapsulation } from '@angular/core';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -59,6 +59,7 @@ interface QRNotification {
     ],
   templateUrl: './portal.html',
   styleUrl: './portal.css',
+  encapsulation: ViewEncapsulation.None
 })
 export class Portal implements OnInit {
   private route = inject(ActivatedRoute);

@@ -329,7 +329,8 @@
     @if (activeTab() === 'support') {
       <app-support-tab
         [supportTickets]="supportTickets()"
-        (openSubmitTicket)="openSubmitTicket()">
+        (openSubmitTicket)="openSubmitTicket()"
+        (rateTicket)="rateTicket($event.ticketId, $event.stars)">
       </app-support-tab>
     }
 
