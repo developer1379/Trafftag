@@ -38,6 +38,8 @@ export class Scan implements OnInit {
   locationSuccess = signal(false);
 
   vehicleId = signal<number>(0);
+  ownerUsername = signal<string>('Vehicle Owner');
+  vehicleInfo = signal<string>('');
 
   categories = [
     { value: 'headlights', label: 'Headlights Left On', icon: 'fa-solid fa-lightbulb', colorClass: 'cat-amber' },
@@ -98,8 +100,9 @@ export class Scan implements OnInit {
     if (numericId > 0) {
       this.vehicleId.set(numericId);
     }
+    this.ownerUsername.set(`Owner #${numericId || 101}`);
 
-    // Query backend API to resolve associated vehicleId for the scanned QR tag
+    // Query backend API to resolve associated vehicle & owner details for the scanned QR tag
     this.http.get<any>(`${API_BASE_URL}/api/v1/qrtags/${encodeURIComponent(tagIdStr)}`).subscribe({
       next: (res) => {
         if (res?.vehicleId) {
@@ -107,8 +110,20 @@ export class Scan implements OnInit {
         } else if (res?.vehicle?.id) {
           this.vehicleId.set(res.vehicle.id);
         }
+
+        if (res?.ownerUsername || res?.username || res?.ownerName) {
+          this.ownerUsername.set(res.ownerUsername || res.username || res.ownerName);
+        }
+
+        if (res?.vehicleName || res?.vehicleInfo) {
+          this.vehicleInfo.set(res.vehicleName || res.vehicleInfo);
+        } else if (res?.vehicle) {
+          this.vehicleInfo.set(`${res.vehicle.make || 'Registered'} ${res.vehicle.model || 'Vehicle'}`);
+        }
       },
-      error: () => {}
+      error: () => {
+        this.ownerUsername.set(`Owner (Serial: ${tagIdStr})`);
+      }
     });
   }
 

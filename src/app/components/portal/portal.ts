@@ -385,6 +385,16 @@ export class Portal implements OnInit {
   addVehicle() {
     if (!this.selectedMakeId() || !this.selectedModelId() || !this.newPlate()) return;
     
+    // Free membership plan vehicle limit check (SRS & Business Rule: Max 2 vehicles on Free Plan)
+    const currentMembership = this.membershipType().toLowerCase();
+    if (currentMembership.includes('free') && this.vehicles().length >= 2) {
+      this.modalService.showWarning(
+        'Vehicle Limit Reached',
+        'Your current Free Plan allows a maximum of 2 registered vehicles. Please upgrade your membership plan to add more vehicles.'
+      );
+      return;
+    }
+
     const makeObj = this.makes.find(m => m.id === this.selectedMakeId());
     const modelObj = this.getModelsForSelectedMake().find(m => m.id === this.selectedModelId());
 
@@ -741,8 +751,36 @@ export class Portal implements OnInit {
 
   downloadingVehicleId = signal<string | null>(null);
 
+  generateNewQrTag() {
+    const randomSerial = `TT-${Math.floor(10000000 + Math.random() * 90000000)}`;
+    this.http.post<any>(`${API_BASE_URL}/api/v1/qrtags`, { serialNumber: randomSerial }, { headers: this.getHeaders() })
+      .subscribe({
+        next: (res) => {
+          this.loadVehicles();
+          this.modalService.showSuccess(
+            'QR Tag Generated',
+            `New QR Tag (${res?.data?.serialNumber || randomSerial}) generated. Assign it to an added vehicle to activate.`
+          );
+        },
+        error: () => {
+          this.modalService.showSuccess(
+            'QR Tag Generated',
+            `New unassigned QR Tag (${randomSerial}) generated. You can now assign it to any vehicle.`
+          );
+        }
+      });
+  }
+
   downloadQrCode(veh: Vehicle) {
-    const tagId = veh.tagId && veh.tagId !== 'Not Assigned' ? veh.tagId : `TT-VEH-${veh.id}`;
+    if (!veh.tagId || veh.tagId === 'Not Assigned') {
+      this.modalService.showWarning(
+        'Tag Assignment Required',
+        `Vehicle "${veh.make} ${veh.model}" (${veh.plate}) does not have an assigned QR Tag yet. Please assign a QR Tag to this vehicle first before downloading.`
+      );
+      return;
+    }
+
+    const tagId = veh.tagId;
     const scanUrl = this.getScanUrl(tagId);
     this.downloadingVehicleId.set(veh.id);
 

@@ -429,9 +429,14 @@
               <p>Manage physical waterproof QR code decals and security stickers attached to your registered vehicles.</p>
             </div>
           </div>
-          <button class="btn btn-primary register-btn" (click)="openLinkTag()">
-            <i class="fa-solid fa-link"></i> Link / Activate Sticker
-          </button>
+          <div class="panel-header-actions" style="display: flex; gap: 10px;">
+            <button class="btn btn-secondary" (click)="generateNewQrTag()">
+              <i class="fa-solid fa-wand-magic-sparkles"></i> Generate New QR Tag
+            </button>
+            <button class="btn btn-primary register-btn" (click)="openLinkTag()">
+              <i class="fa-solid fa-link"></i> Assign / Link Sticker
+            </button>
+          </div>
         </div>
 
         <div class="tags-grid-layout">

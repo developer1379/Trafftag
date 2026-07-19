@@ -44,7 +44,7 @@
           
           <!-- Tag Identifier Entry -->
           <div class="form-group animate-fade-in-up delay-150">
-            <label class="form-label">Vehicle QR Tag ID</label>
+            <label class="form-label">Vehicle QR Tag Serial</label>
             @if (tagId()) {
               <div class="tag-display">
                 <span class="tag-status-indicator"><i class="fa-solid fa-circle-dot"></i></span>
@@ -61,6 +61,20 @@
                 placeholder="Enter Tag Serial (e.g., TT-00000022)" 
                 required
               />
+            }
+          </div>
+
+          <!-- Pre-filled Owner Username & Vehicle Details (SRS Requirement) -->
+          <div class="owner-vehicle-card animate-fade-in-up delay-150">
+            <div class="meta-row">
+              <span class="meta-label"><i class="fa-solid fa-user-shield text-indigo"></i> Owner Username:</span>
+              <span class="meta-val owner-username-badge">{{ ownerUsername() }}</span>
+            </div>
+            @if (vehicleInfo()) {
+              <div class="meta-row">
+                <span class="meta-label"><i class="fa-solid fa-car text-amber"></i> Vehicle:</span>
+                <span class="meta-val">{{ vehicleInfo() }}</span>
+              </div>
             }
           </div>
 
