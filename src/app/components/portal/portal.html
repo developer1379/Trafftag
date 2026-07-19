@@ -24,44 +24,62 @@
     </button>
 
     <div class="sidebar-brand" [routerLink]="['/']">
-      <span class="logo-icon"><i class="fa-solid fa-taxi"></i></span>
-      <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
+      <div class="brand-logo-badge">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+      <div class="brand-text-wrapper">
+        <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
+        <span class="brand-subtag">PORTAL</span>
+      </div>
     </div>
     
     <div class="user-profile-summary">
-      <div class="user-avatar">{{ userInitials() }}</div>
+      <div class="user-avatar-container">
+        <div class="user-avatar">{{ userInitials() }}</div>
+        <span class="user-status-dot" title="Account Active"></span>
+      </div>
       <div class="user-info">
-        <h4>{{ userName() }}</h4>
-        <span class="user-plan-badge">{{ membershipType() }}</span>
+        <h4 class="user-name-text">{{ userName() }}</h4>
+        <div class="user-badge-row">
+          <span class="user-plan-badge"><i class="fa-solid fa-crown badge-crown"></i> {{ membershipType() }}</span>
+        </div>
       </div>
     </div>
 
     <nav class="sidebar-nav">
+      <div class="nav-section-label">MAIN MENU</div>
+
       <button class="nav-item" [class.active]="activeTab() === 'dashboard'" (click)="selectTab('dashboard')">
-        <span><i class="fa-solid fa-chart-pie nav-icon"></i> Overview</span>
+        <span class="nav-label-group"><i class="fa-solid fa-chart-pie nav-icon"></i> Overview</span>
       </button>
       <button class="nav-item" [class.active]="activeTab() === 'vehicles'" (click)="selectTab('vehicles')">
-        <span><i class="fa-solid fa-car nav-icon"></i> My Vehicles</span>
+        <span class="nav-label-group"><i class="fa-solid fa-car nav-icon"></i> My Vehicles</span>
       </button>
       <button class="nav-item" [class.active]="activeTab() === 'tags'" (click)="selectTab('tags')">
-        <span><i class="fa-solid fa-qrcode nav-icon"></i> Active QR Tags</span>
+        <span class="nav-label-group"><i class="fa-solid fa-qrcode nav-icon"></i> Active QR Tags</span>
       </button>
       <button class="nav-item" [class.active]="activeTab() === 'notifications'" (click)="selectTab('notifications')">
-        <span><i class="fa-solid fa-bell nav-icon"></i> Alerts</span>
+        <span class="nav-label-group"><i class="fa-solid fa-bell nav-icon"></i> Alerts</span>
         @if (unreadCount() > 0) {
           <span class="badge-count">{{ unreadCount() }}</span>
         }
       </button>
+
+      <div class="nav-section-label">ACCOUNT & HELP</div>
+
       <button class="nav-item" [class.active]="activeTab() === 'support'" (click)="selectTab('support')">
-        <span><i class="fa-solid fa-circle-question nav-icon"></i> Support Center</span>
+        <span class="nav-label-group"><i class="fa-solid fa-circle-question nav-icon"></i> Support Center</span>
       </button>
       <button class="nav-item" [class.active]="activeTab() === 'profile'" (click)="selectTab('profile')">
-        <span><i class="fa-solid fa-user-gear nav-icon"></i> My Profile</span>
+        <span class="nav-label-group"><i class="fa-solid fa-user-gear nav-icon"></i> My Profile</span>
       </button>
     </nav>
 
     <div class="sidebar-footer">
-      <button class="btn btn-secondary logout-btn" (click)="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+      <button class="logout-btn" (click)="logout()">
+        <i class="fa-solid fa-right-from-bracket logout-icon"></i>
+        <span>Sign Out</span>
+      </button>
     </div>
   </aside>
 
@@ -103,78 +121,106 @@
         <div class="metrics-grid">
           <!-- Profile Widget -->
           <div class="metric-card glass-card">
-            <span class="metric-icon"><i class="fa-solid fa-user text-primary"></i></span>
+            <div class="metric-icon-badge card-icon-blue">
+              <i class="fa-solid fa-user"></i>
+            </div>
             <div class="metric-info">
-              <span class="metric-label">Profile Summary</span>
+              <span class="metric-label">PROFILE SUMMARY</span>
               <span class="metric-value-title">{{ userName() }}</span>
-              <span class="metric-subtext">Active Since: {{ activeSince() }}</span>
-              <span class="metric-subtext">Last Login: {{ lastLogin() }}</span>
+              <div class="metric-subtext-group">
+                <span class="metric-subtext"><i class="fa-regular fa-calendar-check"></i> Active: {{ activeSince() }}</span>
+                <span class="metric-subtext"><i class="fa-regular fa-clock"></i> {{ lastLogin() }}</span>
+              </div>
             </div>
           </div>
           
           <!-- Vehicle Widget -->
           <div class="metric-card glass-card">
-            <span class="metric-icon"><i class="fa-solid fa-car text-indigo"></i></span>
+            <div class="metric-icon-badge card-icon-indigo">
+              <i class="fa-solid fa-car"></i>
+            </div>
             <div class="metric-info">
-              <span class="metric-label">Vehicle Summary</span>
+              <span class="metric-label">VEHICLE SUMMARY</span>
               <span class="metric-value">{{ vehicles().length }} <span class="metric-value-unit">Cars</span></span>
-              <span class="metric-subtext text-success">Active Tags: {{ activeTagsCount() }}</span>
-              <span class="metric-subtext text-danger">Inactive: {{ inactiveTagsCount() }}</span>
+              <div class="metric-subtext-group">
+                <span class="metric-subtext text-emerald"><i class="fa-solid fa-circle-check"></i> Active: {{ activeTagsCount() }}</span>
+                <span class="metric-subtext text-rose"><i class="fa-solid fa-circle-pause"></i> Inactive: {{ inactiveTagsCount() }}</span>
+              </div>
             </div>
           </div>
 
           <!-- Membership Widget -->
           <div class="metric-card glass-card">
-            <span class="metric-icon"><i class="fa-solid fa-gem text-warning"></i></span>
+            <div class="metric-icon-badge card-icon-amber">
+              <i class="fa-solid fa-gem"></i>
+            </div>
             <div class="metric-info">
-              <span class="metric-label">Membership Details</span>
-              <span class="metric-value-title">{{ membershipType() }}</span>
-              <span class="metric-subtext">Renewal: {{ renewalDate() }}</span>
-              <span class="metric-subtext text-indigo">Remaining: {{ remainingDays() }} Days</span>
+              <span class="metric-label">MEMBERSHIP STATUS</span>
+              <span class="metric-value-title text-amber">{{ membershipType() }}</span>
+              <div class="metric-subtext-group">
+                <span class="metric-subtext"><i class="fa-solid fa-arrows-rotate"></i> Renewal: {{ renewalDate() }}</span>
+                <span class="metric-subtext text-indigo"><i class="fa-solid fa-hourglass-half"></i> {{ remainingDays() }} Days Left</span>
+              </div>
             </div>
           </div>
 
           <!-- Notifications Widget -->
           <div class="metric-card glass-card">
-            <span class="metric-icon"><i class="fa-solid fa-bell text-danger"></i></span>
+            <div class="metric-icon-badge card-icon-rose">
+              <i class="fa-solid fa-bell"></i>
+            </div>
             <div class="metric-info">
-              <span class="metric-label">Notification Counts</span>
-              <span class="metric-value">{{ notifications().length }} <span class="metric-value-unit">Total</span></span>
-              <span class="metric-subtext text-danger">Unread Alerts: {{ unreadCount() }}</span>
-              <span class="metric-subtext">This Month: {{ notifications().length }}</span>
+              <span class="metric-label">NOTIFICATIONS</span>
+              <span class="metric-value">{{ notifications().length }} <span class="metric-value-unit">Alerts</span></span>
+              <div class="metric-subtext-group">
+                <span class="metric-subtext text-rose"><i class="fa-solid fa-triangle-exclamation"></i> Unread: {{ unreadCount() }}</span>
+                <span class="metric-subtext"><i class="fa-solid fa-chart-line"></i> Monthly: {{ notifications().length }}</span>
+              </div>
             </div>
           </div>
 
           <!-- Referral Widget -->
           <div class="metric-card glass-card">
-            <span class="metric-icon"><i class="fa-solid fa-gift text-success"></i></span>
+            <div class="metric-icon-badge card-icon-emerald">
+              <i class="fa-solid fa-gift"></i>
+            </div>
             <div class="metric-info">
-              <span class="metric-label">Referrals & Rewards</span>
-              <span class="metric-value">${{ rewardsBalance().toFixed(2) }}</span>
-              <span class="metric-subtext">Total Referrals: {{ totalReferrals() }}</span>
-              <span class="metric-subtext text-muted">Pending Rewards: ${{ pendingRewards().toFixed(2) }}</span>
+              <span class="metric-label">REFERRALS & REWARDS</span>
+              <span class="metric-value text-emerald">${{ rewardsBalance().toFixed(2) }}</span>
+              <div class="metric-subtext-group">
+                <span class="metric-subtext"><i class="fa-solid fa-users"></i> Referrals: {{ totalReferrals() }}</span>
+                <span class="metric-subtext text-muted"><i class="fa-solid fa-coins"></i> Pending: ${{ pendingRewards().toFixed(2) }}</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Quick Actions Panel -->
+        <!-- Quick Control Actions Panel -->
         <section class="quick-actions-section glass-card">
-          <h3>Quick Control Actions</h3>
+          <div class="section-title-row">
+            <i class="fa-solid fa-bolt title-icon"></i>
+            <h3>Quick Control Actions</h3>
+          </div>
           <div class="quick-actions-grid">
-            <button class="btn btn-secondary action-icon-btn" (click)="openAddVehicle()">
-              <i class="fa-solid fa-plus text-primary"></i> Register New Vehicle
+            <button class="quick-action-card" (click)="openAddVehicle()">
+              <div class="action-card-icon icon-blue"><i class="fa-solid fa-plus"></i></div>
+              <span>Register New Vehicle</span>
             </button>
-            <button class="btn btn-secondary action-icon-btn" (click)="openLinkTag()">
-              <i class="fa-solid fa-qrcode text-indigo"></i> Activate Sticker Tag
+            <button class="quick-action-card" (click)="openLinkTag()">
+              <div class="action-card-icon icon-indigo"><i class="fa-solid fa-qrcode"></i></div>
+              <span>Activate Sticker Tag</span>
             </button>
-            <button class="btn btn-secondary action-icon-btn" (click)="openUpgrade()">
-              <i class="fa-solid fa-credit-card text-warning"></i> Upgrade Membership
+            <button class="quick-action-card" (click)="openUpgrade()">
+              <div class="action-card-icon icon-amber"><i class="fa-solid fa-credit-card"></i></div>
+              <span>Upgrade Membership</span>
             </button>
-            <button class="btn btn-secondary action-icon-btn" (click)="selectTab('notifications')">
-              <i class="fa-solid fa-bell text-danger"></i> View Notification Center
+            <button class="quick-action-card" (click)="selectTab('notifications')">
+              <div class="action-card-icon icon-rose"><i class="fa-solid fa-bell"></i></div>
+              <span>View Notification Center</span>
             </button>
-            <button class="btn btn-secondary action-icon-btn" (click)="selectTab('support')">
-              <i class="fa-solid fa-circle-question text-success"></i> Get Technical Support
+            <button class="quick-action-card" (click)="selectTab('support')">
+              <div class="action-card-icon icon-emerald"><i class="fa-solid fa-headset"></i></div>
+              <span>Get Technical Support</span>
             </button>
           </div>
         </section>
@@ -184,12 +230,23 @@
           <!-- Recent Notifications -->
           <div class="dashboard-card glass-card flex-2">
             <div class="card-header">
-              <h3>Recent Vehicle Alerts</h3>
-              <button class="text-btn" (click)="selectTab('notifications')">View All Center</button>
+              <div class="header-title-group">
+                <i class="fa-solid fa-shield-cat header-icon"></i>
+                <h3>Recent Vehicle Alerts</h3>
+              </div>
+              <button class="text-btn" (click)="selectTab('notifications')">
+                <span>View Alert Center</span> <i class="fa-solid fa-arrow-right btn-arrow"></i>
+              </button>
             </div>
             <div class="alerts-list">
               @if (notifications().length === 0) {
-                <p class="empty-message">No alerts received yet. Safe driving!</p>
+                <div class="empty-alert-state">
+                  <div class="empty-alert-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                  </div>
+                  <h4>All Vehicles Secure</h4>
+                  <p>No active security or parking alerts reported. All vehicle monitors are active and nominal.</p>
+                </div>
               } @else {
                 @for (notif of notifications().slice(0, 3); track notif.id) {
                   <div class="alert-item" [class.unread]="!notif.read">
@@ -222,9 +279,19 @@
     <!-- Tab 2: My Vehicles -->
     @if (activeTab() === 'vehicles') {
       <div class="tab-panel">
-        <div class="panel-header">
-          <p>Register all your household or company cars to link them with protective QR labels.</p>
-          <button class="btn btn-primary" (click)="openAddVehicle()"><i class="fa-solid fa-plus"></i> Register Vehicle</button>
+        <div class="panel-header glass-card">
+          <div class="panel-header-info">
+            <div class="panel-header-icon">
+              <i class="fa-solid fa-car-side"></i>
+            </div>
+            <div>
+              <h2>Vehicle Protection Registry</h2>
+              <p>Register all your household or company cars to link them with protective TRAFFTAG QR decals.</p>
+            </div>
+          </div>
+          <button class="btn btn-primary register-btn" (click)="openAddVehicle()">
+            <i class="fa-solid fa-plus"></i> Register Vehicle
+          </button>
         </div>
 
         @if (vehicles().length === 0) {
@@ -330,8 +397,12 @@
                         <i class="fa-solid fa-qrcode"></i> Test
                       </a>
                     }
-                    <button class="footer-btn btn-action-pdf" title="Print Sticker PDF Decal">
-                      <i class="fa-solid fa-file-pdf"></i> Decal
+                    <button class="footer-btn btn-action-pdf" (click)="downloadQrCode(veh)" [disabled]="downloadingVehicleId() === veh.id" title="Download Printable QR Decal">
+                      @if (downloadingVehicleId() === veh.id) {
+                        <span class="spinner-sm"></span> Loading...
+                      } @else {
+                        <i class="fa-solid fa-download"></i> Download QR
+                      }
                     </button>
                     <button class="footer-btn btn-action-delete" (click)="deleteVehicle(veh.id)" title="Remove Vehicle from Registry">
                       <i class="fa-solid fa-trash-can"></i>
@@ -348,14 +419,24 @@
     <!-- Tab 3: Active QR Tags -->
     @if (activeTab() === 'tags') {
       <div class="tab-panel">
-        <div class="panel-header">
-          <p>Manage physical waterproof QR code decals attached to your vehicles.</p>
-          <button class="btn btn-primary" (click)="openLinkTag()"><i class="fa-solid fa-link"></i> Link/Activate Sticker</button>
+        <div class="panel-header glass-card">
+          <div class="panel-header-info">
+            <div class="panel-header-icon">
+              <i class="fa-solid fa-qrcode"></i>
+            </div>
+            <div>
+              <h2>Active QR Decal Fleet</h2>
+              <p>Manage physical waterproof QR code decals and security stickers attached to your registered vehicles.</p>
+            </div>
+          </div>
+          <button class="btn btn-primary register-btn" (click)="openLinkTag()">
+            <i class="fa-solid fa-link"></i> Link / Activate Sticker
+          </button>
         </div>
 
         <div class="tags-grid-layout">
           @for (veh of vehicles(); track veh.id) {
-            <div class="decal-card glass-card">
+            <div class="decal-card">
               <!-- Physical Decal Preview Column -->
               <div class="decal-preview-wrapper">
                 <div class="decal-sticker-mock">
@@ -387,11 +468,11 @@
 
                 <div class="decal-meta-grid">
                   <div class="decal-meta-item">
-                    <span class="lbl"><i class="fa-solid fa-car text-primary"></i> Linked Vehicle:</span>
+                    <span class="lbl"><i class="fa-solid fa-car text-indigo"></i> Linked Vehicle:</span>
                     <span class="val">{{ veh.make }} {{ veh.model }} ({{ veh.plate }})</span>
                   </div>
                   <div class="decal-meta-item">
-                    <span class="lbl"><i class="fa-solid fa-shield-halved text-indigo"></i> Protection Plan:</span>
+                    <span class="lbl"><i class="fa-solid fa-shield-halved text-primary"></i> Protection Plan:</span>
                     <span class="val">{{ membershipType() }}</span>
                   </div>
                   <div class="decal-meta-item">
@@ -406,12 +487,20 @@
 
                 <div class="decal-actions-footer">
                   @if (veh.tagId !== 'Not Assigned') {
-                    <a [routerLink]="['/scan', veh.tagId]" target="_blank" class="btn btn-primary btn-sm">
+                    <a [routerLink]="['/scan', veh.tagId]" target="_blank" class="footer-btn btn-action-scan">
                       <i class="fa-solid fa-up-right-from-square"></i> Test Scan Portal
                     </a>
                   }
-                  <button class="btn btn-secondary btn-sm" (click)="openLinkTag(veh.id)"><i class="fa-solid fa-arrows-rotate"></i> Reassign Sticker</button>
-                  <button class="btn btn-secondary btn-sm" title="Print decal template"><i class="fa-solid fa-print"></i> Print Decal</button>
+                  <button class="footer-btn btn-action-scan" (click)="openLinkTag(veh.id)">
+                    <i class="fa-solid fa-arrows-rotate"></i> Reassign Sticker
+                  </button>
+                  <button class="footer-btn btn-action-pdf" (click)="downloadQrCode(veh)" [disabled]="downloadingVehicleId() === veh.id" title="Download Printable QR Decal">
+                    @if (downloadingVehicleId() === veh.id) {
+                      <span class="spinner-sm"></span> Downloading...
+                    } @else {
+                      <i class="fa-solid fa-download"></i> Download QR Code
+                    }
+                  </button>
                 </div>
               </div>
             </div>

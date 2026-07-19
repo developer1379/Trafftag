@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { UpperCasePipe } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { API_BASE_URL } from '../../config/api.config';
+import { ModalService } from '../../services/modal.service';
 
 interface Vehicle {
   id: string;
@@ -45,6 +46,7 @@ export class Portal implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private http = inject(HttpClient);
+  private modalService = inject(ModalService);
 
   // Navigation
   activeTab = signal<'dashboard' | 'vehicles' | 'tags' | 'notifications' | 'support' | 'profile'>('dashboard');
@@ -402,25 +404,35 @@ export class Portal implements OnInit {
           if (res?.success) {
             this.loadVehicles();
             this.closeAddVehicle();
+            this.modalService.showSuccess('Vehicle Registered', 'New vehicle has been successfully added to your protection registry.');
           } else {
-            alert(res?.message || 'Failed to register vehicle.');
+            this.modalService.showError('Registration Failed', res?.message || 'Failed to register vehicle.');
           }
         },
         error: (err) => {
-          alert(err?.error?.message || 'Error occurred while registering vehicle.');
+          this.modalService.showError('Registration Failed', err?.error?.message || 'Error occurred while registering vehicle.');
         }
       });
   }
 
-  deleteVehicle(id: string) {
-    if (confirm('Are you sure you want to delete this vehicle?')) {
+  async deleteVehicle(id: string) {
+    const confirmed = await this.modalService.confirm({
+      title: 'Remove Vehicle',
+      message: 'Are you sure you want to remove this vehicle from your registry? Any linked QR tags will be unassigned.',
+      confirmText: 'Delete Vehicle',
+      cancelText: 'Cancel',
+      type: 'danger'
+    });
+
+    if (confirmed) {
       this.http.delete<any>(`${API_BASE_URL}/api/v1/vehicles/${id}`, { headers: this.getHeaders() })
         .subscribe({
           next: () => {
             this.loadVehicles();
+            this.modalService.showSuccess('Vehicle Removed', 'The vehicle has been successfully deleted from your registry.');
           },
           error: (err) => {
-            alert(err?.error?.message || 'Error occurred while deleting vehicle.');
+            this.modalService.showError('Deletion Failed', err?.error?.message || 'Error occurred while deleting vehicle.');
           }
         });
     }
@@ -458,7 +470,7 @@ export class Portal implements OnInit {
     const tagId = match ? parseInt(match[0], 10) : null;
 
     if (!tagId) {
-      alert('Invalid QR Sticker Serial format. Must contain a numeric ID.');
+      this.modalService.showWarning('Invalid Format', 'Invalid QR Sticker Serial format. Must contain a numeric ID (e.g. TT-00000021).');
       return;
     }
 
@@ -472,12 +484,13 @@ export class Portal implements OnInit {
           if (res?.success) {
             this.loadVehicles();
             this.closeLinkTag();
+            this.modalService.showSuccess('QR Tag Linked', 'Your QR Sticker Tag has been successfully assigned and activated.');
           } else {
-            alert(res?.message || 'Failed to link QR decal.');
+            this.modalService.showError('Activation Failed', res?.message || 'Failed to link QR decal.');
           }
         },
         error: (err) => {
-          alert(err?.error?.message || 'Error occurred while linking QR decal.');
+          this.modalService.showError('Activation Failed', err?.error?.message || 'Error occurred while linking QR decal.');
         }
       });
   }
@@ -636,13 +649,13 @@ export class Portal implements OnInit {
             this.lastName.set(this.editLastName());
             this.phoneNumber.set(this.editPhoneNumber());
             this.countryCode.set(this.editCountryCode());
-            this.isEditingProfile.set(false);
+            this.modalService.showSuccess('Profile Updated', 'Your account details have been successfully updated.');
           } else {
-            alert(res?.message || 'Failed to update profile.');
+            this.modalService.showError('Update Failed', res?.message || 'Failed to update profile.');
           }
         },
         error: (err) => {
-          alert(err?.error?.message || 'Error occurred while updating profile.');
+          this.modalService.showError('Update Failed', err?.error?.message || 'Error occurred while updating profile.');
         }
       });
   }
@@ -686,5 +699,421 @@ export class Portal implements OnInit {
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('otpEmail');
     this.router.navigate(['/login']);
+  }
+
+  downloadingVehicleId = signal<string | null>(null);
+
+  downloadQrCode(veh: Vehicle) {
+    const tagId = veh.tagId && veh.tagId !== 'Not Assigned' ? veh.tagId : `TT-VEH-${veh.id}`;
+    const scanUrl = this.getScanUrl(tagId);
+    this.downloadingVehicleId.set(veh.id);
+
+    // Attempt to download image from API endpoint
+    this.http.get(`${API_BASE_URL}/api/v1/qrtags/${encodeURIComponent(tagId)}/image`, {
+      headers: this.getHeaders(),
+      responseType: 'blob'
+    }).subscribe({
+      next: (blob: Blob) => {
+        if (blob && blob.size > 0 && blob.type.startsWith('image/')) {
+          this.triggerBlobDownload(blob, `${veh.make}_${veh.model}_${veh.plate}_QR_Decal.png`);
+          this.downloadingVehicleId.set(null);
+        } else {
+          this.generateAndDownloadCanvasQr(veh, tagId, scanUrl);
+        }
+      },
+      error: () => {
+        // Fallback: Generate high-res branded decal PNG via Canvas
+        this.generateAndDownloadCanvasQr(veh, tagId, scanUrl);
+      }
+    });
+  }
+
+  private triggerBlobDownload(blob: Blob, filename: string) {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  }
+
+  private generateAndDownloadCanvasQr(veh: Vehicle, tagId: string, scanUrl: string) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1200;
+    canvas.height = 700;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      this.downloadingVehicleId.set(null);
+      return;
+    }
+
+    const goldColor = '#F5B800';
+    const darkNavy = '#060F1E';
+    const cardNavy = '#0B1B36';
+    const whiteColor = '#FFFFFF';
+    const textGold = '#FFC107';
+
+    // Fill Canvas Background
+    ctx.fillStyle = darkNavy;
+    ctx.fillRect(0, 0, 1200, 700);
+
+    // ==========================================
+    // LEFT SHIELD BADGE (cx: 220, cy: 350)
+    // ==========================================
+    const cx = 220;
+    const cy = 350;
+
+    const drawShield = (wScale: number, hScale: number) => {
+      const w = 360 * wScale;
+      const h = 570 * hScale;
+      const hw = w / 2;
+      const hh = h / 2;
+      const topY = cy - hh;
+      const botY = cy + hh;
+
+      ctx.beginPath();
+      ctx.moveTo(cx, topY);
+      ctx.bezierCurveTo(cx + hw * 0.45, topY - 4, cx + hw * 0.85, topY + 12, cx + hw, topY + 45);
+      ctx.bezierCurveTo(cx + hw * 1.08, cy - hh * 0.25, cx + hw * 0.95, cy + hh * 0.35, cx + hw * 0.72, cy + hh * 0.68);
+      ctx.bezierCurveTo(cx + hw * 0.5, cy + hh * 0.88, cx + hw * 0.2, botY, cx, botY + 15);
+      ctx.bezierCurveTo(cx - hw * 0.2, botY, cx - hw * 0.5, cy + hh * 0.88, cx - hw * 0.72, cy + hh * 0.68);
+      ctx.bezierCurveTo(cx - hw * 0.95, cy + hh * 0.35, cx - hw * 1.08, cy - hh * 0.25, cx - hw, topY + 45);
+      ctx.bezierCurveTo(cx - hw * 0.85, topY + 12, cx - hw * 0.45, topY - 4, cx, topY);
+      ctx.closePath();
+    };
+
+    // 1. Outer Gold Shield
+    drawShield(1.0, 1.0);
+    ctx.fillStyle = goldColor;
+    ctx.fill();
+
+    // 2. Inner Navy Fill
+    drawShield(0.93, 0.94);
+    ctx.fillStyle = cardNavy;
+    ctx.fill();
+
+    // 3. Inner Gold Border Line
+    drawShield(0.88, 0.90);
+    ctx.strokeStyle = goldColor;
+    ctx.lineWidth = 3.5;
+    ctx.stroke();
+
+    // Top Header: ★ TAG IT WITH LOVE ★
+    ctx.fillStyle = textGold;
+    ctx.font = 'bold 15px Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('★   TAG IT WITH LOVE   ★', cx, cy - 195);
+
+    // Main Brand Title: TRAFFTAG
+    ctx.fillStyle = whiteColor;
+    ctx.font = '900 46px "Impact", "Arial Black", sans-serif';
+    ctx.shadowColor = 'rgba(0,0,0,0.6)';
+    ctx.shadowOffsetY = 3;
+    ctx.shadowBlur = 4;
+    ctx.fillText('TRAFFTAG', cx, cy - 138);
+    ctx.shadowColor = 'transparent';
+
+    // Sub Ribbon: ═ MEANS ═
+    ctx.fillStyle = textGold;
+    ctx.font = 'bold 15px Arial, sans-serif';
+    ctx.fillText('═ MEANS ═', cx, cy - 95);
+
+    // WE HELP YOU
+    ctx.fillStyle = whiteColor;
+    ctx.font = '900 24px Arial, sans-serif';
+    ctx.fillText('WE HELP YOU', cx, cy - 60);
+
+    // ALERT.
+    ctx.fillStyle = textGold;
+    ctx.font = '900 62px "Impact", "Arial Black", sans-serif';
+    ctx.fillText('ALERT.', cx, cy + 5);
+
+    // Sound Wave Bell Ring
+    const ringY = cy + 112;
+    ctx.beginPath();
+    ctx.arc(cx, ringY, 46, 0, Math.PI * 2);
+    ctx.fillStyle = darkNavy;
+    ctx.fill();
+    ctx.strokeStyle = textGold;
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    ctx.fillStyle = textGold;
+    ctx.font = 'bold 19px Arial, sans-serif';
+    ctx.fillText('(((', cx - 28, ringY + 2);
+    ctx.fillText(')))', cx + 28, ringY + 2);
+    ctx.font = '28px Arial, sans-serif';
+    ctx.fillText('🔔', cx, ringY + 8);
+
+    // Bottom Star
+    ctx.font = '22px Arial, sans-serif';
+    ctx.fillText('★', cx, cy + 205);
+
+    // ==========================================
+    // RIGHT CONTAINER CARD (rx: 430, ry: 30, rw: 740, rh: 640)
+    // ==========================================
+    const rx = 430;
+    const ry = 30;
+    const rw = 740;
+    const rh = 640;
+
+    // Outer Navy Fill & Gold Border
+    ctx.fillStyle = cardNavy;
+    ctx.beginPath();
+    ctx.roundRect(rx, ry, rw, rh, 16);
+    ctx.fill();
+    ctx.strokeStyle = goldColor;
+    ctx.lineWidth = 5;
+    ctx.stroke();
+
+    // Bar 1: Top Gold Header (y: 34 to 82)
+    ctx.fillStyle = goldColor;
+    ctx.beginPath();
+    ctx.roundRect(rx + 4, ry + 4, rw - 8, 48, [12, 12, 0, 0]);
+    ctx.fill();
+
+    ctx.fillStyle = darkNavy;
+    ctx.font = '900 22px "Arial Black", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('100% FREE TO SCAN • NOTIFY • SMILE', rx + rw / 2, ry + 36);
+
+    // Bar 2: Dark Subheader (y: 82 to 120)
+    ctx.fillStyle = '#000000';
+    ctx.fillRect(rx + 4, ry + 52, rw - 8, 38);
+
+    ctx.fillStyle = textGold;
+    ctx.font = '900 16px Arial, sans-serif';
+    ctx.fillText('PLEASE SCAN ME SO I CAN TELL MY OWNER.', rx + rw / 2, ry + 77);
+
+    // Main QR Box (Left side of right card)
+    const qrBoxX = rx + 20;
+    const qrBoxY = ry + 105;
+    const qrSize = 250;
+
+    ctx.fillStyle = whiteColor;
+    ctx.beginPath();
+    ctx.roundRect(qrBoxX, qrBoxY, qrSize, qrSize, 14);
+    ctx.fill();
+    ctx.strokeStyle = goldColor;
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    // Right Column 3 Info Boxes (x: 715, infoW: 435)
+    const infoX = rx + 285;
+    const infoW = 435;
+
+    const serialNum = tagId.replace(/^TT-/, '') || '00012345';
+    const alphaNum = `7G9H-K2M4-${veh.id.padStart(4, '0')}`;
+
+    // Item 1: TRAFFTAG ID (y: 105, h: 74)
+    ctx.fillStyle = '#071224';
+    ctx.beginPath();
+    ctx.roundRect(infoX, ry + 105, infoW, 74, 10);
+    ctx.fill();
+    ctx.strokeStyle = '#172746';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    ctx.fillStyle = textGold;
+    ctx.beginPath();
+    ctx.roundRect(infoX + 12, ry + 120, 42, 44, 8);
+    ctx.fill();
+    ctx.fillStyle = darkNavy;
+    ctx.font = '20px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('🛡️', infoX + 33, ry + 149);
+
+    ctx.fillStyle = textGold;
+    ctx.font = 'bold 16px Arial';
+    ctx.textAlign = 'left';
+    ctx.fillText('TRAFFTAG ID', infoX + 66, ry + 148);
+
+    ctx.fillStyle = whiteColor;
+    ctx.font = 'bold 20px monospace';
+    ctx.fillText(`:  ${tagId}`, infoX + 220, ry + 148);
+
+    // Item 2: SERIAL NUMBER (y: 193, h: 74)
+    ctx.fillStyle = '#071224';
+    ctx.beginPath();
+    ctx.roundRect(infoX, ry + 193, infoW, 74, 10);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.fillStyle = textGold;
+    ctx.beginPath();
+    ctx.roundRect(infoX + 12, ry + 208, 42, 44, 8);
+    ctx.fill();
+    ctx.fillStyle = darkNavy;
+    ctx.font = '900 22px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('#', infoX + 33, ry + 237);
+
+    ctx.fillStyle = textGold;
+    ctx.font = 'bold 16px Arial';
+    ctx.textAlign = 'left';
+    ctx.fillText('SERIAL NUMBER', infoX + 66, ry + 236);
+
+    ctx.fillStyle = whiteColor;
+    ctx.font = 'bold 20px monospace';
+    ctx.fillText(`:  ${serialNum.padStart(8, '0')}`, infoX + 220, ry + 236);
+
+    // Item 3: ALPHANUMERIC NUMBER (y: 281, h: 74)
+    ctx.fillStyle = '#071224';
+    ctx.beginPath();
+    ctx.roundRect(infoX, ry + 281, infoW, 74, 10);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.fillStyle = textGold;
+    ctx.beginPath();
+    ctx.roundRect(infoX + 12, ry + 296, 42, 44, 8);
+    ctx.fill();
+    ctx.fillStyle = darkNavy;
+    ctx.font = '900 16px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('A1', infoX + 33, ry + 324);
+
+    ctx.fillStyle = textGold;
+    ctx.font = 'bold 14px Arial';
+    ctx.textAlign = 'left';
+    ctx.fillText('ALPHANUMERIC NUMBER', infoX + 66, ry + 324);
+
+    ctx.fillStyle = whiteColor;
+    ctx.font = 'bold 16px monospace';
+    ctx.fillText(`: ${alphaNum}`, infoX + 268, ry + 324);
+
+    // Row 2: Car Nick Name & Vehicle Type (y: 370, h: 84)
+    const midY = ry + 370;
+    const box1W = 340;
+    const box2W = 340;
+
+    // Nick Name Box
+    ctx.fillStyle = '#071224';
+    ctx.beginPath();
+    ctx.roundRect(qrBoxX, midY, box1W, 84, 10);
+    ctx.fill();
+    ctx.strokeStyle = textGold;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    const nickStr = (veh.make && veh.make !== 'Unknown' ? `${veh.make} ${veh.model || ''}` : (veh.model || 'MY CAR')).trim().toUpperCase();
+
+    ctx.fillStyle = textGold;
+    ctx.font = 'bold 13px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('👤 MY CAR NICK NAME IS', qrBoxX + box1W / 2, midY + 28);
+
+    ctx.fillStyle = whiteColor;
+    ctx.font = '900 22px Arial';
+    ctx.fillText(nickStr, qrBoxX + box1W / 2, midY + 60);
+
+    // Vehicle Type Box
+    ctx.fillStyle = '#071224';
+    ctx.beginPath();
+    ctx.roundRect(rx + 380, midY, box2W, 84, 10);
+    ctx.fill();
+    ctx.stroke();
+
+    const typeStr = (veh.color && veh.color !== 'Unknown' ? `${veh.color} ${veh.make || 'CAR'}` : (veh.make && veh.make !== 'Unknown' ? veh.make : 'CAR')).toUpperCase();
+
+    ctx.fillStyle = textGold;
+    ctx.font = 'bold 13px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('🚗 VEHICLE TYPE', rx + 380 + box2W / 2, midY + 28);
+
+    ctx.fillStyle = whiteColor;
+    ctx.font = '900 22px Arial';
+    ctx.fillText(typeStr, rx + 380 + box2W / 2, midY + 60);
+
+    // Row 3: Call/Text Support Box & Checklist (y: 468, h: 104)
+    const helpY = ry + 468;
+    ctx.fillStyle = '#071224';
+    ctx.beginPath();
+    ctx.roundRect(qrBoxX, helpY, rw - 40, 104, 12);
+    ctx.fill();
+    ctx.strokeStyle = '#172746';
+    ctx.stroke();
+
+    // Left Contact Info
+    ctx.fillStyle = textGold;
+    ctx.font = 'bold 14px Arial';
+    ctx.textAlign = 'left';
+    ctx.fillText('📞 NEED HELP? CALL OR TEXT TRAFFTAG', qrBoxX + 20, helpY + 34);
+
+    ctx.fillStyle = whiteColor;
+    ctx.font = '900 28px Arial';
+    ctx.fillText('+1 (212) 470-8284', qrBoxX + 20, helpY + 74);
+
+    // Divider line
+    ctx.strokeStyle = '#1E293B';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(qrBoxX + 390, helpY + 12);
+    ctx.lineTo(qrBoxX + 390, helpY + 92);
+    ctx.stroke();
+
+    // Right Checklist
+    ctx.fillStyle = textGold;
+    ctx.font = 'bold 13px Arial';
+    ctx.fillText('PLEASE INCLUDE:', qrBoxX + 410, helpY + 26);
+
+    ctx.fillStyle = whiteColor;
+    ctx.font = 'bold 12px Arial';
+    ctx.fillText('✔  TRAFFTAG ID', qrBoxX + 410, helpY + 46);
+    ctx.fillText('✔  SERIAL NUMBER', qrBoxX + 410, helpY + 64);
+    ctx.fillText('✔  YOUR MESSAGE OR PHOTO (OPTIONAL)', qrBoxX + 410, helpY + 82);
+
+    // Bottom Message Bar (y: 602)
+    ctx.fillStyle = textGold;
+    ctx.font = 'bold 16px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('✉️   MESSAGE WILL BE FORWARDED TO OWNER.', rx + rw / 2, ry + 604);
+
+    // Draw QR Code Image into box
+    const qrImgUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(scanUrl)}`;
+    const qrImg = new Image();
+    qrImg.crossOrigin = 'Anonymous';
+    qrImg.onload = () => {
+      ctx.drawImage(qrImg, qrBoxX + 10, qrBoxY + 10, 230, 230);
+
+      // Center Bell Badge overlay on QR code
+      const cxQr = qrBoxX + 125;
+      const cyQr = qrBoxY + 125;
+
+      ctx.fillStyle = textGold;
+      ctx.beginPath();
+      ctx.roundRect(cxQr - 24, cyQr - 26, 48, 52, 10);
+      ctx.fill();
+
+      ctx.fillStyle = darkNavy;
+      ctx.beginPath();
+      ctx.roundRect(cxQr - 21, cyQr - 23, 42, 46, 8);
+      ctx.fill();
+
+      ctx.fillStyle = textGold;
+      ctx.font = 'bold 14px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('((( 🔔 )))', cxQr, cyQr + 5);
+
+      canvas.toBlob((blob) => {
+        this.downloadingVehicleId.set(null);
+        if (blob) {
+          this.triggerBlobDownload(blob, `${veh.make}_${veh.model}_${veh.plate}_TRAFFTAG_Decal.png`);
+        }
+      });
+    };
+
+    qrImg.onerror = () => {
+      this.downloadingVehicleId.set(null);
+      canvas.toBlob((blob) => {
+        if (blob) {
+          this.triggerBlobDownload(blob, `${veh.make}_${veh.model}_${veh.plate}_TRAFFTAG_Decal.png`);
+        }
+      });
+    };
+
+    qrImg.src = qrImgUrl;
   }
 }

@@ -1,0 +1,28 @@
+@if (modalService.activeModal(); as config) {
+  <div class="modal-backdrop" (click)="onCancel()">
+    <div class="modal-card" (click)="$event.stopPropagation()" [class]="'modal-type-' + config.type">
+      <!-- Icon Container -->
+      <div class="modal-icon-badge" [class]="'icon-' + config.type">
+        <i class="fa-solid" [class]="config.icon || 'fa-circle-info'"></i>
+      </div>
+
+      <!-- Content -->
+      <div class="modal-body">
+        <h3 class="modal-title">{{ config.title }}</h3>
+        <p class="modal-message">{{ config.message }}</p>
+      </div>
+
+      <!-- Actions -->
+      <div class="modal-actions">
+        @if (config.cancelText) {
+          <button class="modal-btn btn-cancel" (click)="onCancel()">
+            {{ config.cancelText }}
+          </button>
+        }
+        <button class="modal-btn btn-confirm" [class]="'btn-' + config.type" (click)="onConfirm()">
+          {{ config.confirmText || 'Confirm' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}
