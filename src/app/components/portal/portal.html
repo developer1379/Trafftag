@@ -513,17 +513,43 @@
     @if (activeTab() === 'notifications') {
       <div class="tab-panel">
         
+        <!-- Executive Banner Header -->
+        <div class="panel-header glass-card">
+          <div class="panel-header-info">
+            <div class="panel-header-icon">
+              <i class="fa-solid fa-bell"></i>
+            </div>
+            <div>
+              <h2>Real-Time Security Alerts Center</h2>
+              <p>Monitor incoming QR sticker scans, bystander reports, and parking alert dispatches for your vehicles.</p>
+            </div>
+          </div>
+          <div class="header-actions-group">
+            @if (unreadCount() > 0) {
+              <button class="footer-btn btn-action-scan" (click)="markAllAsRead()">
+                <i class="fa-solid fa-check-double"></i> Mark All Read
+              </button>
+            }
+            <button class="footer-btn btn-action-pdf" (click)="simulateTestNotification()">
+              <i class="fa-solid fa-bell"></i> Test Alert
+            </button>
+          </div>
+        </div>
+
         <!-- Search & Filter Area (SRS Requirement FR-NOTIFY-010 & FR-NOTIFY-011) -->
         <div class="filter-toolbar glass-card">
           <div class="search-box">
             <i class="fa-solid fa-magnifying-glass search-icon"></i>
-            <input type="text" placeholder="Search alerts message or category..." [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event)">
+            <input type="text" placeholder="Search alert notes or categories..." [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event)">
+            @if (searchQuery()) {
+              <button class="search-clear-btn" (click)="searchQuery.set('')"><i class="fa-solid fa-xmark"></i></button>
+            }
           </div>
           
           <div class="filter-controls">
             <!-- Filter by Vehicle -->
             <select [ngModel]="filterVehicle()" (ngModelChange)="filterVehicle.set($event)">
-              <option value="all">Filter by Vehicle: All</option>
+              <option value="all">Filter Vehicle: All</option>
               @for (veh of vehicles(); track veh.id) {
                 <option [value]="veh.id">{{ veh.make }} {{ veh.model }} ({{ veh.plate }})</option>
               }
@@ -531,7 +557,7 @@
 
             <!-- Filter by Category -->
             <select [ngModel]="filterCategory()" (ngModelChange)="filterCategory.set($event)">
-              <option value="all">Filter by Issue: All</option>
+              <option value="all">Filter Issue: All</option>
               <option value="Headlights Left On">Headlights Left On</option>
               <option value="Parking Obstruction">Parking Obstruction</option>
               <option value="Window Rolled Down">Window Rolled Down</option>
@@ -542,39 +568,81 @@
             <!-- Filter by Status -->
             <select [ngModel]="filterStatus()" (ngModelChange)="filterStatus.set($event)">
               <option value="all">Status: All</option>
-              <option value="unread">Status: Unread</option>
-              <option value="read">Status: Read</option>
-              <option value="resolved">Status: Resolved</option>
-              <option value="unresolved">Status: Unresolved</option>
+              <option value="unread">Unread Only</option>
+              <option value="read">Read Only</option>
+              <option value="resolved">Resolved</option>
+              <option value="unresolved">Unresolved</option>
             </select>
+
+            @if (searchQuery() || filterVehicle() !== 'all' || filterCategory() !== 'all' || filterStatus() !== 'all') {
+              <button class="reset-filter-btn" (click)="clearNotificationFilters()" title="Reset All Filters">
+                <i class="fa-solid fa-rotate-left"></i> Reset
+              </button>
+            }
           </div>
         </div>
 
         <div class="alerts-list">
           @if (filteredNotifications().length === 0) {
-            <p class="empty-message">No matching notifications found.</p>
+            <div class="empty-alerts-card">
+              <div class="empty-alerts-icon">
+                <i class="fa-solid fa-shield-check"></i>
+              </div>
+              <h3>No Active Security Alerts</h3>
+              <p>Your registered vehicles are currently safe and monitored. Whenever a bystander or parking officer scans your TRAFFTAG sticker, instant alerts will display here.</p>
+              <div class="empty-alerts-actions">
+                <button class="footer-btn btn-action-scan" (click)="loadNotifications()">
+                  <i class="fa-solid fa-rotate"></i> Refresh Feed
+                </button>
+                <button class="footer-btn btn-action-pdf" (click)="simulateTestNotification()">
+                  <i class="fa-solid fa-bell"></i> Send Test Alert
+                </button>
+              </div>
+            </div>
           } @else {
             @for (notif of filteredNotifications(); track notif.id) {
               <div class="alert-item" [class.unread]="!notif.read">
-                <div class="alert-meta">
-                  <span class="alert-category">
-                    <i [class]="notif.icon" class="alert-cat-icon"></i>
-                    {{ notif.category }}
-                  </span>
-                  <span class="alert-time">{{ notif.timestamp }}</span>
+                <div class="alert-header">
+                  <div class="alert-title-block">
+                    <span class="alert-category-pill">
+                      <i [class]="notif.icon"></i> {{ notif.category }}
+                    </span>
+                    <span class="alert-veh-pill">
+                      <i class="fa-solid fa-car"></i> {{ getVehicleName(notif.vehicleId) }}
+                    </span>
+                  </div>
+                  <div class="alert-status-block">
+                    <span class="alert-time">{{ notif.timestamp }}</span>
+                    <span class="status-pill-badge" [class.tag-active]="notif.status === 'Resolved'" [class.tag-missing]="notif.status !== 'Resolved'">
+                      <i class="fa-solid" [class.fa-circle-check]="notif.status === 'Resolved'" [class.fa-triangle-exclamation]="notif.status !== 'Resolved'"></i>
+                      {{ notif.status }}
+                    </span>
+                  </div>
                 </div>
-                <p class="alert-msg">"{{ notif.message }}"</p>
-                <div class="alert-actions">
-                  @if (notif.senderPhone) {
-                    <span class="alert-contact"><i class="fa-solid fa-phone"></i> {{ notif.senderPhone }}</span>
-                  }
-                  <span class="status-pill" [class.resolved]="notif.status === 'Resolved'">{{ notif.status }}</span>
+
+                <div class="alert-body-box">
+                  <p class="alert-msg">"{{ notif.message }}"</p>
+                </div>
+
+                <div class="alert-footer">
+                  <div class="alert-contact">
+                    @if (notif.senderPhone) {
+                      <a [href]="'tel:' + notif.senderPhone" class="contact-link">
+                        <i class="fa-solid fa-phone"></i> Bystander Contact: <strong>{{ notif.senderPhone }}</strong>
+                      </a>
+                    } @else {
+                      <span class="anonymous-label"><i class="fa-solid fa-user-secret"></i> Anonymous Bystander Report</span>
+                    }
+                  </div>
                   
                   <div class="alert-btn-group">
                     @if (!notif.read) {
-                      <button class="action-btn-secondary" (click)="markAsRead(notif.id)">Mark Read</button>
+                      <button class="footer-btn btn-action-scan" (click)="markAsRead(notif.id)">
+                        <i class="fa-solid fa-envelope-open"></i> Mark Read
+                      </button>
                     }
-                    <button class="action-btn" (click)="toggleResolve(notif.id)">
+                    <button class="footer-btn" [class.btn-action-pdf]="notif.status !== 'Resolved'" [class.btn-action-scan]="notif.status === 'Resolved'" (click)="toggleResolve(notif.id)">
+                      <i class="fa-solid" [class.fa-circle-check]="notif.status !== 'Resolved'" [class.fa-rotate-left]="notif.status === 'Resolved'"></i>
                       {{ notif.status === 'Resolved' ? 'Reopen Alert' : 'Mark Resolved' }}
                     </button>
                   </div>

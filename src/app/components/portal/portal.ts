@@ -502,6 +502,44 @@ export class Portal implements OnInit {
     });
   }
 
+  markAllAsRead() {
+    this.notifications.update(list => list.map(n => ({ ...n, read: true })));
+    this.modalService.showSuccess('Alerts Updated', 'All notifications have been marked as read.');
+  }
+
+  clearNotificationFilters() {
+    this.searchQuery.set('');
+    this.filterVehicle.set('all');
+    this.filterCategory.set('all');
+    this.filterStatus.set('all');
+  }
+
+  simulateTestNotification() {
+    const firstVeh = this.vehicles()[0];
+    const vehName = firstVeh ? `${firstVeh.make} ${firstVeh.model}` : 'Toyota Fortuner';
+    const vehId = firstVeh ? firstVeh.id : '1';
+
+    const testNotif: QRNotification = {
+      id: 'TEST-' + Math.floor(Math.random() * 9000 + 1000),
+      vehicleId: vehId,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ', Today',
+      category: 'Headlights Left On',
+      icon: 'fa-solid fa-lightbulb',
+      message: `Friendly alert: The headlights on your ${vehName} appear to be turned on in the parking area.`,
+      senderPhone: '+1 (555) 234-5678',
+      read: false,
+      status: 'Unresolved'
+    };
+
+    this.notifications.update(list => [testNotif, ...list]);
+    this.modalService.showSuccess('Test Alert Dispatched', `Simulated alert generated for ${vehName}.`);
+  }
+
+  getVehicleName(vehId: string): string {
+    const v = this.vehicles().find(item => item.id.toString() === vehId.toString());
+    return v ? `${v.make} ${v.model} (${v.plate})` : 'Registered Vehicle';
+  }
+
   toggleResolve(notifId: string) {
     this.notifications.update(list => {
       return list.map(n => {
