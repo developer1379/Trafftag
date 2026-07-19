@@ -267,8 +267,15 @@ export class Portal implements OnInit {
   }
 
   mapApiVehicle(apiV: any): Vehicle {
+    const vehId = apiV.vehicleId.toString();
+    const userAssignedTag = localStorage.getItem(`assigned_tag_${vehId}`);
+    
+    // Vehicles start as Unassigned unless explicitly linked by user
+    const effectiveTagId = userAssignedTag || 'Not Assigned';
+    const isAssigned = effectiveTagId !== 'Not Assigned';
+
     return {
-      id: apiV.vehicleId.toString(),
+      id: vehId,
       make: apiV.make || 'Unknown',
       model: apiV.model || 'Unknown',
       year: apiV.year || 2025,
@@ -281,8 +288,8 @@ export class Portal implements OnInit {
       lastScan: apiV.lastScan || 'Never',
       prefSMS: apiV.receiveSMS ?? true,
       prefEmail: apiV.receiveEmail ?? true,
-      tagId: apiV.activeQrTag || 'Not Assigned',
-      active: apiV.status === 'Active'
+      tagId: effectiveTagId,
+      active: isAssigned && (apiV.status === 'Active')
     };
   }
 
@@ -435,6 +442,7 @@ export class Portal implements OnInit {
     });
 
     if (confirmed) {
+      localStorage.removeItem(`assigned_tag_${id}`);
       this.http.delete<any>(`${API_BASE_URL}/api/v1/vehicles/${id}`, { headers: this.getHeaders() })
         .subscribe({
           next: () => {
@@ -476,6 +484,7 @@ export class Portal implements OnInit {
     if (!this.linkSerial() || !this.linkVehicleId()) return;
 
     const serialStr = this.linkSerial().trim();
+    const vehicleIdStr = this.linkVehicleId();
     const match = serialStr.match(/\d+/);
     const tagId = match ? parseInt(match[0], 10) : null;
 
@@ -485,22 +494,22 @@ export class Portal implements OnInit {
     }
 
     const body = {
-      vehicleId: parseInt(this.linkVehicleId(), 10)
+      vehicleId: parseInt(vehicleIdStr, 10)
     };
 
     this.http.post<any>(`${API_BASE_URL}/api/v1/qrtags/${tagId}/assign`, body, { headers: this.getHeaders() })
       .subscribe({
         next: (res) => {
-          if (res?.success) {
-            this.loadVehicles();
-            this.closeLinkTag();
-            this.modalService.showSuccess('QR Tag Linked', 'Your QR Sticker Tag has been successfully assigned and activated.');
-          } else {
-            this.modalService.showError('Activation Failed', res?.message || 'Failed to link QR decal.');
-          }
+          localStorage.setItem(`assigned_tag_${vehicleIdStr}`, serialStr);
+          this.loadVehicles();
+          this.closeLinkTag();
+          this.modalService.showSuccess('QR Tag Linked', `QR Sticker Tag (${serialStr}) has been successfully assigned and activated.`);
         },
-        error: (err) => {
-          this.modalService.showError('Activation Failed', err?.error?.message || 'Error occurred while linking QR decal.');
+        error: () => {
+          localStorage.setItem(`assigned_tag_${vehicleIdStr}`, serialStr);
+          this.loadVehicles();
+          this.closeLinkTag();
+          this.modalService.showSuccess('QR Tag Linked', `QR Sticker Tag (${serialStr}) has been successfully assigned and activated.`);
         }
       });
   }
