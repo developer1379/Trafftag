@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -7,7 +7,8 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './link-tag-modal.component.html',
-  styleUrl: './link-tag-modal.component.css'
+  styleUrl: './link-tag-modal.component.css',
+  encapsulation: ViewEncapsulation.None
 })
 export class LinkTagModalComponent {
   @Input() show = false;
