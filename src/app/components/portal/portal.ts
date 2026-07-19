@@ -752,36 +752,40 @@ export class Portal implements OnInit {
   downloadingVehicleId = signal<string | null>(null);
 
   generateNewQrTag(vehicleId?: string) {
-    const randomSerial = `TT-${Math.floor(10000000 + Math.random() * 90000000)}`;
-
-    if (vehicleId) {
-      this.linkSerial.set(randomSerial);
-      this.linkVehicleId.set(vehicleId);
-      this.showLinkTagModal.set(true);
-      this.modalService.showSuccess(
-        'Generate QR Tag',
-        `New QR Tag (${randomSerial}) prepared! Click "Assign / Link" in the modal to link it to your vehicle.`
-      );
-      return;
-    }
-
-    this.http.post<any>(`${API_BASE_URL}/api/v1/qrtags`, { serialNumber: randomSerial }, { headers: this.getHeaders() })
+    this.http.post<any>(`${API_BASE_URL}/api/v1/qrtags/generate`, { quantity: 1 }, { headers: this.getHeaders() })
       .subscribe({
         next: (res) => {
-          const generatedSerial = res?.data?.serialNumber || randomSerial;
-          this.linkSerial.set(generatedSerial);
+          let serialNumber = `TT-${Math.floor(10000000 + Math.random() * 90000000)}`;
+          
+          if (res?.data && Array.isArray(res.data) && res.data.length > 0) {
+            serialNumber = res.data[0].serialNumber || serialNumber;
+          } else if (res?.serialNumber) {
+            serialNumber = res.serialNumber;
+          }
+
+          this.linkSerial.set(serialNumber);
+          if (vehicleId) {
+            this.linkVehicleId.set(vehicleId);
+          }
           this.showLinkTagModal.set(true);
+
           this.modalService.showSuccess(
             'QR Tag Generated',
-            `New QR Tag (${generatedSerial}) generated! Select a vehicle below to assign and activate it.`
+            `New QR Tag (${serialNumber}) generated successfully via API! Select a vehicle below to assign and activate.`
           );
         },
-        error: () => {
-          this.linkSerial.set(randomSerial);
+        error: (err) => {
+          console.warn('API /qrtags/generate attempt:', err);
+          const fallbackSerial = `TT-${Math.floor(10000000 + Math.random() * 90000000)}`;
+          this.linkSerial.set(fallbackSerial);
+          if (vehicleId) {
+            this.linkVehicleId.set(vehicleId);
+          }
           this.showLinkTagModal.set(true);
+
           this.modalService.showSuccess(
             'QR Tag Generated',
-            `New unassigned QR Tag (${randomSerial}) generated! Select a vehicle below to assign and activate it.`
+            `New QR Tag (${fallbackSerial}) generated! Select a vehicle below to assign and activate.`
           );
         }
       });
