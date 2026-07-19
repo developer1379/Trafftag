@@ -30,6 +30,8 @@ export class Scan implements OnInit {
   isSuccess = signal(false);
   errorMessage = signal('');
 
+  vehicleId = signal<number>(0);
+
   categories = [
     { value: 'headlights', label: 'Headlights Left On', icon: 'fa-solid fa-lightbulb', colorClass: 'cat-amber' },
     { value: 'window', label: 'Window Rolled Down', icon: 'fa-solid fa-window-maximize', colorClass: 'cat-blue' },
@@ -45,9 +47,29 @@ export class Scan implements OnInit {
       const id = params.get('tagId');
       if (id) {
         this.tagId.set(id);
+        this.lookupTagDetails(id);
       }
     });
     this.generateCaptcha();
+  }
+
+  lookupTagDetails(tagIdStr: string) {
+    const numericId = parseInt(tagIdStr.replace(/\D/g, ''), 10) || 0;
+    if (numericId > 0) {
+      this.vehicleId.set(numericId);
+    }
+
+    // Query backend API to resolve associated vehicleId for the scanned QR tag
+    this.http.get<any>(`${API_BASE_URL}/api/v1/qrtags/${encodeURIComponent(tagIdStr)}`).subscribe({
+      next: (res) => {
+        if (res?.vehicleId) {
+          this.vehicleId.set(res.vehicleId);
+        } else if (res?.vehicle?.id) {
+          this.vehicleId.set(res.vehicle.id);
+        }
+      },
+      error: () => {}
+    });
   }
 
   generateCaptcha() {
@@ -86,9 +108,10 @@ export class Scan implements OnInit {
     const categoryLabel = categoryObj ? categoryObj.label : this.selectedCategory();
 
     const numericTagId = parseInt(activeTag.replace(/\D/g, ''), 10) || 0;
+    const finalVehicleId = this.vehicleId() || numericTagId;
 
     const payload = {
-      vehicleId: 0,
+      vehicleId: finalVehicleId,
       qrTagId: numericTagId || activeTag,
       category: categoryLabel,
       message: this.customMessage() || `${categoryLabel} reported for tag ${activeTag}`,
