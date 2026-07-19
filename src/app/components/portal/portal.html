@@ -396,14 +396,18 @@
                       <a [routerLink]="['/scan', veh.tagId]" target="_blank" class="footer-btn btn-action-scan" title="Test QR Scan Page">
                         <i class="fa-solid fa-qrcode"></i> Test
                       </a>
+                      <button class="footer-btn btn-action-pdf" (click)="downloadQrCode(veh)" [disabled]="downloadingVehicleId() === veh.id" title="Download Printable QR Decal">
+                        @if (downloadingVehicleId() === veh.id) {
+                          <span class="spinner-sm"></span> Loading...
+                        } @else {
+                          <i class="fa-solid fa-download"></i> Download QR
+                        }
+                      </button>
+                    } @else {
+                      <button class="footer-btn btn-action-pdf" (click)="generateNewQrTag(veh.id)" title="Generate QR Code for this Vehicle">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Generate QR
+                      </button>
                     }
-                    <button class="footer-btn btn-action-pdf" (click)="downloadQrCode(veh)" [disabled]="downloadingVehicleId() === veh.id" title="Download Printable QR Decal">
-                      @if (downloadingVehicleId() === veh.id) {
-                        <span class="spinner-sm"></span> Loading...
-                      } @else {
-                        <i class="fa-solid fa-download"></i> Download QR
-                      }
-                    </button>
                     <button class="footer-btn btn-action-delete" (click)="deleteVehicle(veh.id)" title="Remove Vehicle from Registry">
                       <i class="fa-solid fa-trash-can"></i>
                     </button>

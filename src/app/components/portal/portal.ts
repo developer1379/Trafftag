@@ -751,8 +751,20 @@ export class Portal implements OnInit {
 
   downloadingVehicleId = signal<string | null>(null);
 
-  generateNewQrTag() {
+  generateNewQrTag(vehicleId?: string) {
     const randomSerial = `TT-${Math.floor(10000000 + Math.random() * 90000000)}`;
+
+    if (vehicleId) {
+      this.linkSerial.set(randomSerial);
+      this.linkVehicleId.set(vehicleId);
+      this.showLinkTagModal.set(true);
+      this.modalService.showSuccess(
+        'Generate QR Tag',
+        `New QR Tag (${randomSerial}) prepared! Click "Assign / Link" in the modal to link it to your vehicle.`
+      );
+      return;
+    }
+
     this.http.post<any>(`${API_BASE_URL}/api/v1/qrtags`, { serialNumber: randomSerial }, { headers: this.getHeaders() })
       .subscribe({
         next: (res) => {
