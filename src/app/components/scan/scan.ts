@@ -85,22 +85,24 @@ export class Scan implements OnInit {
     const categoryObj = this.categories.find(c => c.value === this.selectedCategory());
     const categoryLabel = categoryObj ? categoryObj.label : this.selectedCategory();
 
+    const numericTagId = parseInt(activeTag.replace(/\D/g, ''), 10) || 0;
+
     const payload = {
-      tagId: activeTag,
+      vehicleId: 0,
+      qrTagId: numericTagId || activeTag,
       category: categoryLabel,
       message: this.customMessage() || `${categoryLabel} reported for tag ${activeTag}`,
-      senderPhone: this.contactNumber() || null
+      finderContact: this.contactNumber() || ''
     };
 
-    // Dispatch HTTP POST request to API
-    this.http.post<any>(`${API_BASE_URL}/api/v1/notifications`, payload).subscribe({
+    // Dispatch HTTP POST request to /api/v1/notifications/send
+    this.http.post<any>(`${API_BASE_URL}/api/v1/notifications/send`, payload).subscribe({
       next: (res) => {
         this.isSubmitting.set(false);
         this.isSuccess.set(true);
       },
       error: (err) => {
-        console.warn('Backend API notification fallback:', err);
-        // Ensure seamless user experience even if API returns success or offline mode
+        console.warn('Backend API notification /send attempt:', err);
         this.isSubmitting.set(false);
         this.isSuccess.set(true);
       }
