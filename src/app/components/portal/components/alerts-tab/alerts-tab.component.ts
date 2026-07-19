@@ -28,6 +28,11 @@ export class AlertsTabComponent {
   @Output() markAllAsRead = new EventEmitter<void>();
   @Output() toggleResolve = new EventEmitter<string>();
   @Output() clearFilters = new EventEmitter<void>();
+  @Output() simulateTestNotification = new EventEmitter<void>();
+
+  hasUnread(): boolean {
+    return this.notifications.some(n => !n.read);
+  }
 
   getVehicleName(vehId: string): string {
     const v = this.vehicles.find(item => item.id === vehId);

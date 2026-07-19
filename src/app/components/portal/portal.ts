@@ -1,7 +1,6 @@
 import { Component, OnInit, signal, inject, computed } from '@angular/core';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { UpperCasePipe } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { API_BASE_URL } from '../../config/api.config';
 import { ModalService } from '../../services/modal.service';
@@ -48,17 +47,16 @@ interface QRNotification {
   selector: 'app-portal',
   standalone: true,
   imports: [
-    FormsModule,
-    RouterLink,
-    UpperCasePipe,
-    VehiclesTabComponent,
-    QrFleetTabComponent,
-    AlertsTabComponent,
-    SupportTabComponent,
-    ProfileTabComponent,
-    AddVehicleModalComponent,
-    LinkTagModalComponent
-  ],
+      FormsModule,
+      RouterLink,
+      VehiclesTabComponent,
+      QrFleetTabComponent,
+      AlertsTabComponent,
+      SupportTabComponent,
+      ProfileTabComponent,
+      AddVehicleModalComponent,
+      LinkTagModalComponent
+    ],
   templateUrl: './portal.html',
   styleUrl: './portal.css',
 })

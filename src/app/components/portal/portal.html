@@ -309,14 +309,19 @@
         [notifications]="notifications()"
         [filteredNotifications]="filteredNotifications()"
         [vehicles]="vehicles()"
-        [(searchQuery)]="searchQuery"
-        [(filterVehicle)]="filterVehicle"
-        [(filterCategory)]="filterCategory"
-        [(filterStatus)]="filterStatus"
+        [searchQuery]="searchQuery()"
+        (searchQueryChange)="searchQuery.set($event)"
+        [filterVehicle]="filterVehicle()"
+        (filterVehicleChange)="filterVehicle.set($event)"
+        [filterCategory]="filterCategory()"
+        (filterCategoryChange)="filterCategory.set($event)"
+        [filterStatus]="filterStatus()"
+        (filterStatusChange)="filterStatus.set($event)"
         (markAsRead)="markAsRead($event)"
         (markAllAsRead)="markAllAsRead()"
         (toggleResolve)="toggleResolve($event)"
-        (clearFilters)="clearNotificationFilters()">
+        (clearFilters)="clearNotificationFilters()"
+        (simulateTestNotification)="simulateTestNotification()">
       </app-alerts-tab>
     }
 
@@ -333,11 +338,36 @@
       <app-profile-tab
         [userName]="userName()"
         [userEmail]="userEmail()"
-        [userPhone]="phoneNumber()"
         [membershipType]="membershipType()"
-        [remainingDays]="remainingDays()"
         [activeTagsCount]="activeTagsCount()"
-        (openUpgrade)="openUpgrade()">
+        (openUpgrade)="openUpgrade()"
+        [firstName]="firstName()"
+        [lastName]="lastName()"
+        [phoneNumber]="phoneNumber()"
+        [userRole]="userRole()"
+        [isEditingProfile]="isEditingProfile()"
+        [editFirstName]="editFirstName()"
+        [editLastName]="editLastName()"
+        [editPhoneNumber]="editPhoneNumber()"
+        [editCountryCode]="editCountryCode()"
+        [otpResendLoading]="otpResendLoading()"
+        [otpResendSuccess]="otpResendSuccess()"
+        [currentPassword]="currentPassword()"
+        [newPassword]="newPassword()"
+        [isUpdatingPassword]="isUpdatingPassword()"
+        [passwordUpdateMessage]="passwordUpdateMessage()"
+        [passwordUpdateError]="passwordUpdateError()"
+        (editFirstNameChange)="editFirstName.set($event)"
+        (editLastNameChange)="editLastName.set($event)"
+        (editPhoneNumberChange)="editPhoneNumber.set($event)"
+        (editCountryCodeChange)="editCountryCode.set($event)"
+        (currentPasswordChange)="currentPassword.set($event)"
+        (newPasswordChange)="newPassword.set($event)"
+        (startEditingProfile)="startEditingProfile()"
+        (cancelEditingProfile)="cancelEditingProfile()"
+        (saveProfile)="saveProfile()"
+        (resendOtp)="resendOtp()"
+        (updatePassword)="updatePassword()">
       </app-profile-tab>
     }
   </main>

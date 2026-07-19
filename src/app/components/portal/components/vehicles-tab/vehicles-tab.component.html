@@ -1,76 +1,112 @@
-<div class="tab-panel animate-fade-in">
-  <div class="panel-header">
-    <div class="title-with-icon">
-      <div class="panel-header-icon bg-indigo">
+<div class="tab-panel">
+  <div class="panel-header glass-card">
+    <div class="panel-header-info">
+      <div class="panel-header-icon">
         <i class="fa-solid fa-car-side"></i>
       </div>
       <div>
-        <h2>Registered Vehicles</h2>
-        <p>Manage protected vehicles, view alert status, and generate or download QR code decals.</p>
+        <h2>Vehicle Protection Registry</h2>
+        <p>Register all your household or company cars to link them with protective TRAFFTAG QR decals.</p>
       </div>
     </div>
     <button class="btn btn-primary register-btn" (click)="addVehicleClick.emit()">
-      <i class="fa-solid fa-plus"></i> Add Vehicle
+      <i class="fa-solid fa-plus"></i> Register Vehicle
     </button>
   </div>
 
   @if (vehicles.length === 0) {
-    <div class="empty-state-card">
-      <div class="empty-icon"><i class="fa-solid fa-car-rear"></i></div>
-      <h3>No Vehicles Registered Yet</h3>
-      <p>Add your first vehicle to protect it with anonymous QR emergency notification tags.</p>
-      <button class="btn btn-primary mt-3" (click)="addVehicleClick.emit()">
-        <i class="fa-solid fa-plus"></i> Register Vehicle
-      </button>
+    <div class="empty-card-container">
+      <div class="empty-card glass-card">
+        <div class="empty-icon-wrapper">
+          <i class="fa-solid fa-car-rear empty-icon"></i>
+        </div>
+        <h3>No Vehicles Registered</h3>
+        <p>Register all your household or company cars to link them with protective QR labels and start receiving anonymous alerts.</p>
+        <button class="btn btn-primary" (click)="addVehicleClick.emit()"><i class="fa-solid fa-plus"></i> Register Your First Vehicle</button>
+      </div>
     </div>
   } @else {
-    <div class="vehicles-grid-layout">
+    <div class="vehicles-grid">
       @for (veh of vehicles; track veh.id) {
-        <div class="vehicle-card" [class.vehicle-card-active]="veh.active">
-          <!-- Card Top Bar -->
+        <div class="vehicle-card glass-card">
+          <!-- Card Header -->
           <div class="veh-card-header">
             <div class="veh-title-block">
-              <span class="veh-make-badge">{{ veh.make }}</span>
-              <h3 class="veh-name">{{ veh.make }} {{ veh.model }}</h3>
-              <span class="veh-plate-tag"><i class="fa-solid fa-id-card"></i> {{ veh.plate }}</span>
+              <span class="car-brand-icon"><i class="fa-solid fa-car-side text-primary"></i></span>
+              <div>
+                <h3>{{ veh.make }} {{ veh.model }}</h3>
+                <span class="veh-subtitle">{{ veh.color }} &bull; {{ veh.year }}</span>
+              </div>
             </div>
-            <div class="veh-status-badge" [class.status-active]="veh.active" [class.status-inactive]="!veh.active">
-              <i class="fa-solid" [class.fa-circle-check]="veh.active" [class.fa-circle-xmark]="!veh.active"></i>
-              {{ veh.active ? 'Protected' : 'Inactive' }}
-            </div>
-          </div>
-
-          <!-- Vehicle Specs Grid -->
-          <div class="veh-specs-grid">
-            <div class="spec-item">
-              <span class="spec-label">Model Year</span>
-              <span class="spec-value">{{ veh.year }}</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-label">Exterior Color</span>
-              <span class="spec-value">
-                <span class="color-dot-inline" [style.background]="veh.color.toLowerCase()"></span>
-                {{ veh.color }}
-              </span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-label">Assigned Sticker</span>
-              <span class="spec-value tag-code" [class.unassigned]="veh.tagId === 'Not Assigned'">
-                <i class="fa-solid fa-qrcode"></i> {{ veh.tagId }}
-              </span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-label">Total Interactions</span>
-              <span class="spec-value text-indigo font-bold">{{ veh.totalScans }} alerts</span>
+            <div class="status-badge-container">
+              @if (veh.tagId === 'Not Assigned') {
+                <span class="status-pill-badge tag-missing"><i class="fa-solid fa-triangle-exclamation"></i> Unassigned</span>
+              } @else if (veh.active) {
+                <span class="status-pill-badge tag-active"><i class="fa-solid fa-circle-check"></i> Active Decal</span>
+              } @else {
+                <span class="status-pill-badge tag-paused"><i class="fa-solid fa-circle-pause"></i> Tag Paused</span>
+              }
             </div>
           </div>
 
-          <!-- Card Footer Actions -->
+          <!-- Stylized License Plate -->
+          <div class="veh-license-plate-wrapper">
+            <div class="veh-license-plate">
+              <div class="plate-state">{{ veh.stateProvince | uppercase }}</div>
+              <div class="plate-number">{{ veh.plate }}</div>
+              <div class="plate-hologram"></div>
+            </div>
+          </div>
+
+          <!-- Card Body (Grid Details) -->
+          <div class="veh-card-body">
+            <div class="veh-info-section">
+              <h4><i class="fa-solid fa-circle-info text-primary"></i> Specifications & Details</h4>
+              <div class="veh-info-grid">
+                <div class="info-item">
+                  <span class="label">VIN:</span>
+                  <span class="value vin-text">{{ veh.vin || 'N/A' }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="label">Driver Name:</span>
+                  <span class="value">{{ veh.driverName || 'Primary Owner' }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="veh-info-section">
+              <h4><i class="fa-solid fa-chart-simple text-indigo"></i> QR Sticker Analytics</h4>
+              <div class="veh-info-grid">
+                <div class="info-item">
+                  <span class="label">Decal Serial:</span>
+                  <span class="value font-mono">{{ veh.tagId }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="label">Total Alerts:</span>
+                  <span class="value">{{ veh.totalScans }} scans <span class="last-alert-time">(Last: {{ veh.lastScan || 'N/A' }})</span></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="veh-info-section">
+              <h4><i class="fa-solid fa-sliders text-warning"></i> Alert Dispatch Preferences</h4>
+              <div class="preferences-pills">
+                <span class="pref-badge" [class.enabled]="veh.prefSMS">
+                  <i class="fa-solid" [class.fa-comment-sms]="veh.prefSMS" [class.fa-circle-xmark]="!veh.prefSMS"></i> SMS Alerts
+                </span>
+                <span class="pref-badge" [class.enabled]="veh.prefEmail">
+                  <i class="fa-solid" [class.fa-envelope]="veh.prefEmail" [class.fa-circle-xmark]="!veh.prefEmail"></i> Email Alerts
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card Footer Controls -->
           <div class="veh-card-footer">
-            <div class="toggle-protection">
-              <span class="toggle-label">Alerts Active</span>
+            <div class="toggle-control-group">
+              <span class="toggle-desc-label">Protect State</span>
               <label class="switch">
-                <input type="checkbox" [checked]="veh.active" (change)="toggleActive.emit(veh)">
+                <input type="checkbox" [checked]="veh.active" (change)="toggleActive.emit(veh.id)">
                 <span class="slider round"></span>
               </label>
             </div>

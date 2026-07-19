@@ -1,72 +1,61 @@
-<div class="tab-panel animate-fade-in">
-  <div class="panel-header">
-    <div class="title-with-icon">
-      <div class="panel-header-icon bg-cyan">
-        <i class="fa-solid fa-headset"></i>
+<div class="tab-panel">
+  <div class="panel-header glass-card">
+    <div class="panel-header-info">
+      <div class="panel-header-icon">
+        <i class="fa-solid fa-circle-question"></i>
       </div>
       <div>
-        <h2>Support & Help Center</h2>
-        <p>Contact TRAFFTAG protection specialists for replacement decals, hardware issues, or account assistance.</p>
+        <h2>Customer Support Tickets</h2>
+        <p>Need help? Submit a support ticket and track staff resolution statuses (FR-SUPPORT-001).</p>
       </div>
     </div>
-    <button class="btn btn-primary" (click)="openSubmitTicket.emit()">
-      <i class="fa-solid fa-plus"></i> Open Support Ticket
-    </button>
+    <button class="btn btn-primary" (click)="openSubmitTicket.emit()"><i class="fa-solid fa-plus"></i> Submit Support Ticket</button>
   </div>
 
-  <div class="support-grid-layout">
-    <!-- Help Articles Column -->
-    <div class="help-resources-column">
-      <div class="resource-card">
-        <div class="res-icon"><i class="fa-solid fa-shield-virus"></i></div>
-        <div class="res-body">
-          <h4>Decal Replacement Guarantee</h4>
-          <p>If your physical QR sticker is damaged, faded, or peeled off within 12 months, request a free replacement.</p>
-        </div>
-      </div>
+  <div class="tickets-container">
+    @if (supportTickets.length === 0) {
+      <p class="empty-message">No support tickets submitted yet.</p>
+    } @else {
+      @for (ticket of supportTickets; track ticket.id) {
+        <div class="ticket-card glass-card">
+          <div class="ticket-header">
+            <div class="ticket-title-col">
+              <span class="ticket-id">#{{ ticket.id }}</span>
+              <h3>{{ ticket.subject }}</h3>
+            </div>
+            <span class="ticket-status-pill" [class.t-open]="ticket.status === 'Open'" [class.t-progress]="ticket.status === 'In Progress'" [class.t-resolved]="ticket.status === 'Resolved'">
+              {{ ticket.status }}
+            </span>
+          </div>
+          <div class="ticket-meta-info">
+            <span>Category: <strong>{{ ticket.category }}</strong></span>
+            <span>Submitted: <strong>{{ ticket.date }}</strong></span>
+            <span>Priority: <strong [class.p-high]="ticket.priority === 'High'">{{ ticket.priority }}</strong></span>
+          </div>
 
-      <div class="resource-card">
-        <div class="res-icon"><i class="fa-solid fa-user-lock"></i></div>
-        <div class="res-body">
-          <h4>Privacy & Masking Guarantee</h4>
-          <p>Bystanders who scan your QR tag never see your personal phone number or email address.</p>
+          @if (ticket.status === 'Resolved') {
+            <div class="ticket-rating-section">
+              @if (ticket.rated) {
+                <div class="rated-stars">
+                  <span>Your Rating: </span>
+                  @for (star of [1,2,3,4,5]; track star) {
+                    <i class="fa-star" [class.fa-solid]="star <= (ticket.rating || 0)" [class.fa-regular]="star > (ticket.rating || 0)" style="color: var(--warning);"></i>
+                  }
+                </div>
+              } @else {
+                <div class="rating-prompt">
+                  <span>Please rate your experience:</span>
+                  <div class="stars-picker">
+                    @for (star of [1,2,3,4,5]; track star) {
+                      <button (click)="rateTicket.emit({ ticketId: ticket.id, stars: star })"><i class="fa-regular fa-star"></i></button>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          }
         </div>
-      </div>
-    </div>
-
-    <!-- Active Tickets Table -->
-    <div class="tickets-table-column">
-      <div class="tickets-table-card">
-        <div class="card-table-header">
-          <h3>Your Support Tickets</h3>
-        </div>
-        <table class="portal-table">
-          <thead>
-            <tr>
-              <th>Ticket ID</th>
-              <th>Subject</th>
-              <th>Category</th>
-              <th>Status</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (tkt of supportTickets; track tkt.id) {
-              <tr>
-                <td><span class="ticket-id">{{ tkt.id }}</span></td>
-                <td class="font-semibold">{{ tkt.subject }}</td>
-                <td><span class="cat-pill">{{ tkt.category }}</span></td>
-                <td>
-                  <span class="status-badge" [class.status-in-progress]="tkt.status === 'In Progress'" [class.status-resolved]="tkt.status === 'Resolved'" [class.status-open]="tkt.status === 'Open'">
-                    {{ tkt.status }}
-                  </span>
-                </td>
-                <td class="text-muted">{{ tkt.date }}</td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-    </div>
+      }
+    }
   </div>
 </div>

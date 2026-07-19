@@ -1,7 +1,7 @@
-<div class="tab-panel animate-fade-in">
-  <div class="panel-header">
-    <div class="title-with-icon">
-      <div class="panel-header-icon bg-emerald">
+<div class="tab-panel">
+  <div class="panel-header glass-card">
+    <div class="panel-header-info">
+      <div class="panel-header-icon">
         <i class="fa-solid fa-qrcode"></i>
       </div>
       <div>
@@ -75,21 +75,17 @@
               <a [routerLink]="['/scan', veh.tagId]" target="_blank" class="footer-btn btn-action-scan">
                 <i class="fa-solid fa-up-right-from-square"></i> Test Scan Portal
               </a>
-              <button class="footer-btn btn-action-scan" (click)="openLinkTag.emit(veh.id)">
-                <i class="fa-solid fa-arrows-rotate"></i> Reassign Sticker
-              </button>
-              <button class="footer-btn btn-action-pdf" (click)="downloadQr.emit(veh)" [disabled]="downloadingVehicleId === veh.id" title="Download Printable QR Decal">
-                @if (downloadingVehicleId === veh.id) {
-                  <span class="spinner-sm"></span> Downloading...
-                } @else {
-                  <i class="fa-solid fa-download"></i> Download QR Code
-                }
-              </button>
-            } @else {
-              <button class="footer-btn btn-action-pdf" (click)="generateNewQr.emit()" title="Generate QR Code for this Vehicle">
-                <i class="fa-solid fa-wand-magic-sparkles"></i> Generate QR
-              </button>
             }
+            <button class="footer-btn btn-action-scan" (click)="openLinkTag.emit(veh.id)">
+              <i class="fa-solid fa-arrows-rotate"></i> Reassign Sticker
+            </button>
+            <button class="footer-btn btn-action-pdf" (click)="downloadQr.emit(veh)" [disabled]="downloadingVehicleId === veh.id" title="Download Printable QR Decal">
+              @if (downloadingVehicleId === veh.id) {
+                <span class="spinner-sm"></span> Downloading...
+              } @else {
+                <i class="fa-solid fa-download"></i> Download QR Code
+              }
+            </button>
           </div>
         </div>
       </div>

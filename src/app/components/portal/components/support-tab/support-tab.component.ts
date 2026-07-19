@@ -12,4 +12,5 @@ import { CommonModule } from '@angular/common';
 export class SupportTabComponent {
   @Input() supportTickets: any[] = [];
   @Output() openSubmitTicket = new EventEmitter<void>();
+  @Output() rateTicket = new EventEmitter<{ ticketId: string, stars: number }>();
 }
