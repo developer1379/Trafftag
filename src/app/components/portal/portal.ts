@@ -386,7 +386,6 @@ export class Portal implements OnInit {
         this.lastName.set('VERMA');
         this.userEmail.set('arvindverma630635@gmail.com');
       }
-      this.membershipType.set('Premium Plan');
       this.loadVehicles();
       this.loadProfile();
       this.loadNotifications();
@@ -686,6 +685,7 @@ export class Portal implements OnInit {
             this.countryCode.set(d.countryCode || '');
             this.profileImage.set(d.profileImage || '');
             this.userRole.set(d.role || 'Customer');
+            this.membershipType.set(d.activeMembership || 'Free Plan');
           }
         },
         error: (err) => {
