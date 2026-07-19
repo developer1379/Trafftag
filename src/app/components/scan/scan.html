@@ -36,7 +36,7 @@
           <div class="shield-badge"><i class="fa-solid fa-shield-halved"></i> SECURE PRIVACY SHIELD</div>
           <h2>Report Vehicle Issue</h2>
           <p class="form-description">
-            Your contact details and identity will remain completely hidden. The owner will receive an alert instantly.
+            Your contact details and identity remain completely hidden. The owner receives your alert instantly.
           </p>
         </div>
 
@@ -49,7 +49,7 @@
               <div class="tag-display">
                 <span class="tag-status-indicator"><i class="fa-solid fa-circle-dot"></i></span>
                 <span class="tag-val">{{ tagId() }}</span>
-                <span class="tag-lock">Verified Secure</span>
+                <span class="tag-lock"><i class="fa-solid fa-lock"></i> Verified Secure</span>
               </div>
             } @else {
               <input 
@@ -58,7 +58,7 @@
                 [ngModel]="manualTagInput()"
                 (ngModelChange)="manualTagInput.set($event)" 
                 class="form-input" 
-                placeholder="Enter 8-character Serial (e.g., TT-482-901)" 
+                placeholder="Enter Tag Serial (e.g., TT-00000022)" 
                 required
               />
             }
@@ -69,7 +69,7 @@
             <label class="form-label">What is the issue? <span class="required">*</span></label>
             <div class="category-grid">
               @for (cat of categories; track cat.value; let idx = $index) {
-                <label class="category-option animate-fade-in-up" [class.selected]="selectedCategory() === cat.value" [class]="'delay-' + ((idx + 1) * 50)">
+                <label class="category-option animate-fade-in-up" [class.selected]="selectedCategory() === cat.value">
                   <input 
                     type="radio" 
                     name="category" 
@@ -78,7 +78,7 @@
                     (ngModelChange)="selectedCategory.set($event)"
                     class="hidden-radio"
                   />
-                  <span class="category-icon-wrapper"><i [class]="cat.icon"></i></span>
+                  <span class="category-icon-wrapper" [class]="cat.colorClass"><i [class]="cat.icon"></i></span>
                   <span class="category-label-text">{{ cat.label }}</span>
                   @if (selectedCategory() === cat.value) {
                     <span class="selection-check"><i class="fa-solid fa-circle-check"></i></span>
@@ -90,28 +90,27 @@
 
           <!-- Custom Message -->
           <div class="form-group animate-fade-in-up delay-200">
-            <label class="form-label">Additional details (Optional)</label>
+            <label class="form-label">Additional details <span class="lbl-opt">(Optional)</span></label>
             <textarea 
               name="customMessage" 
               [ngModel]="customMessage()"
               (ngModelChange)="customMessage.set($event)" 
               class="form-textarea" 
               placeholder="e.g. Left window is open about 2 inches, or your dog is inside with air conditioning."
-              rows="3"
+              rows="2"
             ></textarea>
           </div>
 
           <!-- Contact Number (Optional) -->
           <div class="form-group animate-fade-in-up delay-250">
-            <label class="form-label">Your Phone Number (Optional)</label>
-            <p class="input-tip">Provide this only if you want the owner to reach back to you directly.</p>
+            <label class="form-label">Your Phone Number <span class="lbl-opt">(Optional)</span></label>
             <input 
               type="tel" 
               name="contactNumber" 
               [ngModel]="contactNumber()"
               (ngModelChange)="contactNumber.set($event)" 
               class="form-input" 
-              placeholder="e.g. +1 (555) 019-2834"
+              placeholder="e.g. +1 (555) 019-2834 (for direct callback)"
             />
           </div>
 
@@ -119,14 +118,19 @@
           <div class="form-group captcha-group animate-fade-in-up delay-300">
             <label class="form-label">Human Verification <span class="required">*</span></label>
             <div class="captcha-box">
-              <span class="captcha-math">{{ num1() }} + {{ num2() }} =</span>
+              <div class="captcha-math">
+                <span>{{ num1() }} + {{ num2() }} =</span>
+                <button type="button" class="captcha-refresh-btn" (click)="generateCaptcha()" title="Refresh Math Verification">
+                  <i class="fa-solid fa-rotate-right"></i>
+                </button>
+              </div>
               <input 
                 type="number" 
                 name="userCaptcha" 
                 [ngModel]="userCaptcha()"
                 (ngModelChange)="userCaptcha.set($event)" 
                 class="form-input captcha-input" 
-                placeholder="?" 
+                placeholder="Result ?" 
                 required
               />
             </div>
@@ -149,7 +153,7 @@
             @if (isSubmitting()) {
               <span class="spinner"></span> Sending Anonymized Alert...
             } @else {
-              <i class="fa-solid fa-envelope"></i> Send Anonymous Alert
+              <i class="fa-solid fa-paper-plane"></i> Send Anonymous Alert
             }
           </button>
 

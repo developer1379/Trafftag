@@ -28,13 +28,13 @@ export class Scan implements OnInit {
   errorMessage = signal('');
 
   categories = [
-    { value: 'headlights', label: 'Headlights Left On', icon: 'fa-solid fa-lightbulb' },
-    { value: 'window', label: 'Window Rolled Down', icon: 'fa-solid fa-window-maximize' },
-    { value: 'tire', label: 'Flat Tire', icon: 'fa-solid fa-circle-notch' },
-    { value: 'parking', label: 'Parking / Obstruction', icon: 'fa-solid fa-square-parking' },
-    { value: 'damage', label: 'Vehicle Damaged', icon: 'fa-solid fa-car-burst' },
-    { value: 'emergency', label: 'Emergency / Towing', icon: 'fa-solid fa-truck-pickup' },
-    { value: 'other', label: 'Other Issue', icon: 'fa-solid fa-pen-to-square' }
+    { value: 'headlights', label: 'Headlights Left On', icon: 'fa-solid fa-lightbulb', colorClass: 'cat-amber' },
+    { value: 'window', label: 'Window Rolled Down', icon: 'fa-solid fa-window-maximize', colorClass: 'cat-blue' },
+    { value: 'tire', label: 'Flat Tire', icon: 'fa-solid fa-circle-notch', colorClass: 'cat-red' },
+    { value: 'parking', label: 'Parking / Obstruction', icon: 'fa-solid fa-square-parking', colorClass: 'cat-purple' },
+    { value: 'damage', label: 'Vehicle Damaged', icon: 'fa-solid fa-car-burst', colorClass: 'cat-orange' },
+    { value: 'emergency', label: 'Emergency / Towing', icon: 'fa-solid fa-truck-pickup', colorClass: 'cat-crimson' },
+    { value: 'other', label: 'Other Issue', icon: 'fa-solid fa-pen-to-square', colorClass: 'cat-slate' }
   ];
 
   ngOnInit() {
