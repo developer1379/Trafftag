@@ -23,4 +23,8 @@ export class QrFleetTabComponent {
   getScanUrl(tagId: string): string {
     return this.scanUrlFn ? this.scanUrlFn(tagId) : '';
   }
+
+  get vehiclesWithTags(): any[] {
+    return this.vehicles.filter(veh => veh.tagId && veh.tagId !== 'Not Assigned');
+  }
 }
