@@ -368,7 +368,8 @@
         (cancelEditingProfile)="cancelEditingProfile()"
         (saveProfile)="saveProfile()"
         (resendOtp)="resendOtp()"
-        (updatePassword)="updatePassword()">
+        (updatePassword)="updatePassword()"
+        (redirectToBillingPortal)="redirectToBillingPortal()">
       </app-profile-tab>
     }
   </main>
@@ -407,6 +408,7 @@
     [linkVehicleId]="linkVehicleId()"
     (linkVehicleIdChange)="linkVehicleId.set($event)"
     [vehicles]="vehicles()"
+    [qrImageBase64]="qrImageBase64()"
     (close)="closeLinkTag()"
     (submit)="linkTag()">
   </app-link-tag-modal>
@@ -420,28 +422,55 @@
           <button class="modal-close" (click)="closeUpgrade()"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div class="modal-body">
-          <div class="upgrade-grid">
-            <div class="upgrade-tier">
-              <h3>Premium Tier</h3>
-              <p class="price">$4.99 <span>/ month</span></p>
-              <ul class="features">
-                <li><i class="fa-solid fa-check"></i> Up to 3 Vehicles</li>
-                <li><i class="fa-solid fa-check"></i> Instant SMS Alerts</li>
-                <li><i class="fa-solid fa-check"></i> Premium Matte Decals</li>
-              </ul>
-              <button class="btn btn-primary w-full" (click)="upgradePlan('Premium Plan')">Choose Premium</button>
+          @if (membershipPlans().length === 0) {
+            <div style="display: flex; flex-direction: column; align-items: center; padding: 40px 20px;">
+              <div class="spinner" style="width: 40px; height: 40px; border-width: 4px; margin-bottom: 15px;"></div>
+              <p>Loading available subscription plans...</p>
             </div>
-            <div class="upgrade-tier">
-              <h3>Fleet Tier</h3>
-              <p class="price">$19.99 <span>/ month</span></p>
-              <ul class="features">
-                <li><i class="fa-solid fa-check"></i> Unlimited Vehicles</li>
-                <li><i class="fa-solid fa-check"></i> Team Webhooks API</li>
-                <li><i class="fa-solid fa-check"></i> Dedicated Manager</li>
-              </ul>
-              <button class="btn btn-secondary w-full" (click)="upgradePlan('Fleet Plan')">Contact Fleet Sales</button>
+          } @else {
+            <div class="upgrade-plans-row">
+              @for (plan of membershipPlans(); track plan.planId) {
+                <div class="upgrade-plan-box" [class.recommended]="plan.planId === 2 || plan.planId === 3" [class.current]="membershipType().toLowerCase() === plan.name.toLowerCase()">
+                  @if (plan.planId === 2) {
+                    <span class="rec-badge">Best Seller</span>
+                  } @else if (plan.planId === 3) {
+                    <span class="rec-badge">Best Value</span>
+                  }
+                  <div style="width: 100%;">
+                    <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 6px;">{{ plan.name }}</h3>
+                    <p class="up-price">
+                      ${{ plan.price.toFixed(2) }}
+                      <span style="font-size: 0.85rem; font-weight: 500; color: var(--text-secondary);">/ {{ plan.name.toLowerCase().includes('lifetime') ? 'one-time' : 'month' }}</span>
+                    </p>
+                  </div>
+                  
+                  <ul style="list-style: none; padding: 0; margin: 20px 0; text-align: left; display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem; color: var(--text-secondary); width: 100%; flex-grow: 1;">
+                    @for (feat of getPlanFeatures(plan); track feat) {
+                      <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                        <i class="fa-solid fa-circle-check" style="color: var(--success); font-size: 0.95rem; margin-top: 1px; flex-shrink: 0;"></i>
+                        <span>{{ feat }}</span>
+                      </li>
+                    }
+                  </ul>
+                  
+                  <div style="width: 100%; margin-top: auto;">
+                    @if (membershipType().toLowerCase().trim() === plan.name.toLowerCase().trim()) {
+                      <button class="btn btn-secondary w-full" disabled style="background: rgba(15, 23, 42, 0.05); color: rgba(15, 23, 42, 0.4); border-color: transparent; cursor: not-allowed;">Current Plan</button>
+                    } @else if (plan.planId === 1) {
+                      <button class="btn btn-secondary w-full" disabled style="background: rgba(15, 23, 42, 0.05); color: rgba(15, 23, 42, 0.4); border-color: transparent; cursor: not-allowed;">Default Tier</button>
+                    } @else {
+                      <button class="btn w-full" 
+                        [class.btn-primary]="plan.planId === 2 || plan.planId === 3" 
+                        [class.btn-indigo]="plan.planId === 4" 
+                        (click)="upgradePlan(plan.planId)">
+                        Choose {{ plan.name }}
+                      </button>
+                    }
+                  </div>
+                </div>
+              }
             </div>
-          </div>
+          }
         </div>
       </div>
     </div>

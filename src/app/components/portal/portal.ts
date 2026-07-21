@@ -102,6 +102,9 @@ export class Portal implements OnInit {
   pendingRewards = signal(5.00);
   totalReferrals = signal(3);
 
+  // Membership Plans list from API
+  membershipPlans = signal<any[]>([]);
+
   // Renewal dates and remaining days computed dynamically
   renewalDate = computed(() => {
     return this.membershipType() === 'Free Plan' ? 'N/A' : 'Aug 15, 2026';
@@ -182,6 +185,10 @@ export class Portal implements OnInit {
 
   linkSerial = signal('');
   linkVehicleId = signal('');
+  
+  userMembershipId = signal<number | null>(null);
+  generatedTagId = signal<number | null>(null);
+  qrImageBase64 = signal<string | null>(null);
 
   // Color Presets Database
   colorPresets = [
@@ -373,6 +380,31 @@ export class Portal implements OnInit {
       }
     });
 
+    this.route.queryParamMap.subscribe(params => {
+      const paymentStatus = params.get('payment');
+      if (paymentStatus === 'success') {
+        this.modalService.showSuccess(
+          'Payment Successful',
+          'Thank you for upgrading! Your membership is now active.'
+        );
+        this.router.navigate([], {
+          queryParams: { payment: null },
+          queryParamsHandling: 'merge',
+          replaceUrl: true
+        });
+      } else if (paymentStatus === 'cancelled') {
+        this.modalService.showWarning(
+          'Payment Cancelled',
+          'Checkout was cancelled. You can try again when you are ready.'
+        );
+        this.router.navigate([], {
+          queryParams: { payment: null },
+          queryParamsHandling: 'merge',
+          replaceUrl: true
+        });
+      }
+    });
+
     // Set user details dynamically from active token payload
     const token = localStorage.getItem('accessToken');
     if (token) {
@@ -388,7 +420,9 @@ export class Portal implements OnInit {
       }
       this.loadVehicles();
       this.loadProfile();
+      this.loadUserMemberships();
       this.loadNotifications();
+      this.loadMembershipPlans();
     }
   }
 
@@ -504,33 +538,64 @@ export class Portal implements OnInit {
 
     const serialStr = this.linkSerial().trim();
     const vehicleIdStr = this.linkVehicleId();
-    const match = serialStr.match(/\d+/);
-    const tagId = match ? parseInt(match[0], 10) : null;
+    
+    // Check if we already have the generated tag ID matching the current serial
+    let tagId = this.generatedTagId();
+    
+    const proceedWithAssign = (resolvedTagId: number) => {
+      const body = {
+        vehicleId: parseInt(vehicleIdStr, 10)
+      };
 
-    if (!tagId) {
-      this.modalService.showWarning('Invalid Format', 'Invalid QR Sticker Serial format. Must contain a numeric ID (e.g. TT-00000021).');
-      return;
-    }
-
-    const body = {
-      vehicleId: parseInt(vehicleIdStr, 10)
+      this.http.post<any>(`${API_BASE_URL}/api/v1/qrtags/${resolvedTagId}/assign`, body, { headers: this.getHeaders() })
+        .subscribe({
+          next: (res) => {
+            // Save to local storage for persistent display matching
+            localStorage.setItem(`assigned_tag_${vehicleIdStr}`, serialStr);
+            this.loadVehicles();
+            this.closeLinkTag();
+            this.modalService.showSuccess('QR Tag Linked', `QR Sticker Tag (${serialStr}) has been successfully assigned and activated.`);
+          },
+          error: (err) => {
+            console.error('Error assigning QR Tag:', err);
+            this.modalService.showError('Assignment Failed', err?.error?.message || 'Could not link QR tag to vehicle.');
+          }
+        });
     };
 
-    this.http.post<any>(`${API_BASE_URL}/api/v1/qrtags/${tagId}/assign`, body, { headers: this.getHeaders() })
-      .subscribe({
-        next: (res) => {
-          localStorage.setItem(`assigned_tag_${vehicleIdStr}`, serialStr);
-          this.loadVehicles();
-          this.closeLinkTag();
-          this.modalService.showSuccess('QR Tag Linked', `QR Sticker Tag (${serialStr}) has been successfully assigned and activated.`);
-        },
-        error: () => {
-          localStorage.setItem(`assigned_tag_${vehicleIdStr}`, serialStr);
-          this.loadVehicles();
-          this.closeLinkTag();
-          this.modalService.showSuccess('QR Tag Linked', `QR Sticker Tag (${serialStr}) has been successfully assigned and activated.`);
-        }
-      });
+    if (tagId) {
+      proceedWithAssign(tagId);
+    } else {
+      // Look up tagId by querying the QR tag details by serial number
+      this.http.get<any>(`${API_BASE_URL}/api/v1/qrtags/${encodeURIComponent(serialStr)}`, { headers: this.getHeaders() })
+        .subscribe({
+          next: (res) => {
+            const resolvedId = res?.qrTagId || res?.id || res?.data?.qrTagId || res?.data?.id;
+            if (resolvedId) {
+              proceedWithAssign(resolvedId);
+            } else {
+              // Fallback: extract numeric value from serial
+              const match = serialStr.match(/\d+$/);
+              const fallbackId = match ? parseInt(match[0], 10) : null;
+              if (fallbackId) {
+                proceedWithAssign(fallbackId);
+              } else {
+                this.modalService.showError('Error', 'Could not resolve the QR tag ID for this serial number.');
+              }
+            }
+          },
+          error: (err) => {
+            // Fallback: extract numeric value from serial
+            const match = serialStr.match(/\d+$/);
+            const fallbackId = match ? parseInt(match[0], 10) : null;
+            if (fallbackId) {
+              proceedWithAssign(fallbackId);
+            } else {
+              this.modalService.showError('Error', 'Could not locate QR tag by serial number.');
+            }
+          }
+        });
+    }
   }
 
   // Alerts logic
@@ -614,9 +679,30 @@ export class Portal implements OnInit {
     );
   }
 
-  upgradePlan(planName: string) {
-    this.membershipType.set(planName);
-    this.showUpgradeModal.set(false);
+  upgradePlan(planId: number) {
+    const payload = {
+      checkoutType: 'Membership',
+      planId: planId,
+      successUrl: `${window.location.origin}/portal/dashboard?payment=success`,
+      cancelUrl: `${window.location.origin}/portal/dashboard?payment=cancelled`
+    };
+
+    this.http.post<any>(`${API_BASE_URL}/api/v1/payments/checkout`, payload, { headers: this.getHeaders() })
+      .subscribe({
+        next: (res) => {
+          this.showUpgradeModal.set(false);
+          const checkoutUrl = typeof res === 'string' ? res : (res?.url || res?.data?.url || res?.data);
+          if (checkoutUrl) {
+            window.location.href = checkoutUrl;
+          } else {
+            this.modalService.showError('Payment Error', 'Failed to retrieve Stripe Checkout session URL.');
+          }
+        },
+        error: (err) => {
+          console.error('Error creating checkout session:', err);
+          this.modalService.showError('Payment Error', err?.error?.message || 'Could not initiate payment process.');
+        }
+      });
   }
 
   // Modals operations
@@ -645,6 +731,8 @@ export class Portal implements OnInit {
     this.showLinkTagModal.set(false);
     this.linkSerial.set('');
     this.linkVehicleId.set('');
+    this.qrImageBase64.set(null);
+    this.generatedTagId.set(null);
   }
 
   openUpgrade() { this.showUpgradeModal.set(true); }
@@ -686,6 +774,11 @@ export class Portal implements OnInit {
             this.profileImage.set(d.profileImage || '');
             this.userRole.set(d.role || 'Customer');
             this.membershipType.set(d.activeMembership || 'Free Plan');
+            
+            // Extract membership ID if available
+            if (d.userMembershipId || d.activeMembershipId || d.membershipId) {
+              this.userMembershipId.set(d.userMembershipId || d.activeMembershipId || d.membershipId);
+            }
           }
         },
         error: (err) => {
@@ -693,6 +786,93 @@ export class Portal implements OnInit {
           if (err?.status === 401) {
             this.logout();
           }
+        }
+      });
+  }
+
+  loadUserMemberships() {
+    this.http.get<any>(`${API_BASE_URL}/api/v1/memberships`, { headers: this.getHeaders() })
+      .subscribe({
+        next: (res) => {
+          const list = Array.isArray(res) ? res : (res?.data || res?.data?.data || []);
+          if (list.length > 0) {
+            const active = list.find((m: any) => m.status === 'Active' || m.isActive) || list[0];
+            const membershipId = active.userMembershipId || active.id;
+            if (membershipId) {
+              this.userMembershipId.set(membershipId);
+            }
+          }
+        },
+        error: (err) => {
+          console.warn('Could not fetch memberships from /api/v1/memberships, trying user-memberships...', err);
+          this.http.get<any>(`${API_BASE_URL}/api/v1/user-memberships`, { headers: this.getHeaders() })
+            .subscribe({
+              next: (res2) => {
+                const list2 = Array.isArray(res2) ? res2 : (res2?.data || res2?.data?.data || []);
+                if (list2.length > 0) {
+                  const active2 = list2.find((m: any) => m.status === 'Active' || m.isActive) || list2[0];
+                  const membershipId2 = active2.userMembershipId || active2.id;
+                  if (membershipId2) {
+                    this.userMembershipId.set(membershipId2);
+                  }
+                }
+              }
+            });
+        }
+      });
+  }
+
+  loadMembershipPlans() {
+    this.http.get<any>(`${API_BASE_URL}/api/v1/memberships/plans`, { headers: this.getHeaders() })
+      .subscribe({
+        next: (res) => {
+          if (res?.success && Array.isArray(res.data)) {
+            this.membershipPlans.set(res.data);
+          } else if (Array.isArray(res)) {
+            this.membershipPlans.set(res);
+          }
+        },
+        error: (err) => {
+          console.error('Error loading membership plans:', err);
+        }
+      });
+  }
+
+  getPlanFeatures(plan: any): string[] {
+    const name = (plan?.name || '').toLowerCase();
+    if (name.includes('free')) {
+      return ['Up to 2 Registered Vehicles', '10 Alert Scans / month', 'Email Alert Notifications'];
+    }
+    if (name.includes('monthly')) {
+      return ['Unlimited Vehicles Protection', 'Unlimited Scan Alerts', 'Instant SMS & Email Notifications', 'Matte Finish QR Decals'];
+    }
+    if (name.includes('annual') || name.includes('yearly')) {
+      return ['Unlimited Vehicles Protection', 'Unlimited Scan Alerts', 'Save 17% (2 Months Free)', 'Priority Support & Free Decals'];
+    }
+    if (name.includes('lifetime') || name.includes('life')) {
+      return ['Unlimited Vehicles Protection', 'Unlimited Scan Alerts', 'One-time Payment (No Recurrent Fees)', 'Lifetime Support & Free Decals'];
+    }
+    return ['Active Vehicle Protection', 'Alert scan notification'];
+  }
+
+  redirectToBillingPortal() {
+    const payload = {
+      returnUrl: `${window.location.origin}/portal/profile`
+    };
+
+    this.http.post<any>(`${API_BASE_URL}/api/v1/payments/portal`, payload, { headers: this.getHeaders() })
+      .subscribe({
+        next: (res) => {
+          const portalUrl = typeof res === 'string' ? res : (res?.url || res?.data?.url || res?.data);
+          if (portalUrl) {
+            window.location.href = portalUrl;
+          } else {
+            this.modalService.showError('Billing Portal Error', 'Failed to retrieve Stripe Customer Portal session URL.');
+          }
+        },
+        error: (err) => {
+          console.error('Error redirecting to billing portal:', err);
+          this.modalService.showError('Billing Portal Error', err?.error?.message || 'Could not initiate Stripe Customer Portal.');
         }
       });
   }
@@ -781,18 +961,44 @@ export class Portal implements OnInit {
   downloadingVehicleId = signal<string | null>(null);
 
   generateNewQrTag(vehicleId?: string) {
-    this.http.post<any>(`${API_BASE_URL}/api/v1/qrtags/generate`, { quantity: 1 }, { headers: this.getHeaders() })
+    const memId = this.userMembershipId();
+    if (!memId) {
+      this.modalService.showWarning(
+        'Active Membership Required',
+        'We could not find an active membership ID on your account. Please purchase a membership plan or try again.'
+      );
+      return;
+    }
+
+    const payload = {
+      userMembershipId: memId
+    };
+
+    this.http.post<any>(`${API_BASE_URL}/api/v1/qrtags/generate`, payload, { headers: this.getHeaders() })
       .subscribe({
         next: (res) => {
           let serialNumber = `TT-${Math.floor(10000000 + Math.random() * 90000000)}`;
+          let qrImage = '';
+          let resolvedTagId: number | null = null;
           
-          if (res?.data && Array.isArray(res.data) && res.data.length > 0) {
-            serialNumber = res.data[0].serialNumber || serialNumber;
+          if (res?.data) {
+            const d = res.data;
+            serialNumber = d.serialNumber || serialNumber;
+            qrImage = d.qrImageBase64 || '';
+            resolvedTagId = d.qrTagId || null;
           } else if (res?.serialNumber) {
             serialNumber = res.serialNumber;
+            qrImage = res.qrImageBase64 || '';
+            resolvedTagId = res.qrTagId || null;
           }
 
           this.linkSerial.set(serialNumber);
+          if (resolvedTagId) {
+            this.generatedTagId.set(resolvedTagId);
+          }
+          if (qrImage) {
+            this.qrImageBase64.set(qrImage);
+          }
           if (vehicleId) {
             this.linkVehicleId.set(vehicleId);
           }
@@ -805,16 +1011,9 @@ export class Portal implements OnInit {
         },
         error: (err) => {
           console.warn('API /qrtags/generate attempt:', err);
-          const fallbackSerial = `TT-${Math.floor(10000000 + Math.random() * 90000000)}`;
-          this.linkSerial.set(fallbackSerial);
-          if (vehicleId) {
-            this.linkVehicleId.set(vehicleId);
-          }
-          this.showLinkTagModal.set(true);
-
-          this.modalService.showSuccess(
-            'QR Tag Generated',
-            `New QR Tag (${fallbackSerial}) generated! Select a vehicle below to assign and activate.`
+          this.modalService.showError(
+            'QR Tag Generation Failed',
+            err?.error?.message || 'Could not generate QR tag. Ensure your membership is active.'
           );
         }
       });

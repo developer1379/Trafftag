@@ -48,4 +48,5 @@ export class ProfileTabComponent {
   @Output() saveProfile = new EventEmitter<void>();
   @Output() resendOtp = new EventEmitter<void>();
   @Output() updatePassword = new EventEmitter<void>();
+  @Output() redirectToBillingPortal = new EventEmitter<void>();
 }

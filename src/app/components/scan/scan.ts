@@ -41,15 +41,38 @@ export class Scan implements OnInit {
   ownerUsername = signal<string>('Vehicle Owner');
   vehicleInfo = signal<string>('');
 
-  categories = [
-    { value: 'headlights', label: 'Headlights Left On', icon: 'fa-solid fa-lightbulb', colorClass: 'cat-amber' },
-    { value: 'window', label: 'Window Rolled Down', icon: 'fa-solid fa-window-maximize', colorClass: 'cat-blue' },
-    { value: 'tire', label: 'Flat Tire', icon: 'fa-solid fa-circle-notch', colorClass: 'cat-red' },
-    { value: 'parking', label: 'Parking / Obstruction', icon: 'fa-solid fa-square-parking', colorClass: 'cat-purple' },
-    { value: 'damage', label: 'Vehicle Damaged', icon: 'fa-solid fa-car-burst', colorClass: 'cat-orange' },
-    { value: 'emergency', label: 'Emergency / Towing', icon: 'fa-solid fa-truck-pickup', colorClass: 'cat-crimson' },
-    { value: 'other', label: 'Other Issue', icon: 'fa-solid fa-pen-to-square', colorClass: 'cat-slate' }
-  ];
+  categories = signal<any[]>([
+    { value: 'Headlights On', label: 'Headlights On', icon: 'fa-solid fa-lightbulb', colorClass: 'cat-amber' },
+    { value: 'Window Open', label: 'Window Open', icon: 'fa-solid fa-window-maximize', colorClass: 'cat-blue' },
+    { value: 'Flat Tire', label: 'Flat Tire', icon: 'fa-solid fa-circle-notch', colorClass: 'cat-red' },
+    { value: 'Parking Issue / Blocking', label: 'Parking Issue / Blocking', icon: 'fa-solid fa-square-parking', colorClass: 'cat-purple' },
+    { value: 'Vehicle Damage', label: 'Vehicle Damage', icon: 'fa-solid fa-car-burst', colorClass: 'cat-orange' },
+    { value: 'Emergency / Tow Warning', label: 'Emergency / Tow Warning', icon: 'fa-solid fa-truck-pickup', colorClass: 'cat-crimson' },
+    { value: 'Other', label: 'Other', icon: 'fa-solid fa-pen-to-square', colorClass: 'cat-slate' }
+  ]);
+
+  getCategoryMeta(name: string) {
+    const lower = name.toLowerCase();
+    if (lower.includes('headlight') || lower.includes('light')) {
+      return { icon: 'fa-solid fa-lightbulb', colorClass: 'cat-amber' };
+    }
+    if (lower.includes('window')) {
+      return { icon: 'fa-solid fa-window-maximize', colorClass: 'cat-blue' };
+    }
+    if (lower.includes('tire') || lower.includes('flat')) {
+      return { icon: 'fa-solid fa-circle-notch', colorClass: 'cat-red' };
+    }
+    if (lower.includes('parking') || lower.includes('block') || lower.includes('obstruction') || lower.includes('blocking')) {
+      return { icon: 'fa-solid fa-square-parking', colorClass: 'cat-purple' };
+    }
+    if (lower.includes('damage') || lower.includes('burst') || lower.includes('scratch') || lower.includes('collision')) {
+      return { icon: 'fa-solid fa-car-burst', colorClass: 'cat-orange' };
+    }
+    if (lower.includes('emergency') || lower.includes('tow') || lower.includes('warning')) {
+      return { icon: 'fa-solid fa-truck-pickup', colorClass: 'cat-crimson' };
+    }
+    return { icon: 'fa-solid fa-pen-to-square', colorClass: 'cat-slate' };
+  }
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -96,33 +119,47 @@ export class Scan implements OnInit {
   }
 
   lookupTagDetails(tagIdStr: string) {
-    const numericId = parseInt(tagIdStr.replace(/\D/g, ''), 10) || 0;
-    if (numericId > 0) {
-      this.vehicleId.set(numericId);
-    }
-    this.ownerUsername.set(`Owner #${numericId || 101}`);
+    this.ownerUsername.set('Protected Owner');
 
-    // Query backend API to resolve associated vehicle & owner details for the scanned QR tag
-    this.http.get<any>(`${API_BASE_URL}/api/v1/qrtags/${encodeURIComponent(tagIdStr)}`).subscribe({
+    // Query backend public API to resolve associated vehicle & owner details for the scanned QR tag
+    this.http.get<any>(`${API_BASE_URL}/api/v1/notifications/scan/${encodeURIComponent(tagIdStr)}`).subscribe({
       next: (res) => {
-        if (res?.vehicleId) {
-          this.vehicleId.set(res.vehicleId);
-        } else if (res?.vehicle?.id) {
-          this.vehicleId.set(res.vehicle.id);
-        }
+        if (res) {
+          const make = res.vehicleMake || '';
+          const model = res.vehicleModel || '';
+          const color = res.vehicleColor || '';
+          const plate = res.vehiclePlate || '';
+          const nick = res.nickname || '';
 
-        if (res?.ownerUsername || res?.username || res?.ownerName) {
-          this.ownerUsername.set(res.ownerUsername || res.username || res.ownerName);
-        }
-
-        if (res?.vehicleName || res?.vehicleInfo) {
-          this.vehicleInfo.set(res.vehicleName || res.vehicleInfo);
-        } else if (res?.vehicle) {
-          this.vehicleInfo.set(`${res.vehicle.make || 'Registered'} ${res.vehicle.model || 'Vehicle'}`);
+          let infoStr = '';
+          if (color || make || model) {
+            infoStr = `${color} ${make} ${model}`.trim();
+          }
+          if (plate) {
+            infoStr += infoStr ? ` [Plate: ${plate}]` : `Plate: ${plate}`;
+          }
+          if (nick) {
+            infoStr += infoStr ? ` (${nick})` : nick;
+          }
+          this.vehicleInfo.set(infoStr || 'Registered Vehicle');
+          
+          if (res.categories && Array.isArray(res.categories)) {
+            const mapped = res.categories.map((c: string) => {
+              const meta = this.getCategoryMeta(c);
+              return {
+                value: c,
+                label: c,
+                icon: meta.icon,
+                colorClass: meta.colorClass
+              };
+            });
+            this.categories.set(mapped);
+          }
         }
       },
-      error: () => {
-        this.ownerUsername.set(`Owner (Serial: ${tagIdStr})`);
+      error: (err) => {
+        console.warn('Failed to resolve scan details via public API:', err);
+        this.vehicleInfo.set('Registered Vehicle');
       }
     });
   }
@@ -165,7 +202,7 @@ export class Scan implements OnInit {
     this.isSubmitting.set(true);
     this.errorMessage.set('');
 
-    const categoryObj = this.categories.find(c => c.value === this.selectedCategory());
+    const categoryObj = this.categories().find(c => c.value === this.selectedCategory());
     const categoryLabel = categoryObj ? categoryObj.label : this.selectedCategory();
 
     const payload = {
@@ -186,7 +223,17 @@ export class Scan implements OnInit {
       error: (err) => {
         console.warn('Backend API notification /send attempt:', err);
         this.isSubmitting.set(false);
-        this.isSuccess.set(true);
+        if (err?.status === 400 && (
+          err?.error?.code === 'NOT001' || 
+          err?.error?.errorCode === 'NOT001' ||
+          err?.error?.message?.includes('NOT001') || 
+          err?.error?.message?.includes('expired') || 
+          err?.error?.message?.includes('unavailable')
+        )) {
+          this.errorMessage.set('The owner of this vehicle is currently unavailable.');
+        } else {
+          this.errorMessage.set(err?.error?.message || 'An error occurred while sending the alert. Please try again.');
+        }
       }
     });
   }

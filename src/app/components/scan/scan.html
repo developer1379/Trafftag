@@ -82,7 +82,7 @@
           <div class="form-group animate-fade-in-up delay-100">
             <label class="form-label">What is the issue? <span class="required">*</span></label>
             <div class="category-grid">
-              @for (cat of categories; track cat.value; let idx = $index) {
+              @for (cat of categories(); track cat.value; let idx = $index) {
                 <label class="category-option animate-fade-in-up" [class.selected]="selectedCategory() === cat.value">
                   <input 
                     type="radio" 
