@@ -61,7 +61,7 @@
         <span class="nav-label-group"><i class="fa-solid fa-gear nav-icon"></i> Settings</span>
       </button>
     </nav>
-
+    
     <div class="sidebar-footer">
       <button class="logout-btn" (click)="logout()">
         <i class="fa-solid fa-right-from-bracket logout-icon"></i>
@@ -113,10 +113,10 @@
               <div class="user-info-side">
                 <span class="welcome-label">Welcome back,</span>
                 <h2 class="user-full-name">{{ userName() }}</h2>
-                <span class="vehicle-tag-plate">{{ vehicles()[0]?.plate || 'UP32AB1234' }}</span>
+                <span class="vehicle-tag-plate">{{ vehicles()[0]?.plate || 'XYZ-3434' }}</span>
               </div>
               <div class="user-qr-card">
-                <img [src]="'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=TRAFFTAG-' + (vehicles()[0]?.plate || 'UP32AB1234')" alt="Vehicle QR Code" class="qr-img" />
+                <img [src]="'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=TRAFFTAG-' + (vehicles()[0]?.plate || 'XYZ-3434')" alt="Vehicle QR Code" class="qr-img" />
               </div>
             </div>
 
@@ -185,7 +185,7 @@
 
           </div>
 
-          <!-- Right Column: Desktop Activity & Security Alerts Center -->
+          <!-- Right Column: Desktop Activity Header Row -->
           <div class="dashboard-activity-side">
             
             <!-- Quick Summary Stats Header Row -->
@@ -195,7 +195,7 @@
                   <i class="fa-solid fa-car"></i>
                 </div>
                 <div class="stat-meta">
-                  <span class="stat-label">Registered Vehicles</span>
+                  <span class="stat-label">REGISTERED VEHICLES</span>
                   <span class="stat-number">{{ vehicles().length }} Active</span>
                 </div>
               </div>
@@ -205,7 +205,7 @@
                   <i class="fa-solid fa-qrcode"></i>
                 </div>
                 <div class="stat-meta">
-                  <span class="stat-label">Active QR Tags</span>
+                  <span class="stat-label">ACTIVE QR TAGS</span>
                   <span class="stat-number">{{ activeTagsCount() }} Assigned</span>
                 </div>
               </div>
@@ -215,57 +215,9 @@
                   <i class="fa-solid fa-bell"></i>
                 </div>
                 <div class="stat-meta">
-                  <span class="stat-label">Unread Alerts</span>
+                  <span class="stat-label">UNREAD ALERTS</span>
                   <span class="stat-number">{{ unreadCount() }} Unresolved</span>
                 </div>
-              </div>
-            </div>
-
-            <!-- Recent Security Alerts Feed -->
-            <div class="dashboard-alerts-card">
-              <div class="alerts-header-row">
-                <div class="alerts-title-group">
-                  <i class="fa-solid fa-shield-cat alerts-icon"></i>
-                  <h3>Recent Security & Parking Alerts</h3>
-                </div>
-                <button class="btn-text-link" (click)="selectTab('notifications')">
-                  View Alert Center <i class="fa-solid fa-arrow-right"></i>
-                </button>
-              </div>
-
-              <div class="alerts-feed-list">
-                @if (notifications().length === 0) {
-                  <div class="empty-alerts-placeholder">
-                    <div class="empty-shield-icon">
-                      <i class="fa-solid fa-shield-halved"></i>
-                    </div>
-                    <h4>All Vehicles Protected</h4>
-                    <p>No security or parking alerts reported. All registered vehicle QR monitors are live and active.</p>
-                  </div>
-                } @else {
-                  @for (notif of notifications().slice(0, 4); track notif.id) {
-                    <div class="feed-alert-item" [class.unread-item]="!notif.read">
-                      <div class="feed-icon-box">
-                        <i [class]="notif.icon"></i>
-                      </div>
-                      <div class="feed-content">
-                        <div class="feed-title-line">
-                          <span class="feed-cat-name">{{ notif.category }}</span>
-                          <span class="feed-time">{{ notif.timestamp }}</span>
-                        </div>
-                        <p class="feed-msg-text">"{{ notif.message }}"</p>
-                        <div class="feed-footer-line">
-                          @if (notif.senderPhone) {
-                            <span class="feed-phone"><i class="fa-solid fa-phone"></i> {{ notif.senderPhone }}</span>
-                          }
-                          <button class="btn-resolve-pill" (click)="toggleResolve(notif.id)">
-                            {{ notif.status === 'Resolved' ? 'Reopen' : 'Mark Resolved' }}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  }
-                }
               </div>
             </div>
 

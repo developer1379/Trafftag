@@ -345,7 +345,7 @@
 }
 
 .mockup-pill-card {
-  background: #FFFFFF;
+  background: #0E1E36;
   border-radius: 12px;
   padding: 16px 8px;
   display: flex;
@@ -353,24 +353,26 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
 }
 
 .mockup-pill-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 184, 0, 0.4);
+  background: rgba(255, 184, 0, 0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
 .pill-icon-wrapper {
   font-size: 1.35rem;
-  color: #08162A;
+  color: #FFB800;
 }
 
 .mockup-pill-card span {
-  color: #08162A;
+  color: #FFFFFF;
   font-size: 0.78rem;
   font-weight: 700;
   text-align: center;
