@@ -791,33 +791,25 @@ export class Portal implements OnInit {
   }
 
   loadUserMemberships() {
-    this.http.get<any>(`${API_BASE_URL}/api/v1/memberships`, { headers: this.getHeaders() })
+    this.http.get<any>(`${API_BASE_URL}/api/v1/user-memberships`, { headers: this.getHeaders() })
       .subscribe({
         next: (res) => {
-          const list = Array.isArray(res) ? res : (res?.data || res?.data?.data || []);
-          if (list.length > 0) {
-            const active = list.find((m: any) => m.status === 'Active' || m.isActive) || list[0];
-            const membershipId = active.userMembershipId || active.id;
+          const list = Array.isArray(res) ? res : (res?.data || res?.data?.data || (res?.success && res?.data ? res.data : []));
+          const items = Array.isArray(list) ? list : (res?.data ? [res.data] : []);
+          if (items.length > 0) {
+            const active = items.find((m: any) => m.status === 'Active' || m.isActive) || items[0];
+            const membershipId = active.userMembershipId || active.id || active.membershipId;
             if (membershipId) {
               this.userMembershipId.set(membershipId);
+            }
+            const planName = active.planName || active.membershipPlan?.name || active.plan?.name || active.name;
+            if (planName) {
+              this.membershipType.set(planName);
             }
           }
         },
         error: (err) => {
-          console.warn('Could not fetch memberships from /api/v1/memberships, trying user-memberships...', err);
-          this.http.get<any>(`${API_BASE_URL}/api/v1/user-memberships`, { headers: this.getHeaders() })
-            .subscribe({
-              next: (res2) => {
-                const list2 = Array.isArray(res2) ? res2 : (res2?.data || res2?.data?.data || []);
-                if (list2.length > 0) {
-                  const active2 = list2.find((m: any) => m.status === 'Active' || m.isActive) || list2[0];
-                  const membershipId2 = active2.userMembershipId || active2.id;
-                  if (membershipId2) {
-                    this.userMembershipId.set(membershipId2);
-                  }
-                }
-              }
-            });
+          console.warn('Could not fetch user memberships from /api/v1/user-memberships:', err);
         }
       });
   }
