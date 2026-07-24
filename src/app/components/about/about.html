@@ -1,0 +1,119 @@
+<div class="page-container">
+  <!-- Header -->
+  <header class="header">
+    <div class="header-container">
+      <a [routerLink]="['/']" class="brand-logo">
+        <div class="logo-shield">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
+      </a>
+      <nav class="nav-menu">
+        <a [routerLink]="['/']" class="nav-link">HOME</a>
+        <a [routerLink]="['/features']" class="nav-link">FEATURES</a>
+        <a [routerLink]="['/pricing']" class="nav-link">PRICING</a>
+        <a [routerLink]="['/faq']" class="nav-link">FAQ</a>
+      </nav>
+      <div class="auth-buttons">
+        <a [routerLink]="['/login']" class="btn-login">LOGIN</a>
+        <a [routerLink]="['/register']" class="btn-register">REGISTER</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Header -->
+  <div class="about-hero">
+    <div class="hero-content">
+      <span class="badge"><i class="fa-solid fa-circle-info"></i> Our Mission</span>
+      <h1>About TRAFFTAG</h1>
+      <p>Pioneering privacy-first vehicle safety and instant QR notification ecosystems worldwide.</p>
+    </div>
+  </div>
+
+  <!-- Content Section -->
+  <main class="about-body">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>50,000+</h3>
+        <p>Vehicles Protected</p>
+      </div>
+      <div class="stat-card">
+        <h3>120,000+</h3>
+        <p>Anonymous Alerts Sent</p>
+      </div>
+      <div class="stat-card">
+        <h3>99.9%</h3>
+        <p>Uptime Reliability</p>
+      </div>
+      <div class="stat-card">
+        <h3>Zero</h3>
+        <p>Identity Disclosures</p>
+      </div>
+    </div>
+
+    <div class="about-card">
+      <section class="about-section">
+        <h2>Who We Are</h2>
+        <p>TRAFFTAG was founded with a singular purpose: to solve the urban vehicle parking and safety dilemma without sacrificing driver privacy. Traditional methods of displaying phone numbers on vehicle dashboards expose car owners to spam, harassment, and identity theft. TRAFFTAG replaces phone numbers with encrypted QR code decals.</p>
+      </section>
+
+      <section class="about-section">
+        <h2>How TRAFFTAG Works</h2>
+        <p>Every TRAFFTAG decal contains a unique, tamper-proof QR code linked securely to the vehicle owner's portal. Anyone who scans the tag using a smartphone camera can instantly send a pre-formatted or custom notification—such as an alert for blocked driveways, open windows, lights left on, or emergency situations—without ever seeing the owner's phone number or personal identity.</p>
+      </section>
+
+      <section class="about-section">
+        <h2>Our Core Values</h2>
+        <div class="values-grid">
+          <div class="value-item">
+            <i class="fa-solid fa-user-shield"></i>
+            <h4>Privacy First</h4>
+            <p>Your personal contact information remains strictly confidential at all times.</p>
+          </div>
+          <div class="value-item">
+            <i class="fa-solid fa-bolt"></i>
+            <h4>Instant Routing</h4>
+            <p>Real-time SMS and WhatsApp notification delivery in under 3 seconds.</p>
+          </div>
+          <div class="value-item">
+            <i class="fa-solid fa-award"></i>
+            <h4>Enterprise Quality</h4>
+            <p>Durable, weatherproof QR decal stickers engineered for harsh outdoor environments.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a [routerLink]="['/']" class="brand-logo">
+          <div class="logo-shield">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
+        </a>
+        <p>Next-generation anonymous vehicle safety and QR decal notification platform.</p>
+      </div>
+      <div class="footer-column">
+        <h4>Navigation</h4>
+        <a [routerLink]="['/']">Home</a>
+        <a [routerLink]="['/features']">Features</a>
+        <a [routerLink]="['/pricing']">Pricing</a>
+        <a [routerLink]="['/faq']">FAQ Center</a>
+      </div>
+      <div class="footer-column">
+        <h4>Legal & Policy</h4>
+        <a [routerLink]="['/privacy-policy']">Privacy Policy</a>
+        <a [routerLink]="['/terms-of-service']">Terms of Service</a>
+        <a [routerLink]="['/about']">About Us</a>
+        <a [routerLink]="['/contact']">Contact Support</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 TRAFFTAG. All rights reserved.</p>
+    </div>
+  </footer>
+</div>

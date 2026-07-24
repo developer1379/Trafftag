@@ -1,0 +1,145 @@
+.page-container {
+  min-height: 100vh;
+  background-color: #F8FAFC;
+  color: #08162A;
+  display: flex;
+  flex-direction: column;
+}
+
+.about-hero {
+  background: linear-gradient(135deg, #08162A 0%, #0E1E36 100%);
+  color: #FFFFFF;
+  padding: 4rem 5% 3.5rem;
+  text-align: center;
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.hero-content h1 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #FFFFFF !important;
+}
+
+.hero-content p {
+  font-size: 1.05rem;
+  color: #CBD5E1 !important;
+  max-width: 600px;
+}
+
+.about-body {
+  max-width: 960px;
+  margin: -2.5rem auto 4rem;
+  padding: 0 20px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.25rem;
+}
+
+.stat-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(8, 22, 42, 0.04);
+}
+
+.stat-card h3 {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #FFB800 !important;
+  margin-bottom: 0.25rem;
+}
+
+.stat-card p {
+  font-size: 0.88rem;
+  color: #64748B !important;
+  font-weight: 600;
+}
+
+.about-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 20px;
+  padding: 3rem 2.5rem;
+  box-shadow: 0 4px 25px rgba(8, 22, 42, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.about-section h2 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #08162A !important;
+  margin-bottom: 0.85rem;
+  border-bottom: 2px solid rgba(255, 184, 0, 0.4);
+  padding-bottom: 6px;
+  display: inline-block;
+}
+
+.about-section p {
+  font-size: 0.98rem;
+  color: #475569 !important;
+  line-height: 1.7;
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.value-item {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.value-item i {
+  font-size: 1.5rem;
+  color: #FFB800 !important;
+}
+
+.value-item h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #08162A !important;
+}
+
+.value-item p {
+  font-size: 0.9rem;
+  color: #64748B !important;
+  line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .about-card {
+    padding: 1.75rem 1.25rem;
+  }
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+}

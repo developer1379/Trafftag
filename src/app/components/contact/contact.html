@@ -1,0 +1,187 @@
+<div class="page-container">
+  <!-- Header -->
+  <header class="header">
+    <div class="header-container">
+      <a [routerLink]="['/']" class="brand-logo">
+        <div class="logo-shield">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
+      </a>
+      <nav class="nav-menu">
+        <a [routerLink]="['/']" class="nav-link">HOME</a>
+        <a [routerLink]="['/features']" class="nav-link">FEATURES</a>
+        <a [routerLink]="['/pricing']" class="nav-link">PRICING</a>
+        <a [routerLink]="['/faq']" class="nav-link">FAQ</a>
+      </nav>
+      <div class="auth-buttons">
+        <a [routerLink]="['/login']" class="btn-login">LOGIN</a>
+        <a [routerLink]="['/register']" class="btn-register">REGISTER</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Header -->
+  <div class="contact-hero">
+    <div class="hero-content">
+      <span class="badge"><i class="fa-solid fa-headset"></i> 24/7 Assistance</span>
+      <h1>Contact Support & Team</h1>
+      <p>Have questions about QR tags, vehicle protection plans, or enterprise fleet setup? We are here to help.</p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="contact-body">
+    <div class="contact-grid">
+      <!-- Contact Info Cards -->
+      <div class="info-sidebar">
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="fa-solid fa-envelope"></i>
+          </div>
+          <div class="info-text">
+            <h4>Email Us</h4>
+            <p>support&#64;trafftag.com</p>
+            <p class="sub-text">Average response time: &lt; 2 hours</p>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="fa-solid fa-phone"></i>
+          </div>
+          <div class="info-text">
+            <h4>Call Support</h4>
+            <p>+1 (800) 555-TAGS</p>
+            <p class="sub-text">Mon - Fri: 8:00 AM - 8:00 PM EST</p>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="fa-solid fa-location-dot"></i>
+          </div>
+          <div class="info-text">
+            <h4>Global Headquarters</h4>
+            <p>100 Safety Plaza, Suite 400</p>
+            <p class="sub-text">New York, NY 10001</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="form-card">
+        <h2>Send Us a Message</h2>
+        <p class="form-desc">Fill out the form below and a representative will get back to you promptly.</p>
+
+        @if (successMessage()) {
+          <div class="alert-success">
+            <i class="fa-solid fa-circle-check"></i>
+            <p>{{ successMessage() }}</p>
+          </div>
+        }
+
+        @if (errorMessage()) {
+          <div class="alert-error">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <p>{{ errorMessage() }}</p>
+          </div>
+        }
+
+        <form (ngSubmit)="submitContact()" class="contact-form">
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label class="form-label">Your Name <span class="req">*</span></label>
+              <input 
+                type="text" 
+                name="name" 
+                [ngModel]="name()" 
+                (ngModelChange)="name.set($event)"
+                class="form-input" 
+                placeholder="e.g. Sarah Jenkins" 
+                required
+              />
+            </div>
+            <div class="form-group flex-1">
+              <label class="form-label">Email Address <span class="req">*</span></label>
+              <input 
+                type="email" 
+                name="email" 
+                [ngModel]="email()" 
+                (ngModelChange)="email.set($event)"
+                class="form-input" 
+                placeholder="sarah@example.com" 
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Subject</label>
+            <input 
+              type="text" 
+              name="subject" 
+              [ngModel]="subject()" 
+              (ngModelChange)="subject.set($event)"
+              class="form-input" 
+              placeholder="e.g. Question about fleet decals"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Message <span class="req">*</span></label>
+            <textarea 
+              name="message" 
+              rows="5"
+              [ngModel]="message()" 
+              (ngModelChange)="message.set($event)"
+              class="form-input" 
+              placeholder="How can we assist you today?"
+              required
+            ></textarea>
+          </div>
+
+          <button type="submit" class="btn-submit" [disabled]="isSubmitting()">
+            @if (isSubmitting()) {
+              Sending Message...
+            } @else {
+              <i class="fa-solid fa-paper-plane"></i> Send Message
+            }
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a [routerLink]="['/']" class="brand-logo">
+          <div class="logo-shield">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
+        </a>
+        <p>Next-generation anonymous vehicle safety and QR decal notification platform.</p>
+      </div>
+      <div class="footer-column">
+        <h4>Navigation</h4>
+        <a [routerLink]="['/']">Home</a>
+        <a [routerLink]="['/features']">Features</a>
+        <a [routerLink]="['/pricing']">Pricing</a>
+        <a [routerLink]="['/faq']">FAQ Center</a>
+      </div>
+      <div class="footer-column">
+        <h4>Legal & Policy</h4>
+        <a [routerLink]="['/privacy-policy']">Privacy Policy</a>
+        <a [routerLink]="['/terms-of-service']">Terms of Service</a>
+        <a [routerLink]="['/about']">About Us</a>
+        <a [routerLink]="['/contact']">Contact Support</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 TRAFFTAG. All rights reserved.</p>
+    </div>
+  </footer>
+</div>

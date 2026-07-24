@@ -1,0 +1,110 @@
+<div class="page-container">
+  <!-- Header -->
+  <header class="header">
+    <div class="header-container">
+      <a [routerLink]="['/']" class="brand-logo">
+        <div class="logo-shield">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
+      </a>
+      <nav class="nav-menu">
+        <a [routerLink]="['/']" class="nav-link">HOME</a>
+        <a [routerLink]="['/features']" class="nav-link">FEATURES</a>
+        <a [routerLink]="['/pricing']" class="nav-link">PRICING</a>
+        <a [routerLink]="['/faq']" class="nav-link">FAQ</a>
+      </nav>
+      <div class="auth-buttons">
+        <a [routerLink]="['/login']" class="btn-login">LOGIN</a>
+        <a [routerLink]="['/register']" class="btn-register">REGISTER</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Header -->
+  <div class="legal-hero">
+    <div class="hero-content">
+      <span class="badge"><i class="fa-solid fa-lock"></i> Privacy & Trust</span>
+      <h1>Privacy Policy</h1>
+      <p>Last updated: July 24, 2026. How TRAFFTAG collects, protects, and handles your vehicle & decal data.</p>
+    </div>
+  </div>
+
+  <!-- Content Section -->
+  <main class="legal-body">
+    <div class="legal-card">
+      <section class="legal-section">
+        <h2>1. Commitment to Zero-Identity Disclosure</h2>
+        <p>TRAFFTAG is designed with a fundamental privacy-first architecture. When someone scans your vehicle's QR decal tag, your phone number, real name, email, and personal identity are <strong>never revealed</strong> to the caller or scanner. All communication is routed through encrypted anonymous gateways.</p>
+      </section>
+
+      <section class="legal-section">
+        <h2>2. Information We Collect</h2>
+        <p>To provide safety notifications and vehicle decal services, we collect minimal operational information:</p>
+        <ul>
+          <li><strong>Account Data:</strong> Name, verified email address, phone number, and optional emergency contact numbers.</li>
+          <li><strong>Vehicle Data:</strong> Vehicle registration number, make, model, color, and assigned QR decal code.</li>
+          <li><strong>Notification Logs:</strong> Timestamp, general alert category (e.g. incorrect parking, emergency assistance), and notification delivery status.</li>
+        </ul>
+      </section>
+
+      <section class="legal-section">
+        <h2>3. How We Use Your Data</h2>
+        <p>Your data is strictly utilized for core service functionality:</p>
+        <ul>
+          <li>Instantly sending SMS, WhatsApp, or voice notifications when your QR decal is scanned.</li>
+          <li>Managing active vehicle subscriptions and QR tag assignments in your portal.</li>
+          <li>Enhancing platform security and preventing fraudulent tag misuse.</li>
+        </ul>
+        <p>We <strong>never sell, lease, or monetize</strong> your personal phone numbers or vehicle details to third-party advertisers.</p>
+      </section>
+
+      <section class="legal-section">
+        <h2>4. Data Storage & Security</h2>
+        <p>All sensitive contact data and vehicle records are protected using enterprise-grade AES-256 encryption at rest and TLS 1.3 in transit. System access is restricted strictly to authenticated session tokens with mandatory multi-factor validation.</p>
+      </section>
+
+      <section class="legal-section">
+        <h2>5. Your Rights & Data Ownership</h2>
+        <p>You maintain 100% control over your registered vehicles and contact settings. Through your TRAFFTAG Portal, you may update, unbind, deactivate, or delete vehicle records and tags at any time with immediate effect.</p>
+      </section>
+
+      <section class="legal-section">
+        <h2>6. Contact Privacy Team</h2>
+        <p>If you have any questions regarding this Privacy Policy or your data protection rights, please reach out to our privacy compliance team at <a [routerLink]="['/contact']" class="legal-link">privacy&#64;trafftag.com</a>.</p>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a [routerLink]="['/']" class="brand-logo">
+          <div class="logo-shield">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
+        </a>
+        <p>Next-generation anonymous vehicle safety and QR decal notification platform.</p>
+      </div>
+      <div class="footer-column">
+        <h4>Navigation</h4>
+        <a [routerLink]="['/']">Home</a>
+        <a [routerLink]="['/features']">Features</a>
+        <a [routerLink]="['/pricing']">Pricing</a>
+        <a [routerLink]="['/faq']">FAQ Center</a>
+      </div>
+      <div class="footer-column">
+        <h4>Legal & Policy</h4>
+        <a [routerLink]="['/privacy-policy']">Privacy Policy</a>
+        <a [routerLink]="['/terms-of-service']">Terms of Service</a>
+        <a [routerLink]="['/about']">About Us</a>
+        <a [routerLink]="['/contact']">Contact Support</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 TRAFFTAG. All rights reserved.</p>
+    </div>
+  </footer>
+</div>

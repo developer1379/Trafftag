@@ -9,6 +9,10 @@ import { Features } from './components/features/features';
 import { Pricing } from './components/pricing/pricing';
 import { Faq } from './components/faq/faq';
 import { VerifyOtp } from './components/verify-otp/verify-otp';
+import { PrivacyPolicy } from './components/privacy-policy/privacy-policy';
+import { TermsOfService } from './components/terms-of-service/terms-of-service';
+import { About } from './components/about/about';
+import { Contact } from './components/contact/contact';
 
 import { inject } from '@angular/core';
 import { Router, UrlTree } from '@angular/router';
@@ -54,6 +58,10 @@ export const routes: Routes = [
   { path: 'features', component: Features, title: 'Features & Benefits | TRAFFTAG QR Vehicle Protection' },
   { path: 'pricing', component: Pricing, title: 'Pricing & Protection Plans | TRAFFTAG Safety Services' },
   { path: 'faq', component: Faq, title: 'Frequently Asked Questions | TRAFFTAG Help Center' },
+  { path: 'about', component: About, title: 'About Us | TRAFFTAG Anonymous Safety Network' },
+  { path: 'contact', component: Contact, title: 'Contact Us & Support | TRAFFTAG' },
+  { path: 'privacy-policy', component: PrivacyPolicy, title: 'Privacy Policy | TRAFFTAG Safety Services' },
+  { path: 'terms-of-service', component: TermsOfService, title: 'Terms of Service | TRAFFTAG Legal' },
   { path: 'login', component: Login, title: 'Sign In | TRAFFTAG Customer Portal' },
   { path: 'register', component: Register, title: 'Create Account | TRAFFTAG Safety Registry' },
   { path: 'verify-otp', component: VerifyOtp, title: 'Verify OTP Code | TRAFFTAG Security' },

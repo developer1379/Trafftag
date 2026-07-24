@@ -2638,5 +2638,284 @@ input:checked + .slider:before {
   }
 }
 
+/* ==========================================
+   ENTERPRISE LIGHT PORTAL SUBPAGES (Pay Fine, Reports, Rules)
+   ========================================== */
+.enterprise-white-card {
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 20px !important;
+  padding: 28px !important;
+  box-shadow: 0 4px 25px rgba(8, 22, 42, 0.04) !important;
+}
+
+.panel-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  gap: 16px;
+}
+
+.panel-header-row h2 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #08162A !important;
+  margin: 0 0 4px 0;
+}
+
+.panel-subtext {
+  font-size: 0.9rem;
+  color: #64748B !important;
+  margin: 0;
+}
+
+.fine-search-box {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.search-input-wrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 16px;
+  color: #64748B;
+}
+
+.search-input {
+  padding-left: 46px !important;
+}
+
+.fines-table-wrapper {
+  overflow-x: auto;
+}
+
+.enterprise-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.enterprise-table th {
+  background: #F8FAFC;
+  color: #08162A !important;
+  font-weight: 800;
+  font-size: 0.85rem;
+  padding: 12px 16px;
+  border-bottom: 2px solid #E2E8F0;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.enterprise-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #E2E8F0;
+  color: #1E293B !important;
+  font-size: 0.9rem;
+}
+
+.font-mono {
+  font-family: monospace;
+  font-weight: 700;
+  color: #08162A !important;
+}
+
+.price-text {
+  font-weight: 800;
+  color: #B45309 !important;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.status-unpaid {
+  background: rgba(239, 68, 68, 0.1);
+  color: #DC2626 !important;
+}
+
+.status-paid {
+  background: rgba(16, 185, 129, 0.1);
+  color: #059669 !important;
+}
+
+.btn-sm {
+  padding: 6px 14px !important;
+  font-size: 0.82rem !important;
+  border-radius: 8px !important;
+}
+
+/* Reports Tab */
+.reports-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.stat-widget-card {
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 16px !important;
+  padding: 20px !important;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 4px 15px rgba(8, 22, 42, 0.03) !important;
+}
+
+.widget-icon {
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 184, 0, 0.12);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFB800 !important;
+  font-size: 1.3rem;
+}
+
+.widget-info h3 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #08162A !important;
+  margin: 0 0 2px 0;
+}
+
+.widget-info p {
+  font-size: 0.85rem;
+  color: #64748B !important;
+  margin: 0;
+}
+
+.margin-top-20 {
+  margin-top: 20px;
+}
+
+.activity-log-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.log-item {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.log-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.bg-yellow {
+  background: rgba(255, 184, 0, 0.15);
+  color: #B45309 !important;
+}
+
+.bg-blue {
+  background: rgba(37, 99, 235, 0.12);
+  color: #2563EB !important;
+}
+
+.log-details {
+  flex: 1;
+}
+
+.log-details h4 {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #08162A !important;
+  margin: 0 0 4px 0;
+}
+
+.log-details p {
+  font-size: 0.88rem;
+  color: #475569 !important;
+  margin: 0 0 4px 0;
+}
+
+.log-time {
+  font-size: 0.78rem;
+  color: #94A3B8 !important;
+}
+
+.status-resolved {
+  background: rgba(16, 185, 129, 0.1);
+  color: #059669 !important;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+/* Rules Grid */
+.rules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.rule-card {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rule-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rule-icon {
+  font-size: 1.3rem;
+  color: #FFB800 !important;
+}
+
+.rule-header h3 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #08162A !important;
+  margin: 0;
+}
+
+.rule-card p {
+  font-size: 0.9rem;
+  color: #475569 !important;
+  line-height: 1.6;
+  margin: 0;
+}
+
+
 
 

@@ -285,6 +285,174 @@
         (redirectToBillingPortal)="redirectToBillingPortal()">
       </app-profile-tab>
     }
+
+    <!-- Tab 7: Pay Fine / E-Challan Gateway -->
+    @if (activeTab() === 'pay-fine') {
+      <div class="tab-panel pay-fine-panel">
+        <div class="enterprise-white-card">
+          <div class="panel-header-row">
+            <div>
+              <h2>E-Challan & Penalty Payment Gateway</h2>
+              <p class="panel-subtext">Search and clear traffic fines, parking penalties, or towing charges associated with your vehicles.</p>
+            </div>
+            <span class="badge"><i class="fa-solid fa-shield-check"></i> Instant Clearance</span>
+          </div>
+
+          <div class="fine-search-box">
+            <div class="search-input-wrapper">
+              <i class="fa-solid fa-magnifying-glass search-icon"></i>
+              <input type="text" placeholder="Enter Vehicle Number (e.g. XYZ-3434) or Challan Serial #" class="form-input search-input">
+            </div>
+            <button class="btn btn-primary"><i class="fa-solid fa-search"></i> Search Penalties</button>
+          </div>
+
+          <div class="fines-table-wrapper">
+            <table class="enterprise-table">
+              <thead>
+                <tr>
+                  <th>Challan ID</th>
+                  <th>Vehicle</th>
+                  <th>Violation Type</th>
+                  <th>Date & Time</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="font-mono">#CH-2026-8842</td>
+                  <td><strong>Toyota Camry (XYZ-3434)</strong></td>
+                  <td>Unauthorized Parking Area</td>
+                  <td>Jul 20, 2026 14:15</td>
+                  <td class="price-text">$45.00</td>
+                  <td><span class="status-badge status-unpaid"><i class="fa-solid fa-clock"></i> Unpaid</span></td>
+                  <td><button class="btn btn-primary btn-sm"><i class="fa-solid fa-credit-card"></i> Pay Now</button></td>
+                </tr>
+                <tr>
+                  <td class="font-mono">#CH-2026-6190</td>
+                  <td><strong>Honda Civic (ABC-1234)</strong></td>
+                  <td>Blocked Fire Hydrant Zone</td>
+                  <td>Jun 11, 2026 09:30</td>
+                  <td class="price-text">$75.00</td>
+                  <td><span class="status-badge status-paid"><i class="fa-solid fa-circle-check"></i> Paid</span></td>
+                  <td><button class="btn btn-secondary btn-sm"><i class="fa-solid fa-download"></i> Receipt</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Tab 8: Analytics & Scan Reports -->
+    @if (activeTab() === 'reports') {
+      <div class="tab-panel reports-panel">
+        <div class="reports-summary-grid">
+          <div class="stat-widget-card">
+            <div class="widget-icon"><i class="fa-solid fa-qrcode"></i></div>
+            <div class="widget-info">
+              <h3>248</h3>
+              <p>Total Decal Scans</p>
+            </div>
+          </div>
+          <div class="stat-widget-card">
+            <div class="widget-icon"><i class="fa-solid fa-shield-check"></i></div>
+            <div class="widget-info">
+              <h3>98.4%</h3>
+              <p>Resolution Rate</p>
+            </div>
+          </div>
+          <div class="stat-widget-card">
+            <div class="widget-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+            <div class="widget-info">
+              <h3>&lt; 2 mins</h3>
+              <p>Avg. Response Time</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="enterprise-white-card margin-top-20">
+          <div class="panel-header-row">
+            <div>
+              <h2>Vehicle Decal Scan & Activity Log</h2>
+              <p class="panel-subtext">Historical analytics of anonymous QR scans, alert triggers, and emergency notifications.</p>
+            </div>
+            <button class="btn btn-secondary"><i class="fa-solid fa-file-pdf"></i> Export PDF Report</button>
+          </div>
+
+          <div class="activity-log-list">
+            <div class="log-item">
+              <div class="log-icon bg-yellow"><i class="fa-solid fa-triangle-exclamation"></i></div>
+              <div class="log-details">
+                <h4>Blocked Driveway Notification Triggered</h4>
+                <p>Scanned on Vehicle: Toyota Camry (XYZ-3434) • Location: Sector 14 Parking</p>
+                <span class="log-time">Jul 24, 2026 at 11:20 AM</span>
+              </div>
+              <span class="status-badge status-resolved">Resolved</span>
+            </div>
+            <div class="log-item">
+              <div class="log-icon bg-blue"><i class="fa-solid fa-bell"></i></div>
+              <div class="log-details">
+                <h4>Headlights Left On Alert</h4>
+                <p>Scanned on Vehicle: Honda Civic (ABC-1234) • Location: North Garage Level 2</p>
+                <span class="log-time">Jul 22, 2026 at 08:45 PM</span>
+              </div>
+              <span class="status-badge status-resolved">Resolved</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Tab 9: Traffic Rules & Regulations Index -->
+    @if (activeTab() === 'rules') {
+      <div class="tab-panel rules-panel">
+        <div class="enterprise-white-card">
+          <div class="panel-header-row">
+            <div>
+              <h2>Traffic Regulations & Vehicle Safety Handbook</h2>
+              <p class="panel-subtext">Official guidelines, parking etiquette, emergency rules, and fine structure.</p>
+            </div>
+            <span class="badge"><i class="fa-solid fa-book-bookmark"></i> Updated 2026</span>
+          </div>
+
+          <div class="rules-grid">
+            <div class="rule-card">
+              <div class="rule-header">
+                <i class="fa-solid fa-ban-smoking rule-icon"></i>
+                <h3>No Parking Zones & Towing Policies</h3>
+              </div>
+              <p>Vehicles parked within 15ft of fire hydrants, hospital gates, or designated emergency lanes are subject to immediate towing and a minimum penalty fine of $75.00.</p>
+            </div>
+
+            <div class="rule-card">
+              <div class="rule-header">
+                <i class="fa-solid fa-qrcode rule-icon"></i>
+                <h3>Decal Placement Guidelines</h3>
+              </div>
+              <p>Affix your TRAFFTAG decal on the bottom-left or top-center of the front/rear windshield for maximum optical visibility by smartphone cameras.</p>
+            </div>
+
+            <div class="rule-card">
+              <div class="rule-header">
+                <i class="fa-solid fa-user-shield rule-icon"></i>
+                <h3>Anonymous Contact Etiquette</h3>
+              </div>
+              <p>Keep communication professional when responding to notifications. Misuse of the anonymous gateway for commercial solicitation is strictly prohibited.</p>
+            </div>
+
+            <div class="rule-card">
+              <div class="rule-header">
+                <i class="fa-solid fa-phone-volume rule-icon"></i>
+                <h3>24/7 Emergency Dispatch Helpline</h3>
+              </div>
+              <p>In case of vehicle accidents, dangerous obstruction, or immediate security threats, contact emergency dispatch at <strong>+1 (800) 555-TAGS</strong>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
   </main>
 
   <!-- Add Vehicle Modal -->

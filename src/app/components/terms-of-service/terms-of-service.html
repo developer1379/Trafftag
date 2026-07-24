@@ -1,0 +1,99 @@
+<div class="page-container">
+  <!-- Header -->
+  <header class="header">
+    <div class="header-container">
+      <a [routerLink]="['/']" class="brand-logo">
+        <div class="logo-shield">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
+      </a>
+      <nav class="nav-menu">
+        <a [routerLink]="['/']" class="nav-link">HOME</a>
+        <a [routerLink]="['/features']" class="nav-link">FEATURES</a>
+        <a [routerLink]="['/pricing']" class="nav-link">PRICING</a>
+        <a [routerLink]="['/faq']" class="nav-link">FAQ</a>
+      </nav>
+      <div class="auth-buttons">
+        <a [routerLink]="['/login']" class="btn-login">LOGIN</a>
+        <a [routerLink]="['/register']" class="btn-register">REGISTER</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Header -->
+  <div class="legal-hero">
+    <div class="hero-content">
+      <span class="badge"><i class="fa-solid fa-file-contract"></i> Terms & Conditions</span>
+      <h1>Terms of Service</h1>
+      <p>Effective Date: July 24, 2026. Guidelines and agreement for using TRAFFTAG QR Vehicle Protection services.</p>
+    </div>
+  </div>
+
+  <!-- Content Section -->
+  <main class="legal-body">
+    <div class="legal-card">
+      <section class="legal-section">
+        <h2>1. Acceptance of Terms</h2>
+        <p>By creating an account, registering a vehicle, ordering a QR decal tag, or using the TRAFFTAG platform, you agree to comply with and be bound by these Terms of Service. If you do not agree to these terms, you may not access or use our services.</p>
+      </section>
+
+      <section class="legal-section">
+        <h2>2. Authorized Vehicle Ownership</h2>
+        <p>You warrant that you are the lawful owner or authorized operator of any vehicle registered under your TRAFFTAG account. Registering decals to vehicles without authorization is strictly prohibited and subject to immediate account termination.</p>
+      </section>
+
+      <section class="legal-section">
+        <h2>3. Proper Use of Anonymous Decals</h2>
+        <p>TRAFFTAG QR decals are designed for emergency vehicle notifications, improper parking alerts, tow warnings, and safety communications. Misusing the notification gateway to send spam, abusive messages, or illegal threats is illegal and will be reported to law enforcement authorities.</p>
+      </section>
+
+      <section class="legal-section">
+        <h2>4. Subscriptions & Payment Terms</h2>
+        <p>Free plans include basic single-vehicle decal binding and SMS alert routing. Upgrade plans (e.g. Pro Fleet or Enterprise) are billed on a recurring monthly or annual basis via Stripe Checkout. You may modify or cancel your subscription at any time within your portal.</p>
+      </section>
+
+      <section class="legal-section">
+        <h2>5. Service Availability & Disclaimers</h2>
+        <p>While TRAFFTAG maintains 99.9% notification uptime, alert delivery depends on third-party mobile telecommunications networks and internet connectivity. TRAFFTAG is not liable for delayed SMS or cellular network outages beyond our reasonable control.</p>
+      </section>
+
+      <section class="legal-section">
+        <h2>6. Questions & Legal Inquiries</h2>
+        <p>If you have questions regarding these Terms of Service, please contact our legal counsel at <a [routerLink]="['/contact']" class="legal-link">legal&#64;trafftag.com</a>.</p>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a [routerLink]="['/']" class="brand-logo">
+          <div class="logo-shield">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
+        </a>
+        <p>Next-generation anonymous vehicle safety and QR decal notification platform.</p>
+      </div>
+      <div class="footer-column">
+        <h4>Navigation</h4>
+        <a [routerLink]="['/']">Home</a>
+        <a [routerLink]="['/features']">Features</a>
+        <a [routerLink]="['/pricing']">Pricing</a>
+        <a [routerLink]="['/faq']">FAQ Center</a>
+      </div>
+      <div class="footer-column">
+        <h4>Legal & Policy</h4>
+        <a [routerLink]="['/privacy-policy']">Privacy Policy</a>
+        <a [routerLink]="['/terms-of-service']">Terms of Service</a>
+        <a [routerLink]="['/about']">About Us</a>
+        <a [routerLink]="['/contact']">Contact Support</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 TRAFFTAG. All rights reserved.</p>
+    </div>
+  </footer>
+</div>
