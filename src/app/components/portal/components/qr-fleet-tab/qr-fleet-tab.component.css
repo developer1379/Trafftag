@@ -6,14 +6,14 @@
 }
 
 .decal-card {
-  background: #ffffff;
-  border: 1px solid rgba(15, 23, 42, 0.09);
+  background: #08162A;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 18px;
   padding: 24px;
   display: flex;
   gap: 24px;
   align-items: center;
-  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
   position: relative;
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -26,13 +26,13 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #6366f1 0%, #3b82f6 100%);
+  background: linear-gradient(90deg, #FFB800 0%, #e6a600 100%);
 }
 
 .decal-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(99, 102, 241, 0.3);
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+  border-color: rgba(255, 184, 0, 0.3);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
 }
 
 /* Sticker visual box */
@@ -44,21 +44,21 @@
   width: 148px;
   height: 148px;
   background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-  border: 3px solid #0f172a;
+  border: 3px solid #08162A;
   border-radius: 14px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   padding: 10px;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
   position: relative;
 }
 
 .sticker-header {
   font-size: 0.62rem;
   font-weight: 900;
-  color: #0f172a;
+  color: #08162A;
   letter-spacing: 1.5px;
   font-family: var(--font-roboto);
 }
@@ -84,7 +84,7 @@
 
 .decal-qr-icon {
   font-size: 3.4rem;
-  color: #0f172a;
+  color: #08162A;
 }
 
 /* Corner brackets for realistic camera target look */
@@ -92,7 +92,7 @@
   position: absolute;
   width: 8px;
   height: 8px;
-  border: 2px solid #0f172a;
+  border: 2px solid #08162A;
 }
 .qr-target-corner.top-left { top: 3px; left: 3px; border-right: none; border-bottom: none; }
 .qr-target-corner.top-right { top: 3px; right: 3px; border-left: none; border-bottom: none; }
@@ -102,7 +102,7 @@
 .sticker-serial-footer {
   font-size: 0.68rem;
   font-weight: 800;
-  color: #0f172a;
+  color: #08162A;
   font-family: 'Courier New', monospace;
   letter-spacing: 1px;
 }
@@ -119,18 +119,18 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   padding-bottom: 10px;
 }
 
 .decal-badge-id {
   font-size: 0.95rem;
-  color: #475569;
+  color: #94A3B8;
   font-weight: 600;
 }
 
 .decal-badge-id strong {
-  color: #d97706;
+  color: #FFB800;
   font-family: monospace;
   font-size: 1.05rem;
   font-weight: 800;
@@ -151,7 +151,7 @@
 
 .decal-meta-item .lbl {
   font-size: 0.75rem;
-  color: #64748b;
+  color: #94A3B8;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -161,7 +161,7 @@
 .decal-meta-item .val {
   font-size: 0.9rem;
   font-weight: 700;
-  color: #0f172a;
+  color: #FFFFFF;
 }
 
 .decal-actions-footer {

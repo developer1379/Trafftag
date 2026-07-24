@@ -29,56 +29,43 @@
       </div>
       <div class="brand-text-wrapper">
         <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
-        <span class="brand-subtag">PORTAL</span>
-      </div>
-    </div>
-    
-    <div class="user-profile-summary">
-      <div class="user-avatar-container">
-        <div class="user-avatar">{{ userInitials() }}</div>
-        <span class="user-status-dot" title="Account Active"></span>
-      </div>
-      <div class="user-info">
-        <h4 class="user-name-text">{{ userName() }}</h4>
-        <div class="user-badge-row">
-          <span class="user-plan-badge"><i class="fa-solid fa-crown badge-crown"></i> {{ membershipType() }}</span>
-        </div>
       </div>
     </div>
 
     <nav class="sidebar-nav">
-      <div class="nav-section-label">MAIN MENU</div>
-
       <button class="nav-item" [class.active]="activeTab() === 'dashboard'" (click)="selectTab('dashboard')">
-        <span class="nav-label-group"><i class="fa-solid fa-chart-pie nav-icon"></i> Overview</span>
+        <span class="nav-label-group"><i class="fa-solid fa-house nav-icon"></i> Dashboard</span>
+      </button>
+      <button class="nav-item" [class.active]="activeTab() === 'notifications'" (click)="selectTab('notifications')">
+        <span class="nav-label-group"><i class="fa-solid fa-triangle-exclamation nav-icon"></i> Violations</span>
       </button>
       <button class="nav-item" [class.active]="activeTab() === 'vehicles'" (click)="selectTab('vehicles')">
         <span class="nav-label-group"><i class="fa-solid fa-car nav-icon"></i> My Vehicles</span>
       </button>
+      <button class="nav-item" [class.active]="activeTab() === 'pay-fine'" (click)="selectTab('pay-fine')">
+        <span class="nav-label-group"><i class="fa-solid fa-credit-card nav-icon"></i> Pay Fine</span>
+      </button>
       <button class="nav-item" [class.active]="activeTab() === 'tags'" (click)="selectTab('tags')">
-        <span class="nav-label-group"><i class="fa-solid fa-qrcode nav-icon"></i> Active QR Tags</span>
+        <span class="nav-label-group"><i class="fa-solid fa-file-invoice nav-icon"></i> E-Challan</span>
       </button>
-      <button class="nav-item" [class.active]="activeTab() === 'notifications'" (click)="selectTab('notifications')">
-        <span class="nav-label-group"><i class="fa-solid fa-bell nav-icon"></i> Alerts</span>
-        @if (unreadCount() > 0) {
-          <span class="badge-count">{{ unreadCount() }}</span>
-        }
+      <button class="nav-item" [class.active]="activeTab() === 'reports'" (click)="selectTab('reports')">
+        <span class="nav-label-group"><i class="fa-solid fa-chart-line nav-icon"></i> Reports</span>
       </button>
-
-      <div class="nav-section-label">ACCOUNT & HELP</div>
-
+      <button class="nav-item" [class.active]="activeTab() === 'rules'" (click)="selectTab('rules')">
+        <span class="nav-label-group"><i class="fa-solid fa-square-plus nav-icon"></i> Traffic Rules</span>
+      </button>
       <button class="nav-item" [class.active]="activeTab() === 'support'" (click)="selectTab('support')">
-        <span class="nav-label-group"><i class="fa-solid fa-circle-question nav-icon"></i> Support Center</span>
+        <span class="nav-label-group"><i class="fa-solid fa-headset nav-icon"></i> Support</span>
       </button>
       <button class="nav-item" [class.active]="activeTab() === 'profile'" (click)="selectTab('profile')">
-        <span class="nav-label-group"><i class="fa-solid fa-user-gear nav-icon"></i> My Profile</span>
+        <span class="nav-label-group"><i class="fa-solid fa-gear nav-icon"></i> Settings</span>
       </button>
     </nav>
 
     <div class="sidebar-footer">
       <button class="logout-btn" (click)="logout()">
         <i class="fa-solid fa-right-from-bracket logout-icon"></i>
-        <span>Sign Out</span>
+        <span>Logout</span>
       </button>
     </div>
   </aside>
@@ -113,166 +100,178 @@
       </div>
     </header>
 
-    <!-- Tab 1: Overview -->
+    <!-- Tab 1: Overview (Matching Mockup & Filling Desktop Viewport) -->
     @if (activeTab() === 'dashboard') {
-      <div class="tab-panel">
+      <div class="tab-panel dashboard-mockup-panel">
         
-        <!-- Metrics Grid (SRS Specified Widgets) -->
-        <div class="metrics-grid">
-          <!-- Profile Widget -->
-          <div class="metric-card glass-card">
-            <div class="metric-icon-badge card-icon-blue">
-              <i class="fa-solid fa-user"></i>
-            </div>
-            <div class="metric-info">
-              <span class="metric-label">PROFILE SUMMARY</span>
-              <span class="metric-value-title">{{ userName() }}</span>
-              <div class="metric-subtext-group">
-                <span class="metric-subtext"><i class="fa-regular fa-calendar-check"></i> Active: {{ activeSince() }}</span>
-                <span class="metric-subtext"><i class="fa-regular fa-clock"></i> {{ lastLogin() }}</span>
+        <div class="dashboard-grid-layout">
+          <!-- Left Column: Main Dark Navy Action Card -->
+          <div class="mockup-navy-card">
+            
+            <!-- Top Welcome Header Row with QR Code -->
+            <div class="mockup-user-header-row">
+              <div class="user-info-side">
+                <span class="welcome-label">Welcome back,</span>
+                <h2 class="user-full-name">{{ userName() }}</h2>
+                <span class="vehicle-tag-plate">{{ vehicles()[0]?.plate || 'UP32AB1234' }}</span>
+              </div>
+              <div class="user-qr-card">
+                <img [src]="'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=TRAFFTAG-' + (vehicles()[0]?.plate || 'UP32AB1234')" alt="Vehicle QR Code" class="qr-img" />
               </div>
             </div>
-          </div>
-          
-          <!-- Vehicle Widget -->
-          <div class="metric-card glass-card">
-            <div class="metric-icon-badge card-icon-indigo">
-              <i class="fa-solid fa-car"></i>
-            </div>
-            <div class="metric-info">
-              <span class="metric-label">VEHICLE SUMMARY</span>
-              <span class="metric-value">{{ vehicles().length }} <span class="metric-value-unit">Cars</span></span>
-              <div class="metric-subtext-group">
-                <span class="metric-subtext text-emerald"><i class="fa-solid fa-circle-check"></i> Active: {{ activeTagsCount() }}</span>
-                <span class="metric-subtext text-rose"><i class="fa-solid fa-circle-pause"></i> Inactive: {{ inactiveTagsCount() }}</span>
-              </div>
-            </div>
-          </div>
 
-          <!-- Membership Widget -->
-          <div class="metric-card glass-card">
-            <div class="metric-icon-badge card-icon-amber">
-              <i class="fa-solid fa-gem"></i>
-            </div>
-            <div class="metric-info">
-              <span class="metric-label">MEMBERSHIP STATUS</span>
-              <span class="metric-value-title text-amber">{{ membershipType() }}</span>
-              <div class="metric-subtext-group">
-                <span class="metric-subtext"><i class="fa-solid fa-arrows-rotate"></i> Renewal: {{ renewalDate() }}</span>
-                <span class="metric-subtext text-indigo"><i class="fa-solid fa-hourglass-half"></i> {{ remainingDays() }} Days Left</span>
-              </div>
-            </div>
-          </div>
+            <!-- 3x4 Grid of White Pill Action Cards -->
+            <div class="mockup-action-cards-grid">
+              <!-- Row 1 -->
+              <button class="mockup-pill-card" (click)="selectTab('pay-fine')">
+                <div class="pill-icon-wrapper"><i class="fa-solid fa-calculator"></i></div>
+                <span>Pay Fine</span>
+              </button>
+              <button class="mockup-pill-card" (click)="selectTab('notifications')">
+                <div class="pill-icon-wrapper"><i class="fa-solid fa-file-circle-check"></i></div>
+                <span>Check Status</span>
+              </button>
+              <button class="mockup-pill-card" (click)="selectTab('notifications')">
+                <div class="pill-icon-wrapper"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <span>My Violations</span>
+              </button>
+              <button class="mockup-pill-card" (click)="selectTab('tags')">
+                <div class="pill-icon-wrapper"><i class="fa-solid fa-receipt"></i></div>
+                <span>E-Challan</span>
+              </button>
 
-          <!-- Notifications Widget -->
-          <div class="metric-card glass-card">
-            <div class="metric-icon-badge card-icon-rose">
-              <i class="fa-solid fa-bell"></i>
-            </div>
-            <div class="metric-info">
-              <span class="metric-label">NOTIFICATIONS</span>
-              <span class="metric-value">{{ notifications().length }} <span class="metric-value-unit">Alerts</span></span>
-              <div class="metric-subtext-group">
-                <span class="metric-subtext text-rose"><i class="fa-solid fa-triangle-exclamation"></i> Unread: {{ unreadCount() }}</span>
-                <span class="metric-subtext"><i class="fa-solid fa-chart-line"></i> Monthly: {{ notifications().length }}</span>
-              </div>
-            </div>
-          </div>
+              <!-- Row 2 -->
+              <button class="mockup-pill-card" (click)="openAddVehicle()">
+                <div class="pill-icon-wrapper"><i class="fa-solid fa-car"></i></div>
+                <span>Add Vehicle</span>
+              </button>
+              <button class="mockup-pill-card" (click)="selectTab('rules')">
+                <div class="pill-icon-wrapper"><i class="fa-solid fa-book-bookmark"></i></div>
+                <span>Traffic Pulse</span>
+              </button>
+              <button class="mockup-pill-card" (click)="selectTab('reports')">
+                <div class="pill-icon-wrapper"><i class="fa-solid fa-chart-line"></i></div>
+                <span>Reports</span>
+              </button>
+              <button class="mockup-pill-card" (click)="selectTab('support')">
+                <div class="pill-icon-wrapper"><i class="fa-solid fa-headset"></i></div>
+                <span>Support</span>
+              </button>
 
-          <!-- Referral Widget -->
-          <div class="metric-card glass-card">
-            <div class="metric-icon-badge card-icon-emerald">
-              <i class="fa-solid fa-gift"></i>
-            </div>
-            <div class="metric-info">
-              <span class="metric-label">REFERRALS & REWARDS</span>
-              <span class="metric-value text-emerald">${{ rewardsBalance().toFixed(2) }}</span>
-              <div class="metric-subtext-group">
-                <span class="metric-subtext"><i class="fa-solid fa-users"></i> Referrals: {{ totalReferrals() }}</span>
-                <span class="metric-subtext text-muted"><i class="fa-solid fa-coins"></i> Pending: ${{ pendingRewards().toFixed(2) }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Quick Control Actions Panel -->
-        <section class="quick-actions-section glass-card">
-          <div class="section-title-row">
-            <i class="fa-solid fa-bolt title-icon"></i>
-            <h3>Quick Control Actions</h3>
-          </div>
-          <div class="quick-actions-grid">
-            <button class="quick-action-card" (click)="openAddVehicle()">
-              <div class="action-card-icon icon-blue"><i class="fa-solid fa-plus"></i></div>
-              <span>Register New Vehicle</span>
-            </button>
-            <button class="quick-action-card" (click)="openLinkTag()">
-              <div class="action-card-icon icon-indigo"><i class="fa-solid fa-qrcode"></i></div>
-              <span>Activate Sticker Tag</span>
-            </button>
-            <button class="quick-action-card" (click)="openUpgrade()">
-              <div class="action-card-icon icon-amber"><i class="fa-solid fa-credit-card"></i></div>
-              <span>Upgrade Membership</span>
-            </button>
-            <button class="quick-action-card" (click)="selectTab('notifications')">
-              <div class="action-card-icon icon-rose"><i class="fa-solid fa-bell"></i></div>
-              <span>View Notification Center</span>
-            </button>
-            <button class="quick-action-card" (click)="selectTab('support')">
-              <div class="action-card-icon icon-emerald"><i class="fa-solid fa-headset"></i></div>
-              <span>Get Technical Support</span>
-            </button>
-          </div>
-        </section>
-
-        <!-- Dashboard Bottom Row -->
-        <div class="dashboard-split">
-          <!-- Recent Notifications -->
-          <div class="dashboard-card glass-card flex-2">
-            <div class="card-header">
-              <div class="header-title-group">
-                <i class="fa-solid fa-shield-cat header-icon"></i>
-                <h3>Recent Vehicle Alerts</h3>
-              </div>
-              <button class="text-btn" (click)="selectTab('notifications')">
-                <span>View Alert Center</span> <i class="fa-solid fa-arrow-right btn-arrow"></i>
+              <!-- Row 3 -->
+              <button class="mockup-pill-card" (click)="openUpgrade()">
+                <div class="pill-icon-wrapper"><i class="fa-solid fa-credit-card"></i></div>
+                <span>Payment</span>
+              </button>
+              <button class="mockup-pill-card" (click)="selectTab('profile')">
+                <div class="pill-icon-wrapper"><i class="fa-solid fa-user"></i></div>
+                <span>Profile</span>
+              </button>
+              <button class="mockup-pill-card" (click)="selectTab('profile')">
+                <div class="pill-icon-wrapper"><i class="fa-solid fa-gear"></i></div>
+                <span>Settings</span>
               </button>
             </div>
-            <div class="alerts-list">
-              @if (notifications().length === 0) {
-                <div class="empty-alert-state">
-                  <div class="empty-alert-icon">
-                    <i class="fa-solid fa-shield-halved"></i>
-                  </div>
-                  <h4>All Vehicles Secure</h4>
-                  <p>No active security or parking alerts reported. All vehicle monitors are active and nominal.</p>
-                </div>
-              } @else {
-                @for (notif of notifications().slice(0, 3); track notif.id) {
-                  <div class="alert-item" [class.unread]="!notif.read">
-                    <div class="alert-meta">
-                      <span class="alert-category">
-                        <i [class]="notif.icon" class="alert-cat-icon"></i>
-                        {{ notif.category }}
-                      </span>
-                      <span class="alert-time">{{ notif.timestamp }}</span>
-                    </div>
-                    <p class="alert-msg">"{{ notif.message }}"</p>
-                    <div class="alert-actions">
-                      @if (notif.senderPhone) {
-                        <span class="alert-contact"><i class="fa-solid fa-phone"></i> {{ notif.senderPhone }}</span>
-                      }
-                      <span class="status-pill" [class.resolved]="notif.status === 'Resolved'">{{ notif.status }}</span>
-                      <button class="action-btn" (click)="toggleResolve(notif.id)">
-                        {{ notif.status === 'Resolved' ? 'Reopen Alert' : 'Mark Resolved' }}
-                      </button>
-                    </div>
-                  </div>
-                }
-              }
+
+            <!-- Bottom Main CTA Buttons -->
+            <div class="mockup-bottom-buttons">
+              <button class="btn-yellow-cta" (click)="openAddVehicle()">
+                Add New Vehicle
+              </button>
+              <button class="btn-navy-cta" (click)="selectTab('profile')">
+                Refer & Earn Rewards 🎁
+              </button>
             </div>
+
+          </div>
+
+          <!-- Right Column: Desktop Activity & Security Alerts Center -->
+          <div class="dashboard-activity-side">
+            
+            <!-- Quick Summary Stats Header Row -->
+            <div class="activity-stats-grid">
+              <div class="activity-stat-card">
+                <div class="stat-icon-circle icon-yellow">
+                  <i class="fa-solid fa-car"></i>
+                </div>
+                <div class="stat-meta">
+                  <span class="stat-label">Registered Vehicles</span>
+                  <span class="stat-number">{{ vehicles().length }} Active</span>
+                </div>
+              </div>
+
+              <div class="activity-stat-card">
+                <div class="stat-icon-circle icon-green">
+                  <i class="fa-solid fa-qrcode"></i>
+                </div>
+                <div class="stat-meta">
+                  <span class="stat-label">Active QR Tags</span>
+                  <span class="stat-number">{{ activeTagsCount() }} Assigned</span>
+                </div>
+              </div>
+
+              <div class="activity-stat-card">
+                <div class="stat-icon-circle icon-red">
+                  <i class="fa-solid fa-bell"></i>
+                </div>
+                <div class="stat-meta">
+                  <span class="stat-label">Unread Alerts</span>
+                  <span class="stat-number">{{ unreadCount() }} Unresolved</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent Security Alerts Feed -->
+            <div class="dashboard-alerts-card">
+              <div class="alerts-header-row">
+                <div class="alerts-title-group">
+                  <i class="fa-solid fa-shield-cat alerts-icon"></i>
+                  <h3>Recent Security & Parking Alerts</h3>
+                </div>
+                <button class="btn-text-link" (click)="selectTab('notifications')">
+                  View Alert Center <i class="fa-solid fa-arrow-right"></i>
+                </button>
+              </div>
+
+              <div class="alerts-feed-list">
+                @if (notifications().length === 0) {
+                  <div class="empty-alerts-placeholder">
+                    <div class="empty-shield-icon">
+                      <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h4>All Vehicles Protected</h4>
+                    <p>No security or parking alerts reported. All registered vehicle QR monitors are live and active.</p>
+                  </div>
+                } @else {
+                  @for (notif of notifications().slice(0, 4); track notif.id) {
+                    <div class="feed-alert-item" [class.unread-item]="!notif.read">
+                      <div class="feed-icon-box">
+                        <i [class]="notif.icon"></i>
+                      </div>
+                      <div class="feed-content">
+                        <div class="feed-title-line">
+                          <span class="feed-cat-name">{{ notif.category }}</span>
+                          <span class="feed-time">{{ notif.timestamp }}</span>
+                        </div>
+                        <p class="feed-msg-text">"{{ notif.message }}"</p>
+                        <div class="feed-footer-line">
+                          @if (notif.senderPhone) {
+                            <span class="feed-phone"><i class="fa-solid fa-phone"></i> {{ notif.senderPhone }}</span>
+                          }
+                          <button class="btn-resolve-pill" (click)="toggleResolve(notif.id)">
+                            {{ notif.status === 'Resolved' ? 'Reopen' : 'Mark Resolved' }}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                }
+              </div>
+            </div>
+
           </div>
         </div>
+
       </div>
     }
 

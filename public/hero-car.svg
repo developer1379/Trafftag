@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
+  <defs>
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0b192c"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="carBody" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="50%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="glassGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#334155" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.95"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="600" rx="16" fill="url(#skyGrad)"/>
+
+  <!-- SUV Car Rear Silhouette -->
+  <!-- Main Body outline -->
+  <path d="M 220,240 C 240,160 300,120 400,120 C 500,120 560,160 580,240 L 640,320 C 660,350 670,400 660,460 L 650,490 C 650,510 630,520 610,520 L 190,520 C 170,520 150,510 150,490 L 140,460 C 130,400 140,350 160,320 Z" fill="url(#carBody)" stroke="#475569" stroke-width="4"/>
+  
+  <!-- Rear Windshield Glass -->
+  <path d="M 250,230 C 270,170 320,140 400,140 C 480,140 530,170 550,230 L 570,300 C 570,310 560,320 540,320 L 260,320 C 240,320 230,310 230,300 Z" fill="url(#glassGrad)" stroke="#64748B" stroke-width="3"/>
+  
+  <!-- Prominent Square White QR Code Sticker on Window -->
+  <g transform="translate(260, 160)">
+    <rect x="0" y="0" width="110" height="110" rx="8" fill="#FFFFFF" stroke="#FFB800" stroke-width="4" filter="url(#glow)"/>
+    <!-- QR Corner Boxes -->
+    <rect x="10" y="10" width="28" height="28" fill="#0A1628"/>
+    <rect x="16" y="16" width="16" height="16" fill="#FFFFFF"/>
+    <rect x="20" y="20" width="8" height="8" fill="#0A1628"/>
+
+    <rect x="72" y="10" width="28" height="28" fill="#0A1628"/>
+    <rect x="78" y="16" width="16" height="16" fill="#FFFFFF"/>
+    <rect x="82" y="20" width="8" height="8" fill="#0A1628"/>
+
+    <rect x="10" y="72" width="28" height="28" fill="#0A1628"/>
+    <rect x="16" y="78" width="16" height="16" fill="#FFFFFF"/>
+    <rect x="20" y="82" width="8" height="8" fill="#0A1628"/>
+
+    <!-- Matrix dots -->
+    <rect x="44" y="12" width="18" height="10" fill="#0A1628"/>
+    <rect x="48" y="30" width="16" height="16" fill="#0A1628"/>
+    <rect x="12" y="44" width="24" height="16" fill="#0A1628"/>
+    <rect x="72" y="44" width="26" height="16" fill="#0A1628"/>
+    <rect x="44" y="72" width="20" height="26" fill="#0A1628"/>
+    <rect x="70" y="70" width="28" height="12" fill="#0A1628"/>
+  </g>
+
+  <!-- Tail Lights -->
+  <!-- Left Tail Light -->
+  <path d="M 160,350 L 290,350 C 300,350 305,360 300,370 L 270,400 C 260,410 240,410 230,410 L 160,400 C 150,400 145,390 150,380 Z" fill="#EF4444" filter="url(#glow)"/>
+  <path d="M 170,360 L 280,360" stroke="#FCA5A5" stroke-width="4"/>
+
+  <!-- Right Tail Light -->
+  <path d="M 640,350 L 510,350 C 500,350 495,360 500,370 L 530,400 C 540,410 560,410 570,410 L 640,400 C 650,400 655,390 650,380 Z" fill="#EF4444" filter="url(#glow)"/>
+  <path d="M 630,360 L 520,360" stroke="#FCA5A5" stroke-width="4"/>
+
+  <!-- License Plate Frame -->
+  <rect x="310" y="420" width="180" height="50" rx="6" fill="#FFFFFF" stroke="#0F172A" stroke-width="4"/>
+  <text x="400" y="455" font-family="'Inter', sans-serif" font-weight="900" font-size="26" fill="#0A1628" text-anchor="middle" letter-spacing="3">TRAFFTAG</text>
+
+  <!-- Rear Bumper & Exhausts -->
+  <rect x="200" y="480" width="400" height="30" rx="8" fill="#0F172A"/>
+  <rect x="220" y="490" width="50" height="15" rx="4" fill="#334155"/>
+  <rect x="530" y="490" width="50" height="15" rx="4" fill="#334155"/>
+</svg>

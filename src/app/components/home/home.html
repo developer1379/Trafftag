@@ -1,291 +1,467 @@
-<div class="home-container">
-  <!-- Background Glows -->
-  <div class="bg-glow-gold" style="top: -10%; left: -10%;"></div>
-  <div class="bg-glow-purple" style="top: 30%; right: -10%;"></div>
-  <div class="bg-glow-gold" style="bottom: 10%; left: 20%;"></div>
+<div class="home-wrapper">
+  <!-- Header / Navigation Bar -->
+  <header class="header">
+    <div class="header-container">
+      <a [routerLink]="['/']" class="brand-logo">
+        <div class="logo-shield">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M12 8v4"/>
+            <path d="M12 16h.01"/>
+          </svg>
+        </div>
+        <span class="logo-text">TRAFFTAG</span>
+      </a>
 
-  <!-- Header -->
-  <header class="navbar animate-fade-in">
-    <div class="navbar-container">
-      <div class="logo" [routerLink]="['/']">
-        <span class="logo-icon"><i class="fa-solid fa-taxi"></i></span>
-        <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
-      </div>
-      
-      <!-- Desktop Navigation Links -->
-      <nav class="nav-links">
-        <a [routerLink]="['/features']" class="nav-item">Features</a>
-        <a [routerLink]="['/pricing']" class="nav-item">Pricing</a>
-        <a [routerLink]="['/faq']" class="nav-item">FAQ</a>
-        <a [routerLink]="['/scan']" class="nav-scan-btn"><i class="fa-solid fa-qrcode"></i> Test Scan</a>
-      </nav>
-      
-      <!-- Desktop Auth -->
-      <div class="nav-auth">
-        <a [routerLink]="['/login']" class="btn btn-secondary" data-ripple-dark="true">Login</a>
-        <a [routerLink]="['/register']" class="btn btn-primary" data-ripple-light="true">Sign Up</a>
-      </div>
-
-      <!-- Hamburger Toggle (Mobile Only) -->
-      <button class="menu-toggle" (click)="toggleMenu()" aria-label="Toggle Navigation">
-        <i class="fa-solid fa-bars"></i>
+      <!-- Mobile Hamburger Toggle Button -->
+      <button class="mobile-toggle-btn" (click)="toggleMobileMenu()" aria-label="Toggle Navigation">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          @if (!mobileMenuOpen()) {
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          } @else {
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          }
+        </svg>
       </button>
+
+      <!-- Navigation Menu -->
+      <nav class="nav-menu" [class.mobile-open]="mobileMenuOpen()">
+        <a [routerLink]="['/']" class="nav-link active" (click)="closeMobileMenu()">HOME</a>
+        <a [routerLink]="['/features']" class="nav-link" (click)="closeMobileMenu()">FEATURES</a>
+        <a href="#how-it-works" class="nav-link" (click)="closeMobileMenu()">HOW IT WORKS</a>
+        <a [routerLink]="['/faq']" class="nav-link" (click)="closeMobileMenu()">FAQ</a>
+
+        <!-- Mobile Auth Actions inside drawer -->
+        <div class="mobile-auth-buttons">
+          <a [routerLink]="['/login']" class="btn-login" (click)="closeMobileMenu()">LOGIN</a>
+          <a [routerLink]="['/register']" class="btn-register" (click)="closeMobileMenu()">REGISTER</a>
+        </div>
+      </nav>
+
+      <!-- Desktop Auth Action Buttons -->
+      <div class="auth-buttons">
+        <a [routerLink]="['/login']" class="btn-login">LOGIN</a>
+        <a [routerLink]="['/register']" class="btn-register">REGISTER</a>
+      </div>
     </div>
   </header>
 
-  <!-- Mobile Drawer Backdrop Overlay -->
-  @if (isMenuOpen()) {
-    <div class="mobile-drawer-overlay" (click)="isMenuOpen.set(false)"></div>
-  }
-
-  <!-- Mobile Slide-Out Drawer -->
-  <div class="mobile-drawer" [class.open]="isMenuOpen()">
-    <div class="drawer-header">
-      <div class="logo">
-        <span class="logo-icon"><i class="fa-solid fa-taxi"></i></span>
-        <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
-      </div>
-      <button class="drawer-close" (click)="isMenuOpen.set(false)" aria-label="Close Menu">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-    </div>
-
-    <nav class="drawer-nav">
-      <a [routerLink]="['/features']" (click)="isMenuOpen.set(false)">
-        <i class="fa-solid fa-star drawer-nav-icon"></i> Features
-      </a>
-      <a [routerLink]="['/pricing']" (click)="isMenuOpen.set(false)">
-        <i class="fa-solid fa-tags drawer-nav-icon"></i> Pricing Plans
-      </a>
-      <a [routerLink]="['/faq']" (click)="isMenuOpen.set(false)">
-        <i class="fa-solid fa-circle-question drawer-nav-icon"></i> FAQs
-      </a>
-      <a [routerLink]="['/scan']" class="drawer-scan-link" (click)="isMenuOpen.set(false)">
-        <i class="fa-solid fa-qrcode drawer-nav-icon"></i> Test Scan Form
-      </a>
-    </nav>
-
-    <div class="drawer-footer">
-      <a [routerLink]="['/login']" class="btn btn-secondary w-full" (click)="isMenuOpen.set(false)">
-        <i class="fa-solid fa-right-to-bracket"></i> Login
-      </a>
-      <a [routerLink]="['/register']" class="btn btn-primary w-full" (click)="isMenuOpen.set(false)">
-        <i class="fa-solid fa-user-plus"></i> Sign Up
-      </a>
-    </div>
-  </div>
-
   <!-- Hero Section -->
   <section class="hero">
-    <div class="hero-content">
-      <div class="badge animate-fade-in-up delay-100">
-        <i class="fa-solid fa-shield text-primary animate-pulse"></i> Next-Gen Security & Safety Platform
-      </div>
-      <h1 class="animate-fade-in-up delay-200">
-        Anonymous Vehicle Communication via <span class="text-gradient">QR Codes</span>
-      </h1>
-      <p class="hero-subtitle animate-fade-in-up delay-300">
-        Protect your privacy, stay reachable on the road. Enable finders to notify you about parking issues, open windows, or emergencies instantly without sharing your personal details.
-      </p>
-      <div class="hero-actions animate-fade-in-up delay-400">
-        <a [routerLink]="['/register']" class="btn btn-indigo btn-lg" data-ripple-light="true">Get Your Free QR Tag</a>
-        <a [routerLink]="['/scan/DEMO123']" class="btn btn-secondary btn-lg" data-ripple-dark="true">See Live Scan Demo</a>
-      </div>
-      <div class="hero-stats animate-fade-in-up delay-500">
-        <div class="stat-item">
-          <span class="stat-number">10k+</span>
-          <span class="stat-label">Active Users</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number">99.9%</span>
-          <span class="stat-label">Uptime Delivery</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number">100%</span>
-          <span class="stat-label">Privacy Shield</span>
+    <div class="hero-container">
+      <!-- Left Side Copy -->
+      <div class="hero-content">
+        <p class="hero-subtitle-top">ONE APP FOR ALL THINGS</p>
+        <h1 class="hero-title">TRAFFTAG</h1>
+        <p class="hero-description">
+          Pay fines, check status, manage violations and stay updated with traffic rules.
+        </p>
+        <div class="hero-cta-group">
+          <a [routerLink]="['/register']" class="btn-get-started">
+            <span>GET STARTED</span>
+          </a>
         </div>
       </div>
-    </div>
-    <div class="hero-visual animate-fade-in delay-300">
-      <div class="canvas-container animate-float">
-        <canvas #rendererCanvas class="hero-3d-canvas"></canvas>
+
+      <!-- Right Side Vehicle Visual -->
+      <div class="hero-media">
+        <div class="hero-image-wrapper">
+          <img src="hero-car.png" alt="TRAFFTAG Vehicle" class="hero-car-img" />
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Features Section -->
-  <section id="features" class="features-section animate-fade-in-up delay-100">
-    <div class="section-header">
-      <div class="badge"><i class="fa-solid fa-star"></i> Core Benefits</div>
-      <h2>Why Choose <span class="text-gradient">TRAFFTAG</span>?</h2>
-      <p>A secure middleman service keeping your phone number off windshields.</p>
-    </div>
-    <div class="features-grid">
-      @for (feature of features(); track feature.title; let idx = $index) {
-        <div class="feature-card glass-card animate-fade-in-up" [class]="'delay-' + ((idx + 1) * 100)">
-          <div class="feature-icon"><i [class]="feature.icon"></i></div>
-          <h3>{{ feature.title }}</h3>
-          <p>{{ feature.desc }}</p>
+  <!-- Full-Width White Section Container matching Mockup 1:1 -->
+  <section class="white-section-container">
+    
+    <!-- Row 1: Services Action Bar (Full Width) -->
+    <div class="services-full-bar">
+      
+      <div class="service-item" (click)="openServiceModal('Pay Fine')">
+        <div class="service-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="16" rx="2"/>
+            <path d="M7 8h10"/>
+            <path d="M7 12h6"/>
+            <circle cx="16" cy="15" r="2"/>
+          </svg>
         </div>
-      }
+        <span class="service-label">Pay Fine</span>
+      </div>
+
+      <div class="service-item" (click)="openServiceModal('Check Status')">
+        <div class="service-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <circle cx="11.5" cy="14.5" r="3.5"/>
+            <path d="M14 17l3 3"/>
+          </svg>
+        </div>
+        <span class="service-label">Check Status</span>
+      </div>
+
+      <div class="service-item" (click)="openServiceModal('My Violations')">
+        <div class="service-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M12 8v4"/>
+            <path d="M12 16h.01"/>
+          </svg>
+        </div>
+        <span class="service-label">My Violations</span>
+      </div>
+
+      <div class="service-item" (click)="openServiceModal('Traffic Rules')">
+        <div class="service-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+            <rect x="8" y="2" width="8" height="4" rx="1"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+        </div>
+        <span class="service-label">Traffic Rules</span>
+      </div>
+
+      <div class="service-item" (click)="openServiceModal('E-Challan')">
+        <div class="service-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+        </div>
+        <span class="service-label">E-Challan</span>
+      </div>
+
+      <div class="service-item" (click)="openServiceModal('Support')">
+        <div class="service-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+        </div>
+        <span class="service-label">Support</span>
+      </div>
+
+    </div>
+
+    <!-- Row 2: Why Choose Trafftag? (Full Width) -->
+    <div class="why-full-section" id="features">
+      <h2 class="section-title">Why Choose Trafftag?</h2>
+
+      <div class="features-full-grid">
+
+        <div class="feature-item">
+          <div class="feature-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="1" y="4" width="22" height="16" rx="2"/>
+              <line x1="1" y1="10" x2="23" y2="10"/>
+            </svg>
+          </div>
+          <span class="feature-label">Fast & Secure Payments</span>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21.5 2v6h-6"/>
+              <path d="M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+            </svg>
+          </div>
+          <span class="feature-label">Real-time Updates</span>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <span class="feature-label">All in One Solution</span>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+            </svg>
+          </div>
+          <span class="feature-label">User Friendly Interface</span>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+          <span class="feature-label">Secure Transactions</span>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
+              <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+            </svg>
+          </div>
+          <span class="feature-label">24/7 Support</span>
+        </div>
+
+      </div>
     </div>
   </section>
 
-  <!-- How It Works -->
-  <section class="how-it-works animate-fade-in-up delay-100">
-    <div class="section-header">
-      <div class="badge"><i class="fa-solid fa-circle-question"></i> Simple Setup</div>
-      <h2>Simple 3-Step Process</h2>
-      <p>Get up and running in less than 5 minutes.</p>
-    </div>
-    <div class="steps-grid">
-      <div class="step-card glass-card animate-fade-in-up delay-100">
-        <div class="step-num">1</div>
-        <h3>Activate Tag</h3>
-        <p>Register your account and link your unique QR tag serial number to your vehicle.</p>
+  <!-- How It Works Section Container (Matching Mockup 1) -->
+  <section class="mockup-section-wrapper" id="how-it-works">
+    <div class="mockup-card-container">
+      <h2 class="mockup-section-title">HOW TRAFFTAG WORKS</h2>
+
+      <div class="mockup-steps-flex">
+        <!-- Step 1 -->
+        <div class="mockup-step-item">
+          <div class="mockup-step-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#08162A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="5" y="2" width="14" height="20" rx="3"/>
+              <path d="M9 7h6"/>
+              <path d="M9 11h6"/>
+              <path d="M9 15h4"/>
+            </svg>
+          </div>
+          <div class="mockup-step-badge">1</div>
+          <h4 class="mockup-step-name">REGISTER</h4>
+          <p class="mockup-step-desc">Create your product</p>
+        </div>
+
+        <div class="mockup-arrow">→</div>
+
+        <!-- Step 2 -->
+        <div class="mockup-step-item">
+          <div class="mockup-step-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#08162A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="6" y="2" width="12" height="20" rx="2"/>
+              <circle cx="16" cy="18" r="4" fill="#08162A"/>
+              <path d="M14 18l1.5 1.5 3-3" stroke="#FFFFFF" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <div class="mockup-step-badge">2</div>
+          <h4 class="mockup-step-name">ADD VEHICLE</h4>
+          <p class="mockup-step-desc">Add your vehicle details</p>
+        </div>
+
+        <div class="mockup-arrow">→</div>
+
+        <!-- Step 3 -->
+        <div class="mockup-step-item">
+          <div class="mockup-step-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#08162A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M12 3v3"/>
+              <path d="M12 18v3"/>
+              <path d="M3 12h3"/>
+              <path d="M18 12h3"/>
+              <path d="M5.6 5.6l2.1 2.1"/>
+              <path d="M16.3 16.3l2.1 2.1"/>
+            </svg>
+          </div>
+          <div class="mockup-step-badge">3</div>
+          <h4 class="mockup-step-name">GET NOTIFIED</h4>
+          <p class="mockup-step-desc">Receive real-time notifications</p>
+        </div>
+
+        <div class="mockup-arrow">→</div>
+
+        <!-- Step 4 -->
+        <div class="mockup-step-item">
+          <div class="mockup-step-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#08162A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+              <circle cx="12" cy="13" r="3.5" fill="#08162A"/>
+              <path d="M10.5 13l1 1 2-2" stroke="#FFFFFF" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <div class="mockup-step-badge">4</div>
+          <h4 class="mockup-step-name">PAY SECURELY</h4>
+          <p class="mockup-step-desc">Pay from security timeline</p>
+        </div>
       </div>
-      <div class="step-card glass-card animate-fade-in-up delay-200">
-        <div class="step-num">2</div>
-        <h3>Affix to Windshield</h3>
-        <p>Place your durable TRAFFTAG sticker inside your car window where it is easily visible.</p>
-      </div>
-      <div class="step-card glass-card animate-fade-in-up delay-300">
-        <div class="step-num">3</div>
-        <h3>Stay Connected</h3>
-        <p>If someone notices an issue, they scan the tag to message you. You get a secure alert.</p>
+
+      <!-- Bottom Banner Inside Section -->
+      <div class="mockup-banner-card">
+        <p class="mockup-banner-text">No more long queues.<br>Pay your fines in a few simple steps.</p>
+        <a [routerLink]="['/scan']" class="btn-register mockup-banner-btn">GET STARTED</a>
       </div>
     </div>
   </section>
 
-  <!-- Live Protection Feed Section -->
-  <section class="live-feed-section animate-fade-in-up delay-100">
-    <div class="section-header">
-      <div class="badge"><i class="fa-solid fa-circle-dot text-danger animate-pulse"></i> Real-time Activity Feed</div>
-      <h2>Live System <span class="text-gradient">Alert Logs</span></h2>
-      <p>See how vehicle owners are being protected in real-time across the platform.</p>
-    </div>
-    <div class="live-feed-container glass-card">
-      <div class="live-feed-header">
-        <div class="feed-title"><i class="fa-solid fa-network-wired text-indigo-400"></i> Active Protection Stream</div>
-        <div class="status-indicator"><span class="pulse-dot"></span> System Online</div>
+  <!-- Choose Best Plan Section Container (Matching Mockup 2) -->
+  <section class="mockup-section-wrapper" id="pricing">
+    <div class="mockup-card-container">
+      <h2 class="mockup-section-title">CHOOSE THE BEST PLAN FOR YOU</h2>
+
+      <!-- Toggle Switch -->
+      <div class="mockup-toggle-wrapper">
+        <button class="mockup-toggle-btn" [class.active]="billingCycle() === 'monthly'" (click)="setBillingCycle('monthly')">Monthly</button>
+        <button class="mockup-toggle-btn" [class.active]="billingCycle() === 'yearly'" (click)="setBillingCycle('yearly')">Yearly <span class="discount-badge">(Save 20%)</span></button>
       </div>
-      <div class="feed-grid">
-        @for (log of activityLog(); track log.vehicle; let idx = $index) {
-          <div class="feed-card animate-fade-in-up" [class]="'delay-' + ((idx + 1) * 100)">
-            <div class="feed-icon-container" [class]="log.color">
-              <i [class]="log.icon"></i>
+
+      <!-- 4 Pricing Cards -->
+      <div class="mockup-plans-grid">
+        <div class="mockup-plan-card">
+          <h3 class="mockup-plan-title">BASIC</h3>
+          <div class="mockup-plan-price">₹0 <span>/mo</span></div>
+          <p class="mockup-plan-desc">Check status & view violations</p>
+          <a [routerLink]="['/register']" class="btn-register mockup-choose-btn">CHOOSE</a>
+        </div>
+
+        <div class="mockup-plan-card">
+          <h3 class="mockup-plan-title">STANDARD</h3>
+          <div class="mockup-plan-price">₹99 <span>/mo</span></div>
+          <p class="mockup-plan-desc">Pay fines & get notifications</p>
+          <a [routerLink]="['/register']" class="btn-register mockup-choose-btn">CHOOSE</a>
+        </div>
+
+        <div class="mockup-plan-card featured">
+          <h3 class="mockup-plan-title">PREMIUM</h3>
+          <div class="mockup-plan-price">₹199 <span>/mo</span></div>
+          <p class="mockup-plan-desc">All features + priority support</p>
+          <a [routerLink]="['/register']" class="btn-register mockup-choose-btn">CHOOSE</a>
+        </div>
+
+        <div class="mockup-plan-card">
+          <h3 class="mockup-plan-title">ENTERPRISE</h3>
+          <div class="mockup-plan-price">₹499 <span>/mo</span></div>
+          <p class="mockup-plan-desc">Advanced reports for organizations</p>
+          <a [routerLink]="['/register']" class="btn-register mockup-choose-btn">CHOOSE</a>
+        </div>
+      </div>
+
+      <!-- Bottom Navy Banner Features -->
+      <div class="mockup-navy-banner">
+        <div class="mockup-navy-feature">
+          <div class="mockup-gold-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="#FFB800"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+          </div>
+          <span>Secure Payments</span>
+        </div>
+
+        <div class="mockup-navy-feature">
+          <div class="mockup-gold-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="#FFB800"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+          </div>
+          <span>100% Privacy</span>
+        </div>
+
+        <div class="mockup-navy-feature">
+          <div class="mockup-gold-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="#FFB800"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+          </div>
+          <span>24/7 Support</span>
+        </div>
+
+        <div class="mockup-navy-feature">
+          <div class="mockup-gold-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="#FFB800"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+          </div>
+          <span>Trusted by Users</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section (Full-Width Edge-to-Edge) -->
+  <section class="mockup-section-wrapper" id="faq">
+    <div class="mockup-card-container">
+      <h2 class="mockup-section-title">FREQUENTLY ASKED QUESTIONS</h2>
+      <div class="faq-accordion" style="width: 100%; max-width: 900px;">
+        @for (faq of faqs(); track faq.question; let idx = $index) {
+          <div class="faq-item" [class.open]="faq.open" (click)="toggleFaq(idx)">
+            <div class="faq-question">
+              <h3>{{ faq.question }}</h3>
+              <span class="faq-icon">▼</span>
             </div>
-            <div class="feed-details">
-              <div class="feed-meta">
-                <span class="vehicle-name">{{ log.vehicle }}</span>
-                <span class="alert-time">{{ log.time }}</span>
+            @if (faq.open) {
+              <div class="faq-answer">
+                <p>{{ faq.answer }}</p>
               </div>
-              <p class="alert-desc">{{ log.alert }}</p>
-              <div class="feed-footer">
-                <span class="alert-loc"><i class="fa-solid fa-location-dot"></i> {{ log.location }}</span>
-                <span class="status-badge" [class.resolved]="log.status === 'Resolved'">
-                  <i class="fa-solid" [class.fa-check-double]="log.status === 'Resolved'" [class.fa-spinner]="log.status !== 'Resolved'"></i>
-                  {{ log.status }}
-                </span>
-              </div>
-            </div>
+            }
           </div>
         }
       </div>
     </div>
   </section>
 
-  <!-- Pricing Section -->
-  <section id="pricing" class="pricing-section animate-fade-in-up delay-100">
-    <div class="section-header">
-      <div class="badge"><i class="fa-solid fa-tags"></i> Affordable Rates</div>
-      <h2>Flexible Subscription Plans</h2>
-      <p>Select the plan that fits your personal or fleet notification needs.</p>
-    </div>
-    <div class="pricing-grid">
-      @for (plan of pricingPlans(); track plan.name; let idx = $index) {
-        <div class="pricing-card glass-card animate-fade-in-up" [class.popular-card]="plan.popular" [class]="'delay-' + ((idx + 1) * 100)">
-          @if (plan.popular) {
-            <span class="popular-badge">Most Popular</span>
-          }
-          <h3>{{ plan.name }}</h3>
-          <div class="price-container">
-            <span class="price-val">{{ plan.price }}</span>
-            <span class="price-period">/ {{ plan.period }}</span>
-          </div>
-          <ul class="plan-features">
-            @for (feat of plan.features; track feat) {
-              <li><i class="fa-solid fa-check text-primary"></i> {{ feat }}</li>
-            }
-          </ul>
-          <a [routerLink]="['/register']" class="btn plan-btn" [class.btn-indigo]="plan.popular" [class.btn-secondary]="!plan.popular" [attr.data-ripple-light]="plan.popular ? 'true' : null" [attr.data-ripple-dark]="!plan.popular ? 'true' : null">
-            {{ plan.action }}
-          </a>
-        </div>
-      }
-    </div>
-  </section>
-
-  <!-- FAQ Section -->
-  <section id="faq" class="faq-section animate-fade-in-up delay-100">
-    <div class="section-header">
-      <div class="badge"><i class="fa-solid fa-circle-question"></i> Help Center</div>
-      <h2>Frequently Asked Questions</h2>
-      <p>Have questions? We have answers.</p>
-    </div>
-    <div class="faq-accordion">
-      @for (faq of faqs(); track faq.question; let idx = $index) {
-        <div class="faq-item glass-card animate-fade-in-up" [class.open]="faq.open" [class]="'delay-' + ((idx + 1) * 50)" (click)="toggleFaq(idx)">
-          <div class="faq-question">
-            <h3>{{ faq.question }}</h3>
-            <span class="faq-toggle-icon">
-              <i class="fa-solid" [class.fa-minus]="faq.open" [class.fa-plus]="!faq.open"></i>
-            </span>
-          </div>
-          @if (faq.open) {
-            <div class="faq-answer">
-              <p>{{ faq.answer }}</p>
-            </div>
-          }
-        </div>
-      }
-    </div>
-  </section>
-
   <!-- Footer -->
   <footer class="footer">
-    <div class="footer-content">
+    <div class="footer-container">
       <div class="footer-brand">
-        <div class="logo">
-          <span class="logo-icon"><i class="fa-solid fa-taxi"></i></span>
-          <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
+        <div class="brand-logo">
+          <div class="logo-shield">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <span class="logo-text">TRAFFTAG</span>
         </div>
-        <p>Smart, secure, and anonymous communications protecting vehicle owners worldwide.</p>
-        <div class="footer-socials">
-          <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
-          <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
-          <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
-        </div>
+        <p>One unified application for managing vehicle fines, checking e-challans, traffic compliance, and smart vehicle security.</p>
       </div>
-      
+
       <div class="footer-column">
-        <h4>Platform</h4>
-        <a [routerLink]="['/login']">Sign In</a>
-        <a [routerLink]="['/register']">Get Started</a>
-        <a [routerLink]="['/portal']">Owner Dashboard</a>
-        <a [routerLink]="['/admin']">Admin Panel</a>
+        <h4>Quick Links</h4>
+        <a [routerLink]="['/']">Home</a>
+        <a [routerLink]="['/features']">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a [routerLink]="['/faq']">FAQ</a>
+      </div>
+
+      <div class="footer-column">
+        <h4>Services</h4>
+        <a [routerLink]="['/scan']">Pay Fine</a>
+        <a [routerLink]="['/portal']">Check Status</a>
+        <a [routerLink]="['/features']">E-Challan</a>
       </div>
 
       <div class="footer-column">
         <h4>Trust & Legal</h4>
-        <a href="#">Privacy Shield</a>
-        <a href="#">Terms of Engagement</a>
-        <a href="#">Cookie Policy</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
         <a href="#">Support Center</a>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; 2026 TRAFFTAG Inc. All rights reserved.</p>
+      <p>&copy; 2026 TRAFFTAG Ecosystem. All rights reserved.</p>
     </div>
   </footer>
+
+  <!-- Fixed Mobile Bottom Navigation Bar (Matching Mockup) -->
+  <nav class="mobile-bottom-nav">
+    <a [routerLink]="['/']" class="mobile-bottom-item active">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Home</span>
+    </a>
+    <a [routerLink]="['/portal']" class="mobile-bottom-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <span>Violations</span>
+    </a>
+    <a [routerLink]="['/scan']" class="mobile-bottom-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <span>Pay</span>
+    </a>
+    <a [routerLink]="['/portal']" class="mobile-bottom-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span>Alerts</span>
+    </a>
+    <a [routerLink]="['/portal']" class="mobile-bottom-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profile</span>
+    </a>
+  </nav>
 </div>

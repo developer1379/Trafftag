@@ -69,7 +69,7 @@ export class Portal implements OnInit {
   private qrDecalService = inject(QrDecalService);
 
   // Navigation
-  activeTab = signal<'dashboard' | 'vehicles' | 'tags' | 'notifications' | 'support' | 'profile'>('dashboard');
+  activeTab = signal<'dashboard' | 'vehicles' | 'tags' | 'notifications' | 'support' | 'profile' | 'pay-fine' | 'reports' | 'rules'>('dashboard');
   isMobileSidebarOpen = signal(false);
 
   // Resend OTP variables
@@ -373,7 +373,7 @@ export class Portal implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const sub = params.get('subpage');
-      if (sub && ['dashboard', 'vehicles', 'tags', 'notifications', 'support', 'profile'].includes(sub)) {
+      if (sub && ['dashboard', 'vehicles', 'tags', 'notifications', 'support', 'profile', 'pay-fine', 'reports', 'rules'].includes(sub)) {
         this.activeTab.set(sub as any);
       } else {
         this.router.navigate(['/portal', 'dashboard'], { replaceUrl: true });
@@ -426,7 +426,7 @@ export class Portal implements OnInit {
     }
   }
 
-  selectTab(tab: 'dashboard' | 'vehicles' | 'tags' | 'notifications' | 'support' | 'profile') {
+  selectTab(tab: 'dashboard' | 'vehicles' | 'tags' | 'notifications' | 'support' | 'profile' | 'pay-fine' | 'reports' | 'rules') {
     this.activeTab.set(tab);
     this.isMobileSidebarOpen.set(false);
     this.router.navigate(['/portal', tab]);

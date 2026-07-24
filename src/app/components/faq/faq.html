@@ -1,91 +1,66 @@
-<div class="home-container">
-  <!-- Background Glows -->
-  <div class="bg-glow-gold" style="top: -10%; left: -10%;"></div>
-  <div class="bg-glow-gold" style="top: 40%; right: -10%;"></div>
+<div class="home-wrapper">
+  <!-- Header / Navigation Bar -->
+  <header class="header">
+    <div class="header-container">
+      <a [routerLink]="['/']" class="brand-logo">
+        <div class="logo-shield">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M12 8v4"/>
+            <path d="M12 16h.01"/>
+          </svg>
+        </div>
+        <span class="logo-text">TRAFFTAG</span>
+      </a>
 
-  <!-- Header -->
-  <header class="navbar">
-    <div class="navbar-container">
-      <div class="logo" [routerLink]="['/']">
-        <span class="logo-icon"><i class="fa-solid fa-taxi"></i></span>
-        <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
-      </div>
-      
-      <!-- Desktop Navigation Links -->
-      <nav class="nav-links">
-        <a [routerLink]="['/features']">Features</a>
-        <a [routerLink]="['/pricing']">Pricing</a>
-        <a [routerLink]="['/faq']" class="active-link">FAQ</a>
-        <a [routerLink]="['/scan']" class="nav-scan-btn"><i class="fa-solid fa-qrcode"></i> Test Scan</a>
-      </nav>
-      
-      <!-- Desktop Auth -->
-      <div class="nav-auth">
-        <a [routerLink]="['/login']" class="btn btn-secondary" data-ripple-dark="true">Login</a>
-        <a [routerLink]="['/register']" class="btn btn-primary" data-ripple-light="true">Sign Up</a>
-      </div>
-
-      <!-- Hamburger Toggle (Mobile Only) -->
-      <button class="menu-toggle" (click)="toggleMenu()" aria-label="Toggle Navigation">
-        <i class="fa-solid fa-bars"></i>
+      <!-- Mobile Hamburger Toggle Button -->
+      <button class="mobile-toggle-btn" (click)="toggleMenu()" aria-label="Toggle Navigation">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          @if (!isMenuOpen()) {
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          } @else {
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          }
+        </svg>
       </button>
+
+      <!-- Navigation Menu -->
+      <nav class="nav-menu" [class.mobile-open]="isMenuOpen()">
+        <a [routerLink]="['/']" class="nav-link">HOME</a>
+        <a [routerLink]="['/features']" class="nav-link">FEATURES</a>
+        <a [routerLink]="['/']" fragment="how-it-works" class="nav-link" (click)="isMenuOpen.set(false)">HOW IT WORKS</a>
+        <a [routerLink]="['/faq']" class="nav-link active" (click)="isMenuOpen.set(false)">FAQ</a>
+
+        <!-- Mobile Auth Actions inside drawer -->
+        <div class="mobile-auth-buttons">
+          <a [routerLink]="['/login']" class="btn-login" (click)="isMenuOpen.set(false)">LOGIN</a>
+          <a [routerLink]="['/register']" class="btn-register" (click)="isMenuOpen.set(false)">REGISTER</a>
+        </div>
+      </nav>
+
+      <!-- Desktop Auth Action Buttons -->
+      <div class="auth-buttons">
+        <a [routerLink]="['/login']" class="btn-login">LOGIN</a>
+        <a [routerLink]="['/register']" class="btn-register">REGISTER</a>
+      </div>
     </div>
   </header>
-
-  <!-- Mobile Drawer Backdrop Overlay -->
-  @if (isMenuOpen()) {
-    <div class="mobile-drawer-overlay" (click)="isMenuOpen.set(false)"></div>
-  }
-
-  <!-- Mobile Slide-Out Drawer -->
-  <div class="mobile-drawer" [class.open]="isMenuOpen()">
-    <div class="drawer-header">
-      <div class="logo" [routerLink]="['/']" (click)="isMenuOpen.set(false)">
-        <span class="logo-icon"><i class="fa-solid fa-taxi"></i></span>
-        <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
-      </div>
-      <button class="drawer-close" (click)="isMenuOpen.set(false)" aria-label="Close Menu">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-    </div>
-
-    <nav class="drawer-nav">
-      <a [routerLink]="['/features']" (click)="isMenuOpen.set(false)">
-        <i class="fa-solid fa-star drawer-nav-icon"></i> Features
-      </a>
-      <a [routerLink]="['/pricing']" (click)="isMenuOpen.set(false)">
-        <i class="fa-solid fa-tags drawer-nav-icon"></i> Pricing Plans
-      </a>
-      <a [routerLink]="['/faq']" class="active-link" (click)="isMenuOpen.set(false)">
-        <i class="fa-solid fa-circle-question drawer-nav-icon"></i> FAQs
-      </a>
-      <a [routerLink]="['/scan']" class="drawer-scan-link" (click)="isMenuOpen.set(false)">
-        <i class="fa-solid fa-qrcode drawer-nav-icon"></i> Test Scan Form
-      </a>
-    </nav>
-
-    <div class="drawer-footer">
-      <a [routerLink]="['/login']" class="btn btn-secondary w-full" (click)="isMenuOpen.set(false)">
-        <i class="fa-solid fa-right-to-bracket"></i> Login
-      </a>
-      <a [routerLink]="['/register']" class="btn btn-primary w-full" (click)="isMenuOpen.set(false)">
-        <i class="fa-solid fa-user-plus"></i> Sign Up
-      </a>
-    </div>
-  </div>
 
   <!-- Main Content -->
   <main class="page-content">
     <div class="page-hero">
-      <div class="badge animate-fade-in-up delay-100"><i class="fa-solid fa-circle-question"></i> Help Desk</div>
-      <h1 class="animate-fade-in-up delay-200">Frequently Asked <span class="text-gradient">Questions</span></h1>
-      <p class="hero-subtitle animate-fade-in-up delay-300">
+      <div class="badge"><i class="fa-solid fa-circle-question"></i> Help Desk</div>
+      <h1>Frequently Asked <span class="text-gradient">Questions</span></h1>
+      <p class="hero-subtitle">
         Find quick answers to common questions about setting up accounts, printing tags, and security features.
       </p>
     </div>
 
     <!-- Category Filters -->
-    <div class="faq-categories animate-fade-in-up delay-100">
+    <div class="faq-categories">
       <button class="category-btn" [class.active]="activeCategory() === 'all'" (click)="activeCategory.set('all')">
         All Questions
       </button>
@@ -101,10 +76,10 @@
     </div>
 
     <!-- FAQ Accordion -->
-    <section class="faq-section animate-fade-in-up delay-100">
+    <section class="faq-section">
       <div class="faq-accordion">
         @for (faq of filteredFaqs(); track faq.question; let idx = $index) {
-          <div class="faq-item glass-card animate-fade-in-up" [class.open]="faq.open" [class]="'delay-' + ((idx + 1) * 50)" (click)="toggleFaq(faq)">
+          <div class="faq-item" [class.open]="faq.open" (click)="toggleFaq(faq)">
             <div class="faq-question">
               <h3>{{ faq.question }}</h3>
               <span class="faq-toggle-icon">
@@ -122,50 +97,55 @@
     </section>
 
     <!-- Support Center CTA -->
-    <section class="support-cta-section animate-fade-in-up delay-100">
-      <div class="support-card glass-card">
+    <section class="support-cta-section">
+      <div class="support-card">
         <div class="support-icon"><i class="fa-solid fa-envelope-open-text"></i></div>
         <h2>Still Have Questions?</h2>
         <p>Our dedicated support team is available 24/7 to assist you with QR sticker setups, fleet configuration, or account inquiries.</p>
-        <a href="mailto:support@trafftag.com" class="btn btn-primary" data-ripple-light="true">Contact Support Team</a>
+        <a href="mailto:support@trafftag.com" class="btn btn-primary">Contact Support Team</a>
       </div>
     </section>
   </main>
 
   <!-- Footer -->
   <footer class="footer">
-    <div class="footer-content">
+    <div class="footer-container">
       <div class="footer-brand">
-        <div class="logo">
-          <span class="logo-icon"><i class="fa-solid fa-taxi"></i></span>
-          <span class="logo-text">TRAFF<span class="logo-highlight">TAG</span></span>
+        <div class="brand-logo">
+          <div class="logo-shield">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <span class="logo-text">TRAFFTAG</span>
         </div>
-        <p>Smart, secure, and anonymous communications protecting vehicle owners worldwide.</p>
-        <div class="footer-socials">
-          <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
-          <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
-          <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
-        </div>
+        <p>One unified application for managing vehicle fines, checking e-challans, traffic compliance, and smart vehicle security.</p>
       </div>
-      
+
       <div class="footer-column">
-        <h4>Platform</h4>
-        <a [routerLink]="['/login']">Sign In</a>
-        <a [routerLink]="['/register']">Get Started</a>
-        <a [routerLink]="['/portal']">Owner Dashboard</a>
-        <a [routerLink]="['/admin']">Admin Panel</a>
+        <h4>Quick Links</h4>
+        <a [routerLink]="['/']">Home</a>
+        <a [routerLink]="['/features']">Features</a>
+        <a [routerLink]="['/']" fragment="how-it-works">How It Works</a>
+        <a [routerLink]="['/faq']">FAQ</a>
+      </div>
+
+      <div class="footer-column">
+        <h4>Services</h4>
+        <a [routerLink]="['/scan']">Pay Fine</a>
+        <a [routerLink]="['/portal']">Check Status</a>
+        <a [routerLink]="['/features']">E-Challan</a>
       </div>
 
       <div class="footer-column">
         <h4>Trust & Legal</h4>
-        <a href="#">Privacy Shield</a>
-        <a href="#">Terms of Engagement</a>
-        <a href="#">Cookie Policy</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
         <a href="#">Support Center</a>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; 2026 TRAFFTAG Inc. All rights reserved.</p>
+      <p>&copy; 2026 TRAFFTAG Ecosystem. All rights reserved.</p>
     </div>
   </footer>
 </div>

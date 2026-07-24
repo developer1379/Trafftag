@@ -10,6 +10,10 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  background: #08162A;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
 }
 
 .ticket-header {
@@ -27,16 +31,18 @@
 .ticket-id {
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--primary);
-  background: var(--primary-glow);
-  padding: 2px 6px;
-  border-radius: 4px;
+  color: #FFB800;
+  background: rgba(255, 184, 0, 0.15);
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 184, 0, 0.3);
 }
 
 .ticket-title-col h3 {
   font-size: 1.05rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: #FFFFFF;
+  margin: 0;
 }
 
 .ticket-status-pill {
@@ -47,44 +53,47 @@
 }
 
 .ticket-status-pill.t-open {
-  background: rgba(223, 178, 63, 0.1);
-  color: var(--primary);
+  background: rgba(255, 184, 0, 0.15);
+  color: #FFB800;
+  border: 1px solid rgba(255, 184, 0, 0.3);
 }
 
 .ticket-status-pill.t-progress {
-  background: rgba(99, 102, 241, 0.1);
-  color: #818cf8;
+  background: rgba(59, 130, 246, 0.15);
+  color: #60A5FA;
+  border: 1px solid rgba(59, 130, 246, 0.3);
 }
 
 .ticket-status-pill.t-resolved {
-  background: rgba(245, 158, 11, 0.1);
-  color: var(--accent);
+  background: rgba(16, 185, 129, 0.15);
+  color: #10B981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 .ticket-meta-info {
   display: flex;
   gap: 20px;
   font-size: 0.85rem;
-  color: var(--text-secondary);
+  color: #94A3B8;
 }
 
 .ticket-meta-info strong {
-  color: var(--text-primary);
+  color: #FFFFFF;
 }
 
 .ticket-meta-info strong.p-high {
-  color: var(--danger);
+  color: #EF4444;
 }
 
 .ticket-rating-section {
-  border-top: 1px solid var(--border-card);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   padding-top: 12px;
   margin-top: 4px;
 }
 
 .rated-stars {
   font-size: 0.88rem;
-  color: var(--text-secondary);
+  color: #94A3B8;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -95,7 +104,7 @@
   align-items: center;
   gap: 12px;
   font-size: 0.88rem;
-  color: var(--text-secondary);
+  color: #94A3B8;
 }
 
 .stars-picker {
@@ -106,7 +115,7 @@
 .stars-picker button {
   background: none;
   border: none;
-  color: var(--text-muted);
+  color: #64748B;
   font-size: 1.1rem;
   cursor: pointer;
   padding: 2px;
@@ -115,5 +124,5 @@
 
 .stars-picker button:hover,
 .stars-picker button:hover ~ button {
-  color: var(--warning);
+  color: #FFB800;
 }
