@@ -12,14 +12,14 @@
 }
 
 .vehicle-card {
-  background: #08162A;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
   border-radius: 18px;
   padding: 22px;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 20px rgba(8, 22, 42, 0.04);
   position: relative;
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -37,8 +37,8 @@
 
 .vehicle-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
-  border-color: rgba(255, 184, 0, 0.3);
+  box-shadow: 0 12px 30px rgba(8, 22, 42, 0.08);
+  border-color: #FFB800 !important;
 }
 
 .veh-card-header {
@@ -58,28 +58,28 @@
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: rgba(255, 184, 0, 0.15);
-  color: #FFB800;
-  border: 1px solid rgba(255, 184, 0, 0.3);
+  background: #08162A !important;
+  color: #FFB800 !important;
+  border: 1px solid #08162A !important;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.25rem;
-  box-shadow: 0 4px 14px rgba(255, 184, 0, 0.2);
+  box-shadow: 0 4px 14px rgba(8, 22, 42, 0.15);
   flex-shrink: 0;
 }
 
 .veh-title-block h3 {
   font-size: 1.2rem;
   font-weight: 800;
-  color: #FFFFFF;
+  color: #08162A !important;
   margin: 0;
   text-transform: capitalize;
 }
 
 .veh-subtitle {
   font-size: 0.82rem;
-  color: #94A3B8;
+  color: #64748B !important;
   font-weight: 500;
 }
 
@@ -94,20 +94,20 @@
 }
 
 .status-pill-badge.tag-active {
-  background: rgba(16, 185, 129, 0.15);
-  color: #10B981;
+  background: rgba(16, 185, 129, 0.12);
+  color: #059669;
   border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 .status-pill-badge.tag-paused {
-  background: rgba(245, 158, 11, 0.15);
-  color: #FFB800;
+  background: rgba(245, 158, 11, 0.12);
+  color: #d97706;
   border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 .status-pill-badge.tag-missing {
-  background: rgba(239, 68, 68, 0.15);
-  color: #EF4444;
+  background: rgba(239, 68, 68, 0.12);
+  color: #dc2626;
   border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
@@ -116,9 +116,9 @@
   display: flex;
   justify-content: center;
   padding: 10px 0;
-  background: rgba(255, 255, 255, 0.03);
+  background: #F8FAFC !important;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid #E2E8F0 !important;
 }
 
 .veh-license-plate {
@@ -133,7 +133,7 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   border-left: 6px solid #0f172a;
   border-right: 6px solid #0f172a;
@@ -176,7 +176,7 @@
   flex-direction: column;
   gap: 14px;
   padding: 12px 0 0 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid #E2E8F0 !important;
 }
 
 .veh-info-section {
@@ -188,7 +188,7 @@
 .veh-info-section h4 {
   font-size: 0.75rem;
   font-weight: 800;
-  color: #FFB800;
+  color: #08162A !important;
   text-transform: uppercase;
   letter-spacing: 1px;
   margin: 0 0 2px 0;
@@ -208,25 +208,25 @@
 
 .info-item .label {
   font-size: 0.75rem;
-  font-weight: 500;
-  color: #94A3B8;
+  font-weight: 600;
+  color: #64748B !important;
 }
 
 .info-item .value {
   font-size: 0.88rem;
   font-weight: 700;
-  color: #FFFFFF;
+  color: #08162A !important;
 }
 
 .info-item .vin-text {
   font-family: monospace;
   font-size: 0.8rem;
-  color: #CBD5E1;
+  color: #334155 !important;
 }
 
 .last-alert-time {
   font-weight: 400;
-  color: #94A3B8;
+  color: #64748B !important;
   font-size: 0.72rem;
 }
 
@@ -239,19 +239,19 @@
   font-size: 0.76rem;
   padding: 4px 12px;
   border-radius: 20px;
-  background: rgba(255, 255, 255, 0.04);
-  color: #94A3B8;
+  background: #F1F5F9 !important;
+  color: #64748B !important;
   display: flex;
   align-items: center;
   gap: 6px;
-  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border: 1px dashed #CBD5E1 !important;
   font-weight: 600;
 }
 
 .pref-badge.enabled {
-  background: rgba(255, 184, 0, 0.12);
-  color: #FFB800;
-  border: 1px solid rgba(255, 184, 0, 0.3);
+  background: rgba(255, 184, 0, 0.15) !important;
+  color: #B45309 !important;
+  border: 1px solid #FFB800 !important;
   font-weight: 700;
 }
 
@@ -263,7 +263,7 @@
   flex-wrap: wrap;
   gap: 12px;
   padding-top: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid #E2E8F0 !important;
 }
 
 .toggle-control-group {
@@ -276,7 +276,7 @@
 .toggle-desc-label {
   font-size: 0.82rem;
   font-weight: 700;
-  color: #FFFFFF;
+  color: #08162A !important;
 }
 
 .footer-actions-group {
@@ -293,9 +293,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.06);
-  color: #FFFFFF;
+  border: 1px solid #CBD5E1 !important;
+  background: #08162A !important;
+  color: #FFFFFF !important;
   cursor: pointer;
   transition: all 0.2s ease;
   padding: 0 14px;

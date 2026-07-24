@@ -436,4 +436,29 @@
       </div>
     </div>
   }
+
+  <!-- Mobile Bottom Navigation Bar (Matches Mobile UI Standard) -->
+  <nav class="mobile-bottom-nav">
+    <button class="nav-item-mobile" [class.active]="activeTab() === 'dashboard'" (click)="selectTab('dashboard')">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+    </button>
+    <button class="nav-item-mobile" [class.active]="activeTab() === 'notifications' || activeTab() === 'rules'" (click)="selectTab('notifications')">
+      <i class="fa-solid fa-shield-halved"></i>
+      <span>Violations</span>
+    </button>
+    <button class="nav-item-mobile" [class.active]="activeTab() === 'pay-fine'" (click)="selectTab('pay-fine')">
+      <i class="fa-solid fa-calculator"></i>
+      <span>Pay</span>
+    </button>
+    <button class="nav-item-mobile" [class.active]="activeTab() === 'tags' || activeTab() === 'vehicles'" (click)="selectTab('tags')">
+      <i class="fa-solid fa-bell-concierge"></i>
+      <span>Fleet</span>
+    </button>
+    <button class="nav-item-mobile" [class.active]="activeTab() === 'profile'" (click)="selectTab('profile')">
+      <i class="fa-solid fa-user"></i>
+      <span>Profile</span>
+    </button>
+  </nav>
 </div>
+

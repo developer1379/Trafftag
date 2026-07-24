@@ -9,25 +9,25 @@
   --font-primary: 'Inter', system-ui, -apple-system, sans-serif;
   --font-secondary: 'Inter', system-ui, -apple-system, sans-serif;
 
-  /* Theme Palette - Rich Dark Blue & Golden Yellow */
-  --bg-primary: #08162A; /* Deep Dark Navy */
-  --bg-secondary: #0E1E36; /* Dark Rich Navy Card Background */
-  --bg-card: rgba(14, 30, 54, 0.85);
-  --bg-card-hover: rgba(18, 38, 68, 0.95);
-  --border-card: rgba(255, 255, 255, 0.08);
-  --border-card-hover: rgba(255, 184, 0, 0.35);
+  /* Theme Palette - Enterprise Light Mode with Rich Navy & Golden Yellow */
+  --bg-primary: #F8FAFC; /* Clean Light Slate Background */
+  --bg-secondary: #FFFFFF; /* Pure White Card Background */
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #FFFFFF;
+  --border-card: #E2E8F0; /* Light Slate Border */
+  --border-card-hover: #FFB800;
 
-  --text-primary: #FFFFFF; /* Crisp White */
-  --text-secondary: #CBD5E1; /* Light Slate Blue */
+  --text-primary: #08162A; /* Rich Dark Navy */
+  --text-secondary: #64748B; /* Slate Gray */
   --text-muted: #94A3B8; /* Slate */
 
-  --primary: #FFB800; /* Golden Yellow */
+  --primary: #FFB800; /* Golden Yellow Accent */
   --primary-hover: #E5A600; /* Rich Gold Hover */
   --primary-glow: rgba(255, 184, 0, 0.15);
 
-  --secondary: #FFB800; /* Golden Yellow Accent */
-  --secondary-hover: #E5A600;
-  --secondary-glow: rgba(255, 184, 0, 0.15);
+  --secondary: #08162A; /* Rich Navy Accent */
+  --secondary-hover: #050B16;
+  --secondary-glow: rgba(8, 22, 42, 0.15);
 
   --accent: #38BDF8; /* Sky Blue Accent */
   --accent-glow: rgba(56, 189, 248, 0.15);
@@ -49,8 +49,8 @@
 
 html, body {
   font-family: var(--font-primary);
-  background-color: #08162A !important;
-  color: #FFFFFF !important;
+  background-color: #F8FAFC !important;
+  color: #08162A !important;
   min-height: 100vh;
   line-height: 1.6;
   overflow-x: hidden;
@@ -60,7 +60,7 @@ html, body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-secondary);
   font-weight: 800;
-  color: #FFFFFF;
+  color: #08162A !important;
 }
 
 a {
@@ -132,20 +132,20 @@ button, .btn {
   border: 1px solid rgba(255, 184, 0, 0.3) !important;
 }
 
-/* Glass Cards - Dark Rich Blue Theme */
+/* Glass Cards - Enterprise Light White Theme */
 .glass-card, .feature-card, .pricing-card, .faq-item, .step-card, .auth-card, .dashboard-card, .scan-card, .support-card {
-  background: #0E1E36 !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  color: #FFFFFF !important;
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  color: #08162A !important;
   border-radius: 18px !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25) !important;
+  box-shadow: 0 4px 20px rgba(8, 22, 42, 0.04) !important;
   transition: all 0.3s ease !important;
 }
 
 .glass-card:hover, .feature-card:hover, .pricing-card:hover, .step-card:hover, .auth-card:hover, .dashboard-card:hover, .scan-card:hover {
   transform: translateY(-4px) !important;
-  border-color: rgba(255, 184, 0, 0.4) !important;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35), 0 0 20px rgba(255, 184, 0, 0.08) !important;
+  border-color: #FFB800 !important;
+  box-shadow: 0 10px 25px rgba(8, 22, 42, 0.08) !important;
 }
 
 /* Feature Icons */
@@ -171,21 +171,34 @@ button, .btn {
 
 /* Text Overrides */
 p, .hero-subtitle, .feature-card p, .faq-answer, .plan-desc {
-  color: #CBD5E1 !important;
+  color: #64748B !important;
 }
 
-/* Form Controls */
+/* Form Controls - Enterprise Light Theme */
 input, select, textarea, .form-input {
-  background: #0B192E !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
-  color: #FFFFFF !important;
-  border-radius: 8px !important;
-  padding: 10px 14px !important;
+  background: #FFFFFF !important;
+  border: 1px solid #CBD5E1 !important;
+  color: #08162A !important;
+  border-radius: 10px !important;
+  padding: 11px 15px;
+  font-family: var(--font-primary) !important;
 }
 
-input:focus, select:focus, textarea:focus {
+.form-input-with-icon,
+input.form-input-with-icon,
+.input-wrapper-inner input {
+  padding-left: 48px !important;
+}
+
+input::placeholder, select::placeholder, textarea::placeholder, .form-input::placeholder {
+  color: #94A3B8 !important;
+  opacity: 1 !important;
+}
+
+input:focus, select:focus, textarea:focus, .form-input:focus {
+  background: #FFFFFF !important;
   border-color: #FFB800 !important;
-  box-shadow: 0 0 0 3px rgba(255, 184, 0, 0.2) !important;
+  box-shadow: 0 0 0 3px rgba(255, 184, 0, 0.25) !important;
   outline: none !important;
 }
 

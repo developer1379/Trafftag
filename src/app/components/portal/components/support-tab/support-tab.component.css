@@ -10,10 +10,10 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  background: #08162A;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
   border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 20px rgba(8, 22, 42, 0.04);
 }
 
 .ticket-header {
@@ -31,17 +31,17 @@
 .ticket-id {
   font-size: 0.85rem;
   font-weight: 700;
-  color: #FFB800;
-  background: rgba(255, 184, 0, 0.15);
+  color: #08162A !important;
+  background: rgba(255, 184, 0, 0.15) !important;
   padding: 2px 8px;
   border-radius: 6px;
-  border: 1px solid rgba(255, 184, 0, 0.3);
+  border: 1px solid #FFB800 !important;
 }
 
 .ticket-title-col h3 {
   font-size: 1.05rem;
   font-weight: 700;
-  color: #FFFFFF;
+  color: #08162A !important;
   margin: 0;
 }
 
@@ -54,19 +54,19 @@
 
 .ticket-status-pill.t-open {
   background: rgba(255, 184, 0, 0.15);
-  color: #FFB800;
-  border: 1px solid rgba(255, 184, 0, 0.3);
+  color: #B45309;
+  border: 1px solid #FFB800;
 }
 
 .ticket-status-pill.t-progress {
-  background: rgba(59, 130, 246, 0.15);
-  color: #60A5FA;
+  background: rgba(59, 130, 246, 0.12);
+  color: #2563EB;
   border: 1px solid rgba(59, 130, 246, 0.3);
 }
 
 .ticket-status-pill.t-resolved {
-  background: rgba(16, 185, 129, 0.15);
-  color: #10B981;
+  background: rgba(16, 185, 129, 0.12);
+  color: #059669;
   border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
@@ -74,19 +74,19 @@
   display: flex;
   gap: 20px;
   font-size: 0.85rem;
-  color: #94A3B8;
+  color: #64748B !important;
 }
 
 .ticket-meta-info strong {
-  color: #FFFFFF;
+  color: #08162A !important;
 }
 
 .ticket-meta-info strong.p-high {
-  color: #EF4444;
+  color: #DC2626 !important;
 }
 
 .ticket-rating-section {
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid #E2E8F0 !important;
   padding-top: 12px;
   margin-top: 4px;
 }

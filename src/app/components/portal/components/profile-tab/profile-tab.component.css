@@ -1,4 +1,4 @@
-/* PROFILE LAYOUT & SECURITY ACTIONS STYLING */
+/* PROFILE LAYOUT & SECURITY ACTIONS STYLING (WHITE THEME HIGH CONTRAST) */
 .profile-layout-grid {
   display: grid !important;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
@@ -11,31 +11,35 @@
   display: flex !important;
   flex-direction: column !important;
   gap: 24px !important;
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 18px !important;
+  box-shadow: 0 4px 20px rgba(8, 22, 42, 0.04) !important;
 }
 
 .profile-card-header {
   display: flex !important;
   align-items: center !important;
   gap: 16px !important;
-  border-bottom: 1px solid var(--border-card) !important;
+  border-bottom: 1px solid #E2E8F0 !important;
   padding-bottom: 20px !important;
 }
 
 .profile-main-icon {
   font-size: 2.6rem !important;
-  color: var(--secondary) !important;
+  color: #FFB800 !important;
 }
 
 .profile-card-header h3 {
   font-size: 1.35rem !important;
-  font-weight: 700 !important;
-  color: var(--text-primary) !important;
+  font-weight: 800 !important;
+  color: #08162A !important;
   margin: 0 !important;
 }
 
 .profile-card-header p {
   font-size: 0.85rem !important;
-  color: var(--text-secondary) !important;
+  color: #64748B !important;
   margin: 4px 0 0 0 !important;
 }
 
@@ -50,7 +54,7 @@
   justify-content: space-between !important;
   align-items: center !important;
   padding: 12px 0 !important;
-  border-bottom: 1px dashed rgba(15, 23, 42, 0.05) !important;
+  border-bottom: 1px dashed #E2E8F0 !important;
 }
 
 .profile-detail-row:last-child {
@@ -59,35 +63,35 @@
 
 .detail-label {
   font-size: 0.9rem !important;
-  color: var(--text-secondary) !important;
+  color: #64748B !important;
   font-weight: 500 !important;
 }
 
 .detail-value {
   font-size: 0.95rem !important;
-  color: var(--text-primary) !important;
-  font-weight: 600 !important;
+  color: #08162A !important;
+  font-weight: 700 !important;
 }
 
 .badge-role {
-  background: rgba(79, 70, 229, 0.06) !important;
-  color: var(--secondary) !important;
-  border: 1px solid rgba(79, 70, 229, 0.15) !important;
+  background: rgba(8, 22, 42, 0.08) !important;
+  color: #08162A !important;
+  border: 1px solid rgba(8, 22, 42, 0.2) !important;
   padding: 3px 8px !important;
-  border-radius: 4px !important;
+  border-radius: 6px !important;
   font-size: 0.78rem !important;
-  font-weight: 700 !important;
+  font-weight: 800 !important;
   text-transform: uppercase !important;
 }
 
 .badge-plan-premium {
-  background: rgba(223, 178, 63, 0.08) !important;
-  color: var(--primary) !important;
-  border: 1px solid rgba(223, 178, 63, 0.2) !important;
+  background: rgba(255, 184, 0, 0.15) !important;
+  color: #B45309 !important;
+  border: 1px solid #FFB800 !important;
   padding: 3px 8px !important;
-  border-radius: 4px !important;
+  border-radius: 6px !important;
   font-size: 0.78rem !important;
-  font-weight: 700 !important;
+  font-weight: 800 !important;
   text-transform: uppercase !important;
 }
 
@@ -98,9 +102,9 @@
 }
 
 .security-action-box {
-  background: rgba(15, 23, 42, 0.01) !important;
-  border: 1px solid rgba(15, 23, 42, 0.05) !important;
-  border-radius: 12px !important;
+  background: #F8FAFC !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 14px !important;
   padding: 20px !important;
   display: flex !important;
   flex-direction: column !important;
@@ -109,23 +113,72 @@
 
 .security-action-box h4 {
   font-size: 1rem !important;
-  font-weight: 700 !important;
-  color: var(--text-primary) !important;
+  font-weight: 800 !important;
+  color: #08162A !important;
   margin: 0 !important;
 }
 
 .security-action-box p {
   font-size: 0.85rem !important;
-  color: var(--text-secondary) !important;
+  color: #64748B !important;
   line-height: 1.5 !important;
   margin: 4px 0 0 0 !important;
 }
 
+/* Form Inputs inside Profile Cards */
+.profile-card input[type="text"],
+.profile-card input[type="password"],
+.profile-card input[type="email"] {
+  background: #FFFFFF !important;
+  border: 1px solid #CBD5E1 !important;
+  border-radius: 10px !important;
+  color: #08162A !important;
+  font-size: 0.92rem !important;
+  padding: 10px 14px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.profile-card input[type="text"]:focus,
+.profile-card input[type="password"]:focus,
+.profile-card input[type="email"]:focus {
+  border-color: #FFB800 !important;
+  box-shadow: 0 0 0 3px rgba(255, 184, 0, 0.2) !important;
+  outline: none !important;
+}
+
+.profile-card label {
+  color: #08162A !important;
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 4px !important;
+  display: block !important;
+}
+
+/* Action Buttons inside Profile */
+.resend-otp-btn,
+.profile-card .btn-indigo,
+.profile-card .btn-primary {
+  background: #08162A !important;
+  color: #FFFFFF !important;
+  border: 1px solid #08162A !important;
+  border-radius: 10px !important;
+  padding: 12px 18px !important;
+  font-weight: 700 !important;
+  font-size: 0.92rem !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.resend-otp-btn:hover,
+.profile-card .btn-indigo:hover,
+.profile-card .btn-primary:hover {
+  background: #050B16 !important;
+  color: #FFB800 !important;
+}
+
 .resend-otp-btn {
   width: 100% !important;
-  padding: 12px !important;
-  font-weight: 600 !important;
-  font-size: 0.95rem !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -136,11 +189,11 @@
   display: inline-flex !important;
   align-items: center !important;
   gap: 8px !important;
-  background: rgba(16, 185, 129, 0.05) !important;
-  border: 1px solid rgba(16, 185, 129, 0.18) !important;
+  background: rgba(16, 185, 129, 0.08) !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
   padding: 12px 16px !important;
   border-radius: 10px !important;
-  color: #065f46 !important;
-  font-weight: 500 !important;
+  color: #047857 !important;
+  font-weight: 600 !important;
   font-size: 0.88rem !important;
 }
