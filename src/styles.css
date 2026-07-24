@@ -49,8 +49,8 @@
 
 html, body {
   font-family: var(--font-primary);
-  background-color: #F8FAFC !important;
-  color: #08162A !important;
+  background-color: #08162A;
+  color: #FFFFFF;
   min-height: 100vh;
   line-height: 1.6;
   overflow-x: hidden;
@@ -60,7 +60,6 @@ html, body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-secondary);
   font-weight: 800;
-  color: #08162A !important;
 }
 
 a {
@@ -132,8 +131,8 @@ button, .btn {
   border: 1px solid rgba(255, 184, 0, 0.3) !important;
 }
 
-/* Glass Cards - Enterprise Light White Theme */
-.glass-card, .feature-card, .pricing-card, .faq-item, .step-card, .auth-card, .dashboard-card, .scan-card, .support-card {
+/* Cards - White Container Specific Overrides for Auth and Modals */
+.auth-card, .modal-card, .support-card, .activity-stat-card {
   background: #FFFFFF !important;
   border: 1px solid #E2E8F0 !important;
   color: #08162A !important;
@@ -142,35 +141,12 @@ button, .btn {
   transition: all 0.3s ease !important;
 }
 
-.glass-card:hover, .feature-card:hover, .pricing-card:hover, .step-card:hover, .auth-card:hover, .dashboard-card:hover, .scan-card:hover {
-  transform: translateY(-4px) !important;
-  border-color: #FFB800 !important;
-  box-shadow: 0 10px 25px rgba(8, 22, 42, 0.08) !important;
-}
-
-/* Feature Icons */
-.feature-icon {
-  font-size: 1.6rem !important;
-  width: 52px !important;
-  height: 52px !important;
-  border-radius: 12px !important;
-  background: rgba(255, 184, 0, 0.1) !important;
-  color: #FFB800 !important;
-  border: 1px solid rgba(255, 184, 0, 0.25) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  transition: all 0.3s ease !important;
-}
-
-.feature-card:hover .feature-icon {
-  background: #FFB800 !important;
+.auth-card h1, .auth-card h2, .auth-card h3, .auth-card h4,
+.modal-card h1, .modal-card h2, .modal-card h3, .modal-card h4 {
   color: #08162A !important;
-  transform: scale(1.08) !important;
 }
 
-/* Text Overrides */
-p, .hero-subtitle, .feature-card p, .faq-answer, .plan-desc {
+.auth-card p, .modal-card p {
   color: #64748B !important;
 }
 
