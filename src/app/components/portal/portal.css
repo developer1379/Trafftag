@@ -253,17 +253,9 @@
 }
 
 .dashboard-grid-layout {
-  display: grid;
-  grid-template-columns: 520px 1fr;
-  gap: 24px;
+  display: flex;
+  justify-content: center;
   width: 100%;
-  align-items: start;
-}
-
-@media (max-width: 1180px) {
-  .dashboard-grid-layout {
-    grid-template-columns: 1fr;
-  }
 }
 
 .mockup-navy-card {
@@ -271,6 +263,7 @@
   border-radius: 20px;
   padding: 28px 24px;
   width: 100%;
+  max-width: 680px;
   box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
   display: flex;
   flex-direction: column;
