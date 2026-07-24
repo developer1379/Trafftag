@@ -1394,97 +1394,231 @@
   font-size: 0.95rem;
 }
 
-.upgrade-plans-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  width: 100%;
-  align-items: stretch;
-  margin-top: 10px;
+/* ==========================================
+   COMPACT & PROFESSIONAL UPGRADE MODAL STYLES
+   ========================================== */
+.modal-large.upgrade-modal-compact {
+  max-width: 940px !important;
+  width: 95% !important;
+  border-radius: 20px !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 20px 60px rgba(8, 22, 42, 0.25) !important;
+  border: 1px solid #E2E8F0 !important;
+  overflow: hidden !important;
 }
 
-@media (max-width: 992px) {
+.upgrade-modal-compact .modal-header {
+  padding: 20px 24px 14px !important;
+  border-bottom: 1px solid #F1F5F9 !important;
+  background: #FFFFFF !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.upgrade-modal-compact .modal-header h2 {
+  font-size: 1.35rem !important;
+  font-weight: 800 !important;
+  color: #08162A !important;
+  margin: 0 !important;
+}
+
+.modal-subtitle {
+  font-size: 0.85rem !important;
+  color: #64748B !important;
+  margin: 2px 0 0 0 !important;
+}
+
+.compact-body {
+  padding: 24px !important;
+  background: #F8FAFC !important;
+}
+
+.upgrade-plans-row {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 14px !important;
+  align-items: stretch !important;
+}
+
+@media (max-width: 900px) {
   .upgrade-plans-row {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    grid-template-columns: repeat(2, 1fr) !important;
   }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 520px) {
   .upgrade-plans-row {
-    grid-template-columns: 1fr;
-    gap: 16px;
+    grid-template-columns: 1fr !important;
   }
 }
 
 .upgrade-plan-box {
-  padding: 32px 20px 24px 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  background: #0E1E36 !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  border-radius: 20px;
-  position: relative;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  text-align: center;
-  height: 100%;
+  background: #08162A !important;
+  border: 1px solid #1E293B !important;
+  border-radius: 16px !important;
+  padding: 20px 16px 16px 16px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  position: relative !important;
+  transition: all 0.25s ease !important;
+  text-align: center !important;
+  box-shadow: 0 4px 15px rgba(8, 22, 42, 0.12) !important;
 }
 
 .upgrade-plan-box:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-  border-color: rgba(255, 184, 0, 0.4) !important;
+  transform: translateY(-4px) !important;
+  border-color: #FFB800 !important;
+  box-shadow: 0 10px 25px rgba(8, 22, 42, 0.25) !important;
 }
 
 .upgrade-plan-box.recommended {
   border: 2px solid #FFB800 !important;
-  box-shadow: 0 15px 35px rgba(255, 184, 0, 0.2);
-  background: #0E1E36 !important;
+  background: linear-gradient(180deg, #0E1E36 0%, #08162A 100%) !important;
+  box-shadow: 0 8px 24px rgba(255, 184, 0, 0.15) !important;
 }
 
 .upgrade-plan-box.current {
-  border: 1px dashed rgba(16, 185, 129, 0.5) !important;
-  background: rgba(16, 185, 129, 0.05) !important;
+  border: 2px solid #10B981 !important;
+  background: linear-gradient(180deg, #0A2524 0%, #08162A 100%) !important;
 }
 
 .rec-badge {
-  position: absolute;
-  top: -12px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #08162A;
-  font-size: 0.7rem;
-  font-weight: 800;
-  padding: 4px 12px;
-  border-radius: 20px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  white-space: nowrap;
+  position: absolute !important;
+  top: -11px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  font-size: 0.68rem !important;
+  font-weight: 800 !important;
+  padding: 3px 10px !important;
+  border-radius: 20px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  white-space: nowrap !important;
 }
 
-.upgrade-plan-box.recommended .rec-badge {
-  background: #FFB800;
-  box-shadow: 0 4px 10px rgba(255, 184, 0, 0.3);
+.badge-popular {
+  background: #FFB800 !important;
+  color: #08162A !important;
+  box-shadow: 0 3px 8px rgba(255, 184, 0, 0.4) !important;
 }
 
-.upgrade-plan-box:not(.recommended) .rec-badge {
-  background: rgba(255, 255, 255, 0.15);
-  color: #FFFFFF;
+.badge-value {
+  background: #3B82F6 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 3px 8px rgba(59, 130, 246, 0.4) !important;
+}
+
+.badge-active {
+  background: #10B981 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 3px 8px rgba(16, 185, 129, 0.4) !important;
+}
+
+.plan-card-header {
+  margin-bottom: 10px !important;
+}
+
+.plan-card-title {
+  font-size: 1.05rem !important;
+  font-weight: 800 !important;
+  color: #FFFFFF !important;
+  margin: 0 0 6px 0 !important;
+  letter-spacing: -0.01em !important;
 }
 
 .up-price {
-  font-size: 1.8rem;
-  font-weight: 800;
+  font-size: 1.55rem !important;
+  font-weight: 900 !important;
   color: #FFFFFF !important;
-  margin: 10px 0;
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  gap: 2px;
-  font-family: var(--font-secondary);
+  margin: 0 !important;
+  display: flex !important;
+  align-items: baseline !important;
+  justify-content: center !important;
+  gap: 2px !important;
+}
+
+.up-price .currency {
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  color: #FFB800 !important;
+}
+
+.up-price .period {
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  color: #94A3B8 !important;
+}
+
+.plan-features-list {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 12px 0 16px 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  text-align: left !important;
+}
+
+.plan-features-list li {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 8px !important;
+  font-size: 0.8rem !important;
+  color: #CBD5E1 !important;
+  line-height: 1.35 !important;
+}
+
+.plan-features-list .check-icon {
+  color: #FFB800 !important;
+  font-size: 0.85rem !important;
+  margin-top: 2px !important;
+  flex-shrink: 0 !important;
+}
+
+.plan-card-footer {
+  margin-top: auto !important;
+  width: 100% !important;
+}
+
+.plan-btn {
+  width: 100% !important;
+  padding: 10px 14px !important;
+  font-size: 0.85rem !important;
+  font-weight: 800 !important;
+  border-radius: 10px !important;
+  border: none !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-upgrade {
+  background: #FFB800 !important;
+  color: #08162A !important;
+  box-shadow: 0 4px 12px rgba(255, 184, 0, 0.25) !important;
+}
+
+.btn-upgrade:hover {
+  background: #E5A600 !important;
+  transform: translateY(-1px) !important;
+}
+
+.btn-current {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #10B981 !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  cursor: default !important;
+}
+
+.btn-disabled {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #64748B !important;
+  cursor: default !important;
 }
 
 .up-price span {

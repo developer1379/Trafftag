@@ -497,54 +497,60 @@
   <!-- Upgrade Modal -->
   @if (showUpgradeModal()) {
     <div class="modal-overlay">
-      <div class="modal-content modal-large">
+      <div class="modal-content modal-large upgrade-modal-compact">
         <div class="modal-header">
-          <h2>Upgrade Subscription Plan</h2>
+          <div>
+            <h2>Upgrade Subscription Plan</h2>
+            <p class="modal-subtitle">Select a vehicle protection tier tailored to your fleet needs</p>
+          </div>
           <button class="modal-close" (click)="closeUpgrade()"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body compact-body">
           @if (membershipPlans().length === 0) {
             <div style="display: flex; flex-direction: column; align-items: center; padding: 40px 20px;">
-              <div class="spinner" style="width: 40px; height: 40px; border-width: 4px; margin-bottom: 15px;"></div>
-              <p>Loading available subscription plans...</p>
+              <div class="spinner" style="width: 36px; height: 36px; border-width: 3px; margin-bottom: 12px;"></div>
+              <p style="font-size: 0.9rem; color: #64748B;">Loading available subscription plans...</p>
             </div>
           } @else {
             <div class="upgrade-plans-row">
               @for (plan of membershipPlans(); track plan.planId) {
-                <div class="upgrade-plan-box" [class.recommended]="plan.planId === 2 || plan.planId === 3" [class.current]="membershipType().toLowerCase() === plan.name.toLowerCase()">
+                <div class="upgrade-plan-box" 
+                     [class.recommended]="plan.planId === 2 || plan.planId === 3" 
+                     [class.current]="membershipType().toLowerCase().trim() === plan.name.toLowerCase().trim()">
+                  
                   @if (plan.planId === 2) {
-                    <span class="rec-badge">Best Seller</span>
+                    <span class="rec-badge badge-popular">Best Seller</span>
                   } @else if (plan.planId === 3) {
-                    <span class="rec-badge">Best Value</span>
+                    <span class="rec-badge badge-value">Best Value</span>
+                  } @else if (membershipType().toLowerCase().trim() === plan.name.toLowerCase().trim()) {
+                    <span class="rec-badge badge-active">Active</span>
                   }
-                  <div style="width: 100%;">
-                    <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 6px;">{{ plan.name }}</h3>
-                    <p class="up-price">
-                      ${{ plan.price.toFixed(2) }}
-                      <span style="font-size: 0.85rem; font-weight: 500; color: var(--text-secondary);">/ {{ plan.name.toLowerCase().includes('lifetime') ? 'one-time' : 'month' }}</span>
-                    </p>
+
+                  <div class="plan-card-header">
+                    <h3 class="plan-card-title">{{ plan.name }}</h3>
+                    <div class="up-price">
+                      <span class="currency">$</span>{{ plan.price.toFixed(2) }}
+                      <span class="period">/ {{ plan.name.toLowerCase().includes('lifetime') ? 'one-time' : 'mo' }}</span>
+                    </div>
                   </div>
                   
-                  <ul style="list-style: none; padding: 0; margin: 20px 0; text-align: left; display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem; color: var(--text-secondary); width: 100%; flex-grow: 1;">
+                  <ul class="plan-features-list">
                     @for (feat of getPlanFeatures(plan); track feat) {
-                      <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
-                        <i class="fa-solid fa-circle-check" style="color: var(--success); font-size: 0.95rem; margin-top: 1px; flex-shrink: 0;"></i>
+                      <li>
+                        <i class="fa-solid fa-circle-check check-icon"></i>
                         <span>{{ feat }}</span>
                       </li>
                     }
                   </ul>
                   
-                  <div style="width: 100%; margin-top: auto;">
+                  <div class="plan-card-footer">
                     @if (membershipType().toLowerCase().trim() === plan.name.toLowerCase().trim()) {
-                      <button class="btn btn-secondary w-full" disabled style="background: rgba(15, 23, 42, 0.05); color: rgba(15, 23, 42, 0.4); border-color: transparent; cursor: not-allowed;">Current Plan</button>
+                      <button class="plan-btn btn-current" disabled><i class="fa-solid fa-check"></i> Current Plan</button>
                     } @else if (plan.planId === 1) {
-                      <button class="btn btn-secondary w-full" disabled style="background: rgba(15, 23, 42, 0.05); color: rgba(15, 23, 42, 0.4); border-color: transparent; cursor: not-allowed;">Default Tier</button>
+                      <button class="plan-btn btn-disabled" disabled>Default Plan</button>
                     } @else {
-                      <button class="btn w-full" 
-                        [class.btn-primary]="plan.planId === 2 || plan.planId === 3" 
-                        [class.btn-indigo]="plan.planId === 4" 
-                        (click)="upgradePlan(plan.planId)">
-                        Choose {{ plan.name }}
+                      <button class="plan-btn btn-upgrade" (click)="upgradePlan(plan.planId)">
+                        Select Plan <i class="fa-solid fa-arrow-right"></i>
                       </button>
                     }
                   </div>
